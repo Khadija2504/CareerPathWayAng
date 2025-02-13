@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  standalone: false,
-  styleUrl: './app.component.css'
+  selector: 'app-nav',
+  standalone: true,
+  templateUrl: './nav.component.html',
+  styleUrl: './nav.component.css',
+  imports: [NgIf]
 })
-export class AppComponent implements OnInit {
-  isLoggedIn: boolean = false;
+export class NavComponent implements OnInit{
+isLoggedIn: boolean = false;
   userRole: string | null = null;
   isMobileMenuOpen = false;
   isDropdownOpen = false;

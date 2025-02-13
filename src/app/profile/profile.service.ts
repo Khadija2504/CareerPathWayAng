@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 export class ProfileService {
   private baseUrl = 'http://localhost:8800/api/user';
   private getUserUrl = `${this.baseUrl}/details`;
+  private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
   constructor(private http: HttpClient) {}
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -50,5 +51,17 @@ export class ProfileService {
         return throwError(() => error);
       })
     )
+  }
+
+  updateUserDetails(userData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put<any>(this.updateUserUrl, userData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating user details:', error);
+  
+        const errorMessage = error?.error?.message || 'Failed to update user details. Please try again.';
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 }

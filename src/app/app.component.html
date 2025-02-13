@@ -1,4 +1,6 @@
-<nav>
-  <a routerLink="/auth/login">Login</a>
-</nav>
+<ng-container *ngIf="isLoggedIn">
+  <nav>
+    <a routerLink="/auth/login">Login</a>
+  </nav>
+</ng-container>
 <router-outlet />

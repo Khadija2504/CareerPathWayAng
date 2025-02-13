@@ -1,0 +1,69 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+    <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Career Pathway</h1>
+        <p class="text-gray-600">Login to continue your journey</p>
+      </div>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter your email"
+          />
+          <div *ngIf="f['email'].touched && f['email'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['email'].errors['required']">Email is required.</div>
+            <div *ngIf="f['email'].errors['email']">Please enter a valid email.</div>
+          </div>
+        </div>
+  
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter your password"
+          />
+          <div *ngIf="f['password'].touched && f['password'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['password'].errors['required']">Password is required.</div>
+            <div *ngIf="f['password'].errors['minlength']">
+              Password must be at least 6 characters.
+            </div>
+          </div>
+        </div>
+  
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+        >
+          <span *ngIf="!isSubmitting">Login</span>
+          <span *ngIf="isSubmitting">Logging in...</span>
+        </button>
+  
+        <div *ngIf="errorMessage" class="text-red-500 text-sm text-center">
+          {{ errorMessage }}
+        </div>
+  
+        <div *ngIf="successMessage" class="text-green-500 text-sm text-center">
+          {{ successMessage }}
+        </div>
+      </form>
+  
+      <div class="mt-6 text-center">
+        <p class="text-gray-600">Don't have an account?</p>
+        <a
+          routerLink=""
+          class="text-blue-600 hover:text-blue-500 font-medium"
+        >
+          Register here
+        </a>
+      </div>
+    </div>
+  </div>

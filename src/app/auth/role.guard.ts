@@ -15,7 +15,7 @@ export class RoleGuard implements CanActivate {
     if (userRole && userRole === expectedRole) {
       return true;
     } else {
-      this.router.navigate(['']);
+      this.router.navigate(['/error/unauthorized']);
       return false;
     }
   }

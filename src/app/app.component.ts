@@ -31,9 +31,4 @@ export class AppComponent implements OnInit {
     return this.authService.getUserRole() === role;
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.checkLoginStatus();
-    setTimeout(()=> this.router.navigate(['/auth/login']));
-  }
 }

@@ -1,0 +1,136 @@
+<div class="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
+      <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Update User Details</h1>
+  
+      <div *ngIf="isLoading" class="text-center">
+        <p class="text-gray-700">Loading user details...</p>
+      </div>
+  
+      <div *ngIf="errorMessage" class="text-center text-red-500">
+        <p>{{ errorMessage }}</p>
+        <!-- <button
+          (click)="fetchUserDetails(userId!)"
+          class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+        >
+          Retry
+        </button> -->
+      </div>
+  
+      <form *ngIf="userDetails && !isLoading" [formGroup]="updateForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">First Name</label>
+            <input
+              type="text"
+              formControlName="firstName"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="First Name"
+            />
+            <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="text-red-500 text-sm mt-1">
+              <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Last Name</label>
+            <input
+              type="text"
+              formControlName="lastName"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Last Name"
+            />
+            <div *ngIf="f['lastName'].touched && f['lastName'].errors" class="text-red-500 text-sm mt-1">
+              <div *ngIf="f['lastName'].errors['required']">Last name is required.</div>
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              formControlName="email"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Email"
+            />
+            <div *ngIf="f['email'].touched && f['email'].errors" class="text-red-500 text-sm mt-1">
+              <div *ngIf="f['email'].errors['required']">Email is required.</div>
+              <div *ngIf="f['email'].errors['email']">Please enter a valid email.</div>
+            </div>
+          </div>
+  
+          <!-- <div>
+            <label class="block text-sm font-medium text-gray-700">Role</label>
+            <select
+              formControlName="role"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="EMPLOYEE">Employee</option>
+              <option value="MENTOR">Mentor</option>
+            </select>
+            <div *ngIf="f['role'].touched && f['role'].errors" class="text-red-500 text-sm mt-1">
+              <div *ngIf="f['role'].errors['required']">Role is required.</div>
+            </div>
+          </div> -->
+
+          <input type="password" formControlName="password" class="hidden">
+  
+          <div *ngIf="updateForm.get('role')?.value === 'EMPLOYEE'">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Department</label>
+              <input
+                type="text"
+                formControlName="department"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Department"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Job Title</label>
+              <input
+                type="text"
+                formControlName="jobTitle"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Job Title"
+              />
+            </div>
+          </div>
+  
+          <div *ngIf="updateForm.get('role')?.value === 'MENTOR'">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Expertise Area</label>
+              <input
+                type="text"
+                formControlName="expertiseArea"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Expertise Area"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Years of Experience</label>
+              <input
+                type="number"
+                formControlName="yearsOfExperience"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Years of Experience"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="text-center">
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+          >
+            <span *ngIf="!isLoading">Update</span>
+            <span *ngIf="isLoading">Updating...</span>
+          </button>
+        </div>
+  
+        <div *ngIf="successMessage" class="text-green-500 text-sm text-center">
+          {{ successMessage }}
+        </div>
+      </form>
+    </div>
+  </div>

@@ -13,6 +13,7 @@ export class UserDetailsComponent {
   isLoading = true;
   errorMessage: string | null = null;
   goals: any[] = [];
+  selectedGoal: any = null;
 
   constructor(private profileService: ProfileService, private router: Router) {}
 
@@ -24,8 +25,6 @@ export class UserDetailsComponent {
   fetchUserDetails(): void {
     this.profileService.getUserDetails().subscribe({
       next: (response) => {
-        console.log(response);
-        
         this.userDetails = response;
         this.isLoading = false;
       },
@@ -33,8 +32,8 @@ export class UserDetailsComponent {
         this.errorMessage = 'Failed to fetch user details. Please try again later.';
         this.isLoading = false;
         console.error('Error fetching user details:', error);
-      }
-    });
+      },
+    }); 
   }
 
   logout(): void {
@@ -44,16 +43,14 @@ export class UserDetailsComponent {
 
   getGoalsList(): void {
     this.errorMessage = null;
-    
+
     this.profileService.getAllEmployeeGoals().subscribe({
       next: (response) => {
-        console.log(response);
-        
         this.goals = response;
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'failed to load goals. please try again.';
-      }
+        this.errorMessage = error.error?.message || 'Failed to load goals. Please try again.';
+      },
     });
   }
 }

@@ -6,13 +6,17 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddGoalsComponent } from './add-goals/add-goals.component';
+import { TruncatePipe } from './user-details/truncate.pipe';
+import { GoalsComponent } from './goals/goals.component';
 
 
 @NgModule({
   declarations: [
     UserDetailsComponent,
     UpdateProfileComponent,
-    AddGoalsComponent
+    AddGoalsComponent,
+    TruncatePipe,
+    GoalsComponent
   ],
   imports: [
     CommonModule,

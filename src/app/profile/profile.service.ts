@@ -10,6 +10,7 @@ export class ProfileService {
   private baseUrl = 'http://localhost:8800/api/user';
   private baseGoalUrl = 'http://localhost:8800/api/employee/goal';
   private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
+  private getGoalsUrl = `${this.baseGoalUrl}/displayEmployeeGoals`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
   constructor(private http: HttpClient) {}
@@ -77,5 +78,15 @@ export class ProfileService {
         return throwError(() => new Error(errorMessage));
       })
     );
+  }
+
+  getAllEmployeeGoals(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(this.getGoalsUrl, {headers}).pipe(
+      catchError(error => {
+        console.error('error fetching goals:', error);
+        return throwError(()=> error);
+      })
+    )
   }
 }

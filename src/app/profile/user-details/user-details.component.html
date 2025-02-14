@@ -73,4 +73,27 @@
         </div>
       </div>
     </div>
+    <div *ngIf="goals.length > 0" class="mt-8">
+        <h2 class="text-2xl font-bold text-gray-800 text-center">Goals</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div *ngFor="let goal of goals" class="bg-gray-50 p-4 rounded-lg shadow-sm">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Goal Description</label>
+              <p class="mt-1 text-lg text-gray-900">{{ goal.goalDescription }}</p>
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-gray-700">Target Date</label>
+              <p class="mt-1 text-lg text-gray-900">{{ goal.targetDate | date }}</p>
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-gray-700">Status</label>
+              <p class="mt-1 text-lg text-gray-900">{{ goal.status }}</p>
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-gray-700">Type</label>
+              <p class="mt-1 text-lg text-gray-900">{{ goal.type }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>

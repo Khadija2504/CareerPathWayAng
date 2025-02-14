@@ -12,16 +12,20 @@ export class UserDetailsComponent {
   userDetails: any = null;
   isLoading = true;
   errorMessage: string | null = null;
+  goals: any[] = [];
 
   constructor(private profileService: ProfileService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchUserDetails();
+    this.getGoalsList();
   }
 
   fetchUserDetails(): void {
     this.profileService.getUserDetails().subscribe({
       next: (response) => {
+        console.log(response);
+        
         this.userDetails = response;
         this.isLoading = false;
       },
@@ -36,5 +40,20 @@ export class UserDetailsComponent {
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/auth/login']);
+  }
+
+  getGoalsList(): void {
+    this.errorMessage = null;
+    
+    this.profileService.getAllEmployeeGoals().subscribe({
+      next: (response) => {
+        console.log(response);
+        
+        this.goals = response;
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'failed to load goals. please try again.';
+      }
+    });
   }
 }

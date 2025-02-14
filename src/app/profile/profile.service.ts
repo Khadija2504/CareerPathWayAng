@@ -8,6 +8,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class ProfileService {
   private baseUrl = 'http://localhost:8800/api/user';
+  private baseGoalUrl = 'http://localhost:8800/api/employee/goal';
+  private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
   constructor(private http: HttpClient) {}
@@ -16,8 +18,8 @@ export class ProfileService {
   }
 
   isLoggedin(): boolean {
-    return !!this.getToken;
-  }
+    return !!this.getToken();
+  }  
 
   private getHeaders(): HttpHeaders {
     const tokenString = this.getToken();
@@ -60,6 +62,18 @@ export class ProfileService {
         console.error('Error updating user details:', error);
   
         const errorMessage = error?.error?.message || 'Failed to update user details. Please try again.';
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  addGoal(goalData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(this.addGoalUrl, goalData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error adding goal:', error);
+        const errorMessage = error.error || 'Failed to add goal. Please try again.';
+
         return throwError(() => new Error(errorMessage));
       })
     );

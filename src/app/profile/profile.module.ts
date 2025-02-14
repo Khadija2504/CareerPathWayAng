@@ -5,12 +5,14 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddGoalsComponent } from './add-goals/add-goals.component';
 
 
 @NgModule({
   declarations: [
     UserDetailsComponent,
-    UpdateProfileComponent
+    UpdateProfileComponent,
+    AddGoalsComponent
   ],
   imports: [
     CommonModule,

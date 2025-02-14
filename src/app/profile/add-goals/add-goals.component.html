@@ -1,0 +1,91 @@
+<div class="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
+      <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Add new goal</h1>
+  
+      <div *ngIf="isLoading" class="text-center">
+        <p class="text-gray-700">Adding goal...</p>
+      </div>
+  
+      <div *ngIf="errorMessage" class="text-center text-red-500">
+        <p>{{ errorMessage }}</p>
+      </div>
+  
+      <form [formGroup]="goalForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Goal Description</label>
+          <textarea
+            formControlName="goalDescription"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter goal description"
+          ></textarea>
+          <div *ngIf="f['goalDescription'].touched && f['goalDescription'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['goalDescription'].errors['required']">Goal description is required.</div>
+            <div *ngIf="f['goalDescription'].errors['maxlength']">Description cannot exceed 500 characters.</div>
+            <div *ngIf="f['goalDescription'].errors['serverError']">{{ f['goalDescription'].errors['serverError'] }}</div>
+          </div>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Target date</label>
+          <input
+            type="date"
+            formControlName="targetDate"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <div *ngIf="f['targetDate'].touched && f['targetDate'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['targetDate'].errors['required']">Target date is required.</div>
+            <div *ngIf="f['targetDate'].errors['future']">Target date must be in the future.</div>
+            <div *ngIf="f['targetDate'].errors['serverError']">{{ f['targetDate'].errors['serverError'] }}</div>
+          </div>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Status</label>
+          <select
+            formControlName="status"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="NOT_STARTED">Not Started</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+          <div *ngIf="f['status'].touched && f['status'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['status'].errors['required']">Status is required.</div>
+            <div *ngIf="f['status'].errors['pattern']">Status must be NOT_STARTED, IN_PROGRESS, or COMPLETED.</div>
+            <div *ngIf="f['status'].errors['serverError']">{{ f['status'].errors['serverError'] }}</div>
+          </div>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Type</label>
+          <select
+            formControlName="type"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="longTerm">Long Term</option>
+            <option value="shortTerm">Short Term</option>
+          </select>
+          <div *ngIf="f['type'].touched && f['type'].errors" class="text-red-500 text-sm mt-1">
+            <div *ngIf="f['type'].errors['required']">Type is required.</div>
+            <div *ngIf="f['type'].errors['pattern']">Type must be longTerm or shortTerm.</div>
+            <div *ngIf="f['type'].errors['serverError']">{{ f['type'].errors['serverError'] }}</div>
+          </div>
+        </div>
+  
+        <div class="text-center">
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+          >
+            <span *ngIf="!isLoading">Add Goal</span>
+            <span *ngIf="isLoading">Adding...</span>
+          </button>
+        </div>
+  
+        <div *ngIf="successMessage" class="text-green-500 text-sm text-center">
+          {{ successMessage }}
+        </div>
+      </form>
+    </div>
+  </div>

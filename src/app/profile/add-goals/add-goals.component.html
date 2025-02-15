@@ -47,7 +47,6 @@
           >
             <option value="NOT_STARTED">Not Started</option>
             <option value="IN_PROGRESS">In Progress</option>
-            <option value="COMPLETED">Completed</option>
           </select>
           <div *ngIf="f['status'].touched && f['status'].errors" class="text-red-500 text-sm mt-1">
             <div *ngIf="f['status'].errors['required']">Status is required.</div>

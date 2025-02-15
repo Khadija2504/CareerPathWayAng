@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProfileService } from '../profile.service';
 import { Router } from '@angular/router';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-details',
@@ -14,6 +15,8 @@ export class UserDetailsComponent {
   errorMessage: string | null = null;
   goals: any[] = [];
   selectedGoal: any = null;
+  faEdit = faEdit;
+    faTrash = faTrash;
 
   constructor(private profileService: ProfileService, private router: Router) {}
 
@@ -46,10 +49,26 @@ export class UserDetailsComponent {
 
     this.profileService.getAllEmployeeGoals().subscribe({
       next: (response) => {
-        this.goals = response;
+        this.goals = response.slice(-3);
       },
       error: (error) => {
         this.errorMessage = error.error?.message || 'Failed to load goals. Please try again.';
+      },
+    });
+  }
+
+  updateGoalStatus(goalId: number, newStatus: string): void {
+    const goalData = { goalId, status: newStatus };
+
+    this.profileService.updateGoalStatus(goalData).subscribe({
+      next: (response) => {
+        const updatedGoal = this.goals.find((goal) => goal.id === goalId);
+        if (updatedGoal) {
+          updatedGoal.status = newStatus;
+        }
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Failed to update goal status. Please try again.';
       },
     });
   }

@@ -1,9 +1,9 @@
-<div class="min-h-screen bg-gray-100 p-6">
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6">
     <div class="max-w-4xl mx-auto">
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="h-32 bg-gradient-to-r from-blue-600 to-blue-400"></div>
   
-        <div class="p-6">
+        <div class="p-4 sm:p-6">
           <div *ngIf="isLoading" class="text-center">
             <p class="text-gray-700">Loading user details...</p>
           </div>
@@ -20,43 +20,43 @@
   
           <div *ngIf="userDetails && !isLoading" class="space-y-6">
             <div class="text-center">
-              <h1 class="text-3xl font-bold text-gray-800">{{ userDetails.firstName }} {{ userDetails.lastName }}</h1>
-              <p class="text-gray-600 mt-2">{{ userDetails.jobTitle }} at {{ userDetails.department }}</p>
-              <p class="text-gray-500 mt-1">{{ userDetails.email }}</p>
+              <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">{{ userDetails.firstName }} {{ userDetails.lastName }}</h1>
+              <p class="text-sm sm:text-base text-gray-600 mt-2">{{ userDetails.jobTitle }} at {{ userDetails.department }}</p>
+              <p class="text-sm sm:text-base text-gray-500 mt-1">{{ userDetails.email }}</p>
             </div>
   
-            <div *ngIf="userDetails.role === 'MENTOR'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div *ngIf="userDetails.role === 'MENTOR'" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Expertise Area</label>
-                <p class="mt-1 text-lg text-gray-900">{{ userDetails.expertiseArea }}</p>
+                <p class="mt-1 text-base sm:text-lg text-gray-900">{{ userDetails.expertiseArea }}</p>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Years of Experience</label>
-                <p class="mt-1 text-lg text-gray-900">{{ userDetails.yearsOfExperience }}</p>
+                <p class="mt-1 text-base sm:text-lg text-gray-900">{{ userDetails.yearsOfExperience }}</p>
               </div>
             </div>
   
-            <div *ngIf="userDetails.role === 'EMPLOYEE'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div *ngIf="userDetails.role === 'EMPLOYEE'" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Department</label>
-                <p class="mt-1 text-lg text-gray-900">{{ userDetails.department }}</p>
+                <p class="mt-1 text-base sm:text-lg text-gray-900">{{ userDetails.department }}</p>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Job Title</label>
-                <p class="mt-1 text-lg text-gray-900">{{ userDetails.jobTitle }}</p>
+                <p class="mt-1 text-base sm:text-lg text-gray-900">{{ userDetails.jobTitle }}</p>
               </div>
             </div>
   
-            <div class="text-center mt-8 space-x-4">
+            <div class="text-center mt-6 space-x-4">
               <button
                 (click)="logout()"
-                class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-300"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
               >
                 Logout
               </button>
               <a
                 routerLink="/profile/edit-profile"
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
               >
                 Edit Profile
               </a>
@@ -65,86 +65,95 @@
         </div>
       </div>
   
-      <div class="min-h-screen bg-gray-100 p-6">
-        <div class="max-w-6xl mx-auto flex gap-8">
-
-          <div class="w-1/2">
+      <div class="mt-6">
+        <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-6">
+          <div class="w-full lg:w-1/2">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Goals</h2>
             <div class="space-y-4">
               <div
                 *ngFor="let goal of goals; let i = index"
                 (click)="selectedGoal = goal"
-                class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                class="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
               >
                 <div class="flex justify-between items-center">
                   <div>
-                    <h3 class="text-xl font-semibold text-gray-800">{{ goal.goalDescription | truncate: 3 }}</h3>
-                    <p class="text-gray-600 mt-2">{{ goal.targetDate | date }}</p>
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{{ goal.goalDescription | truncate: 3 }}</h3>
+                    <p class="text-sm sm:text-base text-gray-600 mt-2">{{ goal.targetDate | date }}</p>
                   </div>
                   <div class="text-right">
-                    <p *ngIf="goal.status === 'IN_PROGRESS'" class="text-gray-800 font-bold">IN PROGRESS</p>
-                    <p *ngIf="goal.status === 'NOT_STARTED'" class="text-gray-800 font-bold">NOT STARTED</p>
-                    <p *ngIf="goal.status === 'COMPLETED'" class="text-gray-800 font-bold">COMPLETED</p>
-                    <p *ngIf="goal.type === 'longTerm'" class="text-gray-600">Long term</p>
-                    <p *ngIf="goal.type === 'shortTerm'" class="text-gray-600">Short term</p>
+                    <p *ngIf="goal.status === 'IN_PROGRESS'" class="text-sm sm:text-base text-gray-800 font-bold">IN PROGRESS</p>
+                    <p *ngIf="goal.status === 'NOT_STARTED'" class="text-sm sm:text-base text-gray-800 font-bold">NOT STARTED</p>
+                    <p *ngIf="goal.status === 'COMPLETED'" class="text-sm sm:text-base text-gray-800 font-bold">COMPLETED</p>
+                    <p *ngIf="goal.type === 'longTerm'" class="text-sm sm:text-base text-gray-600">Long term</p>
+                    <p *ngIf="goal.type === 'shortTerm'" class="text-sm sm:text-base text-gray-600">Short term</p>
                   </div>
                 </div>
               </div>
             </div>
-            <a routerLink="/profile/goals"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-          >
-            see more
-          </a>
+            <a
+              routerLink="/profile/goals"
+              class="mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+            >
+              See More
+            </a>
           </div>
-      
-          <div class="w-1/2">
-            <div class="bg-white rounded-lg shadow-md p-6">
+  
+          <div class="w-full lg:w-1/2">
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <h2 class="text-2xl font-bold text-gray-800 mb-6">Other Content</h2>
-              <p class="text-gray-600">This is where additional content will go.</p>
-            </div>
-          </div>
-        </div>
-      
-        <div
-          *ngIf="selectedGoal"
-          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
-          (click)="selectedGoal = null"
-        >
-          <div class="bg-white rounded-lg shadow-2xl p-8 max-w-lg w-full" (click)="$event.stopPropagation()">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Goal Details</h2>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Goal Description</label>
-                <p class="mt-1 text-lg text-gray-900 font-semibold">{{ selectedGoal.goalDescription }}</p>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Target Date</label>
-                <p class="mt-1 text-lg text-gray-900">{{ selectedGoal.targetDate | date }}</p>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Status</label>
-                <p *ngIf="selectedGoal.status === 'IN_PROGRESS'" class="mt-1 text-lg text-gray-900">IN PROGRESS</p>
-                <p *ngIf="selectedGoal.status === 'NOT_STARTED'" class="mt-1 text-lg text-gray-900">NOT STARTED</p>
-                <p *ngIf="selectedGoal.status === 'COMPLETED'" class="mt-1 text-lg text-gray-900">COMPLETED</p>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Type</label>
-                <p *ngIf="selectedGoal.type === 'longTerm'" class="mt-1 text-lg text-gray-900">Long term</p>
-                <p *ngIf="selectedGoal.type === 'shortTerm'" class="mt-1 text-lg text-gray-900">Short term</p>
-              </div>
-            </div>
-            <div class="mt-6 flex justify-end">
-              <button
-                (click)="selectedGoal = null"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-              >
-                Close
-              </button>
+              <p class="text-sm sm:text-base text-gray-600">This is where additional content will go.</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-</div>
   
+      <div
+        *ngIf="selectedGoal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+        (click)="selectedGoal = null"
+      >
+        <div class="bg-white rounded-lg shadow-2xl p-6 sm:p-8 max-w-lg w-full" (click)="$event.stopPropagation()">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Goal Details</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Goal Description</label>
+              <p class="mt-1 text-lg text-gray-900 font-semibold">{{ selectedGoal.goalDescription }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Target Date</label>
+              <p class="mt-1 text-lg text-gray-900">{{ selectedGoal.targetDate | date }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Status</label>
+              <p *ngIf="selectedGoal.status === 'IN_PROGRESS'" class="mt-1 text-lg text-gray-900">IN PROGRESS</p>
+              <p *ngIf="selectedGoal.status === 'NOT_STARTED'" class="mt-1 text-lg text-gray-900">NOT STARTED</p>
+              <p *ngIf="selectedGoal.status === 'COMPLETED'" class="mt-1 text-lg text-gray-900">COMPLETED</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Type</label>
+              <p *ngIf="selectedGoal.type === 'longTerm'" class="mt-1 text-lg text-gray-900">Long term</p>
+              <p *ngIf="selectedGoal.type === 'shortTerm'" class="mt-1 text-lg text-gray-900">Short term</p>
+            </div>
+          </div>
+          <div class="mt-6 flex flex-col sm:flex-row justify-between gap-4">
+            <div class="text-right">
+              <select
+                [(ngModel)]="selectedGoal.status"
+                (change)="updateGoalStatus(selectedGoal.id, selectedGoal.status)"
+                class="mt-1 block w-full sm:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="IN_PROGRESS">IN PROGRESS</option>
+                <option value="COMPLETED">COMPLETED</option>
+              </select>
+            </div>
+            <button
+              (click)="selectedGoal = null"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

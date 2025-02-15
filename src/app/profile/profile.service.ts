@@ -11,6 +11,7 @@ export class ProfileService {
   private baseGoalUrl = 'http://localhost:8800/api/employee/goal';
   private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
   private getGoalsUrl = `${this.baseGoalUrl}/displayEmployeeGoals`;
+  private updateGoalUrl = `${this.baseGoalUrl}/updateGoalStatus`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
   constructor(private http: HttpClient) {}
@@ -88,5 +89,17 @@ export class ProfileService {
         return throwError(()=> error);
       })
     )
+  }
+
+  
+  updateGoalStatus(goalData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(this.updateGoalUrl, goalData, {headers}).pipe(
+      catchError(error=> {
+        console.error('error updating goal status: ', error);
+        const errorMessage = error?.error?.message || 'failed to update goal status, plz try agin leater';
+        return throwError(()=> new Error(errorMessage));
+      })
+    );
   }
 }

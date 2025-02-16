@@ -1,4 +1,12 @@
-  <ng-container *ngIf="isLoggedIn">
-    <app-nav></app-nav>
+<nav *ngIf="isLoggedIn" class="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
+  <ng-container *ngIf="hasRole('EMPLOYEE')">
+    <app-emplyee-nav></app-emplyee-nav>
   </ng-container>
+  <ng-container *ngIf="hasRole('MENTOR')">
+    <app-emplyee-nav></app-emplyee-nav>
+  </ng-container>
+  <ng-container *ngIf="hasRole('ADMIN')">
+    <app-emplyee-nav></app-emplyee-nav>
+  </ng-container>
+</nav>
   <router-outlet />

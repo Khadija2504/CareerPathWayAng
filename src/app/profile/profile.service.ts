@@ -12,6 +12,7 @@ export class ProfileService {
   private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
   private getGoalsUrl = `${this.baseGoalUrl}/displayEmployeeGoals`;
   private updateGoalUrl = `${this.baseGoalUrl}/updateGoalStatus`;
+  private deleteGoalUrl = `${this.baseGoalUrl}/deleteGoal`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
   constructor(private http: HttpClient) {}
@@ -98,6 +99,17 @@ export class ProfileService {
       catchError(error=> {
         console.error('error updating goal status: ', error);
         const errorMessage = error?.error?.message || 'failed to update goal status, plz try agin leater';
+        return throwError(()=> new Error(errorMessage));
+      })
+    );
+  }
+
+  deleteGoal(goalId: number):Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(this.deleteGoalUrl, goalId, {headers}).pipe(
+      catchError(error=> {
+        console.error('error deleting this goal: ', error);
+        const errorMessage = error?.error?.message || 'failed to delete this goal, plz try agin leater';
         return throwError(()=> new Error(errorMessage));
       })
     );

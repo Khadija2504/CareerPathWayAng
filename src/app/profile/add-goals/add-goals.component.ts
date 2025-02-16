@@ -46,7 +46,7 @@ export class AddGoalsComponent {
         
         this.successMessage = 'Goal added successfully!';
         this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/profile']), 2000);
+        setTimeout(() => this.router.navigate(['/profile/goals']), 2000);
       },
       error: (error) => {
         this.isLoading = false;

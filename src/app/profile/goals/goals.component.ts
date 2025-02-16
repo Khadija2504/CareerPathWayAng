@@ -50,4 +50,17 @@ export class GoalsComponent implements OnInit {
       },
     });
   }
+
+  deleteGoal(goalId: number): void {
+    if (confirm('Are you sure you want to delete this goal?')) {
+      this.profileService.deleteGoal(goalId).subscribe({
+        next: () => {
+          this.goals = this.goals.filter((goal) => goal.id !== goalId);
+        },
+        error: (error) => {
+          this.errorMessage = error.error?.message || 'Failed to delete goal. Please try again.';
+        },
+      });
+    }
+  }
 }

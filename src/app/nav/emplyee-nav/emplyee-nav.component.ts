@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { Component } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-nav',
+  selector: 'app-emplyee-nav',
   standalone: true,
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css',
+  templateUrl: './emplyee-nav.component.html',
+  styleUrl: './emplyee-nav.component.css',
   imports: [NgIf]
 })
-export class NavComponent implements OnInit{
+export class EmplyeeNavComponent {
 isLoggedIn: boolean = false;
   userRole: string | null = null;
   isMobileMenuOpen = false;
@@ -39,3 +39,4 @@ isLoggedIn: boolean = false;
     setTimeout(()=> this.router.navigate(['/auth/login']));
   }
 }
+

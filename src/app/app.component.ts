@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   hasRole(role: string): boolean {
-    console.log(role);
-    console.log(this.authService.getUserRole());
     return this.authService.getUserRole() === role;
   }
 

@@ -12,6 +12,7 @@ export class ProfileService {
   private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
   private getGoalsUrl = `${this.baseGoalUrl}/displayEmployeeGoals`;
   private updateGoalUrl = `${this.baseGoalUrl}/updateGoalStatus`;
+  private updateGoalDetailsUrl = `${this.baseGoalUrl}/updateGoal`;
   private deleteGoalUrl = `${this.baseGoalUrl}/deleteGoal`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
@@ -111,6 +112,30 @@ export class ProfileService {
         console.error('error deleting this goal: ', error);
         const errorMessage = error?.error?.message || 'failed to delete this goal, plz try agin leater';
         return throwError(()=> new Error(errorMessage));
+      })
+    );
+  }
+
+  updateGoal(goalId: any, goalData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put<any>(`${this.updateGoalDetailsUrl}/${goalId}`, goalData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating goal:', error);
+        const errorMessage = error?.error?.message || 'Failed to update goal, please try again';
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getGoalById(goalId: any): Observable<any> {
+    const headers = this.getHeaders();
+    console.log(goalId);
+    
+    return this.http.get<any>(`${this.baseGoalUrl}/getGoal/${goalId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching goal details:', error);
+        const errorMessage = error?.error?.message || 'Failed to fetch goal details.';
+        return throwError(() => new Error(errorMessage));
       })
     );
   }

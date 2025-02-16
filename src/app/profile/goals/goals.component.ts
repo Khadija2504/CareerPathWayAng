@@ -63,4 +63,9 @@ export class GoalsComponent implements OnInit {
       });
     }
   }
+
+  editGoal(goal: any): void {
+    this.router.navigate(['/profile/edit-goal', goal.id]);
+    console.log("goal id:", goal.id);
+  }
 }

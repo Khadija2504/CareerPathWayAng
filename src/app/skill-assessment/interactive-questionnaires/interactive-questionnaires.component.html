@@ -1,0 +1,27 @@
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Skill Assessment</h2>
+      <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+      <form (ngSubmit)="onSubmit()" class="space-y-6">
+        <div *ngFor="let question of questions; let i = index" class="space-y-2">
+          <p class="text-lg font-semibold text-gray-800">{{ question.questionText }}</p>
+          <div *ngFor="let option of question.options" class="flex items-center">
+            <input
+              type="radio"
+              [(ngModel)]="responses[i]"
+              [value]="option"
+              [name]="'question' + i"
+              class="mr-2"
+            />
+            <label>{{ option }}</label>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>

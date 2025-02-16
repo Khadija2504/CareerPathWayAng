@@ -7,6 +7,7 @@ const routes: Routes = [
   {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m=> m.AuthModule)},
   {path: 'error', loadChildren: () => import('./errors/errors.module').then(m=> m.ErrorsModule)},
   {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m=> m.ProfileModule)},
+  {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule)},
   {path: '**', component: NotFoundComponent},
 
 ];

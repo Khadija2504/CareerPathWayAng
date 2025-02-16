@@ -10,10 +10,13 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { EmplyeeNavComponent } from './nav/emplyee-nav/emplyee-nav.component';
 import { MentorNavComponent } from './nav/mentor-nav/mentor-nav.component';
 import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
+import { SkillAssessmentComponent } from './skill-assessment/skill-assessment.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
+    SkillAssessmentComponent,
 
   ],
   imports: [
@@ -23,7 +26,8 @@ import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
     EmplyeeNavComponent,
     MentorNavComponent,
     AdminNavComponent,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

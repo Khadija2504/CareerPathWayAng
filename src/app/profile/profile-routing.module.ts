@@ -4,12 +4,14 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { AddGoalsComponent } from './add-goals/add-goals.component';
 import { GoalsComponent } from './goals/goals.component';
+import { EditGoalComponent } from './edit-goal/edit-goal.component';
 
 const routes: Routes = [
   {path: '', component: UserDetailsComponent},
   {path: 'edit-profile', component: UpdateProfileComponent},
   {path: 'addGoal', component: AddGoalsComponent},
   {path: 'goals', component: GoalsComponent},
+  { path: 'edit-goal/:goalId', component: EditGoalComponent },
 ];
 
 @NgModule({

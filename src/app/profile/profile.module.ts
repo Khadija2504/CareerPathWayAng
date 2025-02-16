@@ -11,6 +11,7 @@ import { GoalsComponent } from './goals/goals.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { EditGoalComponent } from './edit-goal/edit-goal.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
     UpdateProfileComponent,
     AddGoalsComponent,
     TruncatePipe,
-    GoalsComponent
+    GoalsComponent,
+    EditGoalComponent
   ],
   imports: [
     CommonModule,

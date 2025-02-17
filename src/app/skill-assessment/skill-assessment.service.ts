@@ -7,7 +7,8 @@ import { ProfileService } from '../profile/profile.service';
   providedIn: 'root'
 })
 export class SkillAssessmentService {
-  private baseSkillUrl = 'http://localhost:8800/api/employee/questionnaires';
+  private baseSkillUrl = 'http://localhost:8800/api/employee/skills';
+  private baseQuestionsUrm = 'http://localhost:8800/api/employee/questionnaires'
    constructor(private http: HttpClient, private profileService: ProfileService) {}
     getToken(): string | null {
       return localStorage.getItem('token');
@@ -43,7 +44,7 @@ export class SkillAssessmentService {
 
   getAllSkills(): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseSkillUrl}/skills`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseSkillUrl}/displaySkills`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching skills:', error);
         return throwError(() => error);
@@ -53,7 +54,7 @@ export class SkillAssessmentService {
   
   getQuestionnairesBySkillId(skillId: number): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseSkillUrl}/skill/${skillId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseQuestionsUrm}/skill/${skillId}`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching questionnaires:', error);
         return throwError(() => error);
@@ -64,7 +65,7 @@ export class SkillAssessmentService {
   submitQuestionnaireResponses(skillId: number, responses: string[]): Observable<any> {
     const headers = this.getHeaders();
     const requestBody = { skillId, responses };
-    return this.http.post<any>(`${this.baseSkillUrl}/submit`, requestBody, { headers }).pipe(
+    return this.http.post<any>(`${this.baseQuestionsUrm}/submit`, requestBody, { headers }).pipe(
       catchError(error => {
         console.error('Error submitting responses:', error);
         return throwError(() => error);
@@ -74,7 +75,7 @@ export class SkillAssessmentService {
   
   getAssessmentById(assessmentId: number): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseSkillUrl}/assessment/${assessmentId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseQuestionsUrm}/assessment/${assessmentId}`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching assessment:', error);
         return throwError(() => error);

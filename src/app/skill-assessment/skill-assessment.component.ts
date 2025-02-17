@@ -38,7 +38,7 @@ export class SkillAssessmentComponent implements OnInit{
 
   onSelectSkill(): void {
     if (this.selectedSkillId) {
-      this.router.navigate(['/skill-assessment', this.selectedSkillId]);
+      this.router.navigate(['/skill-assessment/interactive-questionnaires', this.selectedSkillId]);
     }
   }
 }

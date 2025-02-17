@@ -13,6 +13,7 @@ export class SkillAssessmentComponent implements OnInit{
   selectedSkillId: number | null = null;
   assessment: any;
   errorMessage: string | null = null;
+  assessments: any[] = [];
 
   constructor(private skillService: SkillAssessmentService, private router: Router, private route: ActivatedRoute) {}
 
@@ -25,10 +26,9 @@ export class SkillAssessmentComponent implements OnInit{
         console.error('Error fetching skills:', error);
       },
     });
-    const assessmentId = +this.route.snapshot.paramMap.get('id')!;
-    this.skillService.getAssessmentById(assessmentId).subscribe({
+    this.skillService.getAssessments().subscribe({
       next: (response) => {
-        this.assessment = response;
+        this.assessments = response;
       },
       error: (error) => {
         this.errorMessage = 'Failed to load assessment results. Please try again.';

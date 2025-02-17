@@ -73,9 +73,9 @@ export class SkillAssessmentService {
     );
   }
   
-  getAssessmentById(assessmentId: number): Observable<any> {
+  getAssessments(): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseQuestionsUrm}/assessment/${assessmentId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseSkillUrl}/displayEmployeeSkillAssessment`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching assessment:', error);
         return throwError(() => error);

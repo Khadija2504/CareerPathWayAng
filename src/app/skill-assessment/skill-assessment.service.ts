@@ -9,7 +9,7 @@ import { ProfileService } from '../profile/profile.service';
 export class SkillAssessmentService {
   private baseSkillUrl = 'http://localhost:8800/api/employee/skills';
   private baseQuestionsUrm = 'http://localhost:8800/api/employee/questionnaires'
-   constructor(private http: HttpClient, private profileService: ProfileService) {}
+   constructor(private http: HttpClient) {}
     getToken(): string | null {
       return localStorage.getItem('token');
     }

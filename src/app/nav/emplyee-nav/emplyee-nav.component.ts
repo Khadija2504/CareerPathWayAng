@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { ProfileService } from '../../profile/profile.service';
 
 @Component({
   selector: 'app-emplyee-nav',
@@ -11,13 +12,19 @@ import { Router, RouterLink } from '@angular/router';
   imports: [NgIf, RouterLink]
 })
 export class EmplyeeNavComponent {
-isLoggedIn: boolean = false;
+  userDetails: any = null;
+  isLoggedIn: boolean = false;
   userRole: string | null = null;
   isMobileMenuOpen = false;
   isDropdownOpen = false;
-  constructor(private authService: AuthService, private router:Router) {}
+  isLoading = true;
+  errorMessage: string | null = null;
+  constructor(private authService: AuthService, private router:Router, private profileService: ProfileService) {}
 
   ngOnInit(): void {
+    this.fetchUserDetails();
+    console.log(this.userDetails);
+    
     this.checkLoginStatus();
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userRole = this.authService.getUserRole();
@@ -37,6 +44,21 @@ isLoggedIn: boolean = false;
     this.authService.logout();
     this.checkLoginStatus();
     setTimeout(()=> this.router.navigate(['/auth/login']));
+  }
+
+  fetchUserDetails(): void {    
+    this.profileService.getUserDetails().subscribe({
+      next: (response) => {
+        this.userDetails = response;
+        console.log(response);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Failed to fetch user details. Please try again later.';
+        this.isLoading = false;
+        console.error('Error fetching user details:', error);
+      },
+    }); 
   }
 }
 

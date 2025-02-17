@@ -12,6 +12,7 @@ import { MentorNavComponent } from './nav/mentor-nav/mentor-nav.component';
 import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
 import { SkillAssessmentComponent } from './skill-assessment/skill-assessment.component';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @NgModule({
   declarations: [

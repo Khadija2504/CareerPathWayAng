@@ -1,14 +1,14 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-emplyee-nav',
   standalone: true,
   templateUrl: './emplyee-nav.component.html',
   styleUrl: './emplyee-nav.component.css',
-  imports: [NgIf]
+  imports: [NgIf, RouterLink]
 })
 export class EmplyeeNavComponent {
 isLoggedIn: boolean = false;

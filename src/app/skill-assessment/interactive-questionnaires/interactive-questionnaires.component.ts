@@ -37,7 +37,7 @@ export class InteractiveQuestionnairesComponent {
   onSubmit(): void {
     this.skillService.submitQuestionnaireResponses(this.skillId, this.responses).subscribe({
       next: (assessment) => {
-        this.router.navigate(['/assessment-result', assessment.id]);
+        this.router.navigate(['/skill-assessment', assessment.id]);
       },
       error: (error) => {
         this.errorMessage = error.message || 'Failed to submit responses. Please try again.';

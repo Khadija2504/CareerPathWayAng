@@ -7,6 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class MentorShipService {
   private baseMentorsUrl = 'http://localhost:8800/api/user/allMentors';
+  private baseMessagesUrl = 'http://localhost:8800/api/messages';
 
   constructor(private http: HttpClient) { }
   getToken(): string | null {
@@ -50,4 +51,24 @@ export class MentorShipService {
         })
       );
     }
+
+  sendMessage(messageData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${this.baseMessagesUrl}/send`, messageData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error sending message:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getMessagesBetweenUsers(receiverId: number): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.baseMessagesUrl}/between?receiverId=${receiverId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching messages list:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

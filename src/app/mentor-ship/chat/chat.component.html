@@ -1,8 +1,15 @@
 <div class="flex flex-col h-screen bg-gray-100 p-4">
     <div class="flex-1 overflow-y-auto bg-white rounded-lg shadow-md p-4">
       <div *ngFor="let message of messages" class="mb-4">
-        <div [ngClass]="{'text-right': message.senderId === receiverId, 'text-left': message.senderId !== receiverId}">
-          <div [ngClass]="{'bg-blue-500 text-white': message.senderId === receiverId, 'bg-gray-200': message.senderId !== receiverId}" class="inline-block rounded-lg px-4 py-2">
+        <div *ngIf="message.sender.id === loggedinUser" class="text-right">
+          <div class="inline-block rounded-lg px-4 py-2 bg-blue-500 text-white">
+            {{ message.content }}
+          </div>
+          <div class="text-xs text-gray-500 mt-1">{{ message.timestamp | date:'short' }}</div>
+        </div>
+
+        <div *ngIf="message.sender.id !== loggedinUser" class="text-left">
+          <div class="inline-block rounded-lg px-4 py-2 bg-gray-200">
             {{ message.content }}
           </div>
           <div class="text-xs text-gray-500 mt-1">{{ message.timestamp | date:'short' }}</div>

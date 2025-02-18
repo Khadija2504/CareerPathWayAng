@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mentors-list',
@@ -9,7 +10,7 @@ import { MentorShipService } from '../mentor-ship.service';
 })
 export class MentorsListComponent implements OnInit{
   mentors: any[]= [];
-  constructor(private mentorShipService: MentorShipService) {}
+  constructor(private mentorShipService: MentorShipService, private router: Router) {}
   ngOnInit(): void {
     this.mentorShipService.getAllMentors().subscribe({
       next: (response) => {
@@ -19,5 +20,9 @@ export class MentorsListComponent implements OnInit{
         console.error('Error fetching mentors:', error);
       },
     });
+  }
+
+  startChat(mentorId: number): void {
+    this.router.navigate(['/mentorShip-coaching/chat', mentorId]);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProfileService } from '../../profile/profile.service';
 
 @Component({
   selector: 'app-chat',
@@ -13,11 +14,15 @@ export class ChatComponent implements OnInit {
   messages: any[] = [];
   chatForm: FormGroup;
   receiverId: number | null = null;
+  loggedinUser: any = null;
+  isLoading = true;
+  errorMessage: string | null = null;
 
   constructor(
     private mentorShipService: MentorShipService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private profileService: ProfileService
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
@@ -32,36 +37,60 @@ export class ChatComponent implements OnInit {
     } else {
       console.error('Mentor ID is missing in the route.');
     }
+    this.fetchUserDetails();
+  }
+
+  fetchUserDetails(): void {
+    this.profileService.getUserDetails().subscribe({
+      next: (response) => {
+        this.loggedinUser = response.id;
+        console.log(this.loggedinUser);
+        
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Failed to fetch user details. Please try again later.';
+        this.isLoading = false;
+        console.error('Error fetching user details:', error);
+      },
+    });
   }
 
   loadMessages(): void {
     if (this.receiverId !== null) {
-      this.mentorShipService.getMessagesBetweenUsers(this.receiverId).subscribe(
-        messages => this.messages = messages,
-        error => console.error('Error loading messages', error)
-      );
+      this.mentorShipService.getMessagesBetweenUsers(this.receiverId).subscribe({
+        next: (response) => {
+          this.messages = response;
+          console.log(this.messages[1]);
+        },
+        error: (error) => {
+          console.error('Error fetching messages:', error);
+        },
+      });
     } else {
       console.error('Receiver ID is not set.');
     }
   }
 
   sendMessage(): void {
-    if (this.chatForm.valid && this.receiverId !== null) {
+    if (this.chatForm.valid && this.receiverId !== null && this.loggedinUser) {
       const message = {
-        senderId: 0,
+        senderId: this.loggedinUser.id,
         receiverId: this.receiverId,
         content: this.chatForm.value.content
       };
 
-      this.mentorShipService.sendMessage(message).subscribe(
-        response => {
+      this.mentorShipService.sendMessage(message).subscribe({
+        next: (response) => {
           this.messages.push(response);
           this.chatForm.reset();
         },
-        error => console.error('Error sending message', error)
-      );
+        error: (error) => {
+          console.error('Error sending message:', error);
+        }
+      });
     } else {
-      console.error('Form is invalid or Receiver ID is not set.');
+      console.error('Form is invalid, Receiver ID is not set, or User details are missing.');
     }
   }
 }

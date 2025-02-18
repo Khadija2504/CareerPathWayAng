@@ -8,6 +8,8 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class MentorShipService {
   private baseMentorsUrl = 'http://localhost:8800/api/user/allMentors';
   private baseMessagesUrl = 'http://localhost:8800/api/messages';
+  private mentorshipUrl = 'http://localhost:8800/api/mentorship';
+
 
   constructor(private http: HttpClient) { }
   getToken(): string | null {
@@ -67,6 +69,26 @@ export class MentorShipService {
     return this.http.get<any[]>(`${this.baseMessagesUrl}/between?receiverId=${receiverId}`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching messages list:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  creatMentorship(mentorshipData: any): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.post<any[]>(`${this.mentorshipUrl}/create-mentorship`, mentorshipData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error creating new mentorship:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  isMentorshipExist(mentorId: number) : Observable<boolean> {
+    const headers = this.getHeaders();
+    return this.http.post<boolean>(`${this.mentorshipUrl}/isMentorshipExist`, mentorId, { headers }).pipe(
+      catchError(error => {
+        console.error('Error checking the availablaty of mentorship:', error);
         return throwError(() => error);
       })
     );

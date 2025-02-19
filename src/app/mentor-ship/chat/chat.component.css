@@ -1,0 +1,29 @@
+/* Smooth scrolling for messages */
+.chat-messages {
+    scroll-behavior: smooth;
+  }
+  
+  /* Better textarea behavior */
+  textarea {
+    min-height: 40px;
+    max-height: 100px;
+    overflow-y: auto !important;
+  }
+  
+  /* Hide scrollbar for cleaner look */
+  .chat-messages::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

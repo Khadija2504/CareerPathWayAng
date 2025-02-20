@@ -25,7 +25,7 @@ export class MentorsListComponent implements OnInit{
   }
 
   startChat(mentorId: number): void {
-    this.router.navigate(['/mentorShip-coaching/chat', mentorId]);
+    this.router.navigate(['/mentorShip-coaching/chat']);
   }
 
   createMentorship(mentorId: number): void{
@@ -51,13 +51,24 @@ export class MentorsListComponent implements OnInit{
       next: (response) => {
         this.isExist = response;
         console.log(response);
-        if(!this.isExist) {
-          this.createMentorship(mentorId);
-        }
       },
       error: (error) => {
         console.error('Error sending the mentorhsip data:', error);
       }
     });
+  }
+
+  isConversationExist(mentorId: number): void {
+    this.isMentorshipExist(mentorId);
+    if(this.isExist == true){
+      this.startChat(mentorId);
+    }
+  }
+
+  isMentorExist(mentorId: number): void{
+    this.isMentorshipExist(mentorId);
+    if(this.isExist == false) {
+      this.createMentorship(mentorId);
+    }
   }
 }

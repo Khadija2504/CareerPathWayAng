@@ -19,6 +19,8 @@ export class ChatComponent implements OnInit {
   errorMessage: string | null = null;
   conversations : any[] = [];
   mentor: number | null = null;
+  isConversationsOpen: boolean = false;
+  isMessagesOpen: boolean = false;
 
   constructor(
     private mentorShipService: MentorShipService,
@@ -59,7 +61,7 @@ export class ChatComponent implements OnInit {
       this.mentorShipService.getMessagesBetweenUsers(mentorId).subscribe({
         next: (response) => {
           this.messages = response;
-          console.log(this.messages[1]);
+          this.isMessagesOpen = true; 
         },
         error: (error) => {
           console.error('Error fetching messages:', error);
@@ -107,5 +109,13 @@ export class ChatComponent implements OnInit {
     } else {
       console.error('Form is invalid, Receiver ID is not set, or User details are missing.');
     }
+  }
+
+  toggleConversations(): void {
+    this.isConversationsOpen = !this.isConversationsOpen;
+  }
+
+  closeMessages(): void {
+    this.isMessagesOpen = false;
   }
 }

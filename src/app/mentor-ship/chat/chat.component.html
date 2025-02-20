@@ -1,30 +1,54 @@
 <div>
-    <div class="fixed bottom-6 right-6 flex flex-col w-96 h-[500px] bg-white rounded-lg shadow-xl overflow-hidden">
-     <div class="bg-blue-500 px-4 py-3">
-       <h2 class="text-sm font-semibold text-white">Conversations</h2>
-     </div>
-   
-     <div class="flex-1 overflow-y-auto p-4 space-y-3">
-       <div *ngFor="let conversation of conversations">
-           <div>
-             <div class="bg-gray-100 rounded-lg px-3 py-2 max-w-xs">
-               <p class="text-xs text-gray-800">{{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}</p>
-             </div>
-           </div>
-           <button
-              (click)="startChat(conversation.mentor.id)"
-              class="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-lg hover:bg-gray-200 transition"
-            >
-           </button>
-
-       </div>
-     </div>
-   </div>
- </div>
-
-<div class="fixed bottom-6 right-120 flex flex-col w-96 h-[500px] bg-white rounded-lg shadow-xl overflow-hidden">
-    <div class="bg-blue-500 px-4 py-3">
-      <h2 class="text-sm font-semibold text-white">chat</h2>
+    <div class="fixed bottom-6 right-6 flex flex-col w-96 bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="bg-[#f3f6f8] px-4 py-3 cursor-pointer flex justify-between items-center" 
+           (click)="toggleConversations()">
+        <h2 class="text-sm font-semibold text-[#0a66c2]">Conversations</h2>
+        <div class="flex items-center space-x-1">
+          <span class="text-xs text-[#666666]">{{conversations.length}}</span>
+          <svg *ngIf="!isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+               viewBox="0 0 16 16" fill="none" class="text-[#666666]">
+            <path d="M8 11L3 6l.7-.7L8 9.6l4.3-4.3.7.7-5 5z" fill="currentColor"></path>
+          </svg>
+          <svg *ngIf="isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+               viewBox="0 0 16 16" fill="none" class="text-[#666666]">
+            <path d="M8 5L13 10l-.7.7L8 6.4 3.7 10.7 3 10l5-5z" fill="currentColor"></path>
+          </svg>
+        </div>
+      </div>
+  
+      <div *ngIf="isConversationsOpen" class="flex-1 overflow-y-auto">
+        <div *ngFor="let conversation of conversations" class="border-t border-gray-200">
+          <button (click)="startChat(conversation.mentor.id)"
+                  class="w-full text-left p-3 hover:bg-[#f5f5f5] transition-colors flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-[#e6e6e6] flex items-center justify-center flex-shrink-0">
+              <span class="text-xs font-medium text-[#666666]">
+                {{conversation.mentor.firstName[0]}}{{conversation.mentor.lastName[0]}}
+              </span>
+            </div>
+            
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-semibold text-[#191919] truncate">
+                  {{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}
+                </p>
+                <span class="text-xs text-[#666666]">• Now</span>
+              </div>
+              <p class="text-xs text-[#666666] truncate">Active now</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="isMessagesOpen" class="fixed bottom-6 right-120 flex flex-col w-96 h-[500px] bg-white rounded-lg shadow-xl overflow-hidden">
+    <div class="bg-blue-500 px-4 py-3 flex justify-between items-center">
+      <h2 class="text-sm font-semibold text-white">Chat</h2>
+      <button (click)="closeMessages()" class="text-white hover:text-gray-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
   
     <div class="flex-1 overflow-y-auto p-4 space-y-3">

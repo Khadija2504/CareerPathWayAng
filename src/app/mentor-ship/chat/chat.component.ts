@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from '../../profile/profile.service';
 
@@ -17,12 +17,15 @@ export class ChatComponent implements OnInit {
   loggedinUser: any = null;
   isLoading = true;
   errorMessage: string | null = null;
+  conversations : any[] = [];
+  mentor: number | null = null;
 
   constructor(
     private mentorShipService: MentorShipService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private router: Router
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
@@ -30,14 +33,8 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mentorId = this.route.snapshot.paramMap.get('mentorId');
-    if (mentorId !== null) {
-      this.receiverId = +mentorId;
-      this.loadMessages();
-    } else {
-      console.error('Mentor ID is missing in the route.');
-    }
     this.fetchUserDetails();
+    this.loadMentors();
   }
 
   fetchUserDetails(): void {
@@ -56,9 +53,10 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  loadMessages(): void {
-    if (this.receiverId !== null) {
-      this.mentorShipService.getMessagesBetweenUsers(this.receiverId).subscribe({
+  loadMessages(mentorId: number): void {
+    if (mentorId !== null) {
+      this.receiverId = mentorId
+      this.mentorShipService.getMessagesBetweenUsers(mentorId).subscribe({
         next: (response) => {
           this.messages = response;
           console.log(this.messages[1]);
@@ -70,6 +68,23 @@ export class ChatComponent implements OnInit {
     } else {
       console.error('Receiver ID is not set.');
     }
+  }
+
+  loadMentors(): void {
+    this.mentorShipService.getAllMentorships().subscribe({
+      next: (response) => {
+        this.conversations = response;
+        console.log(response);
+        
+      },
+      error: (error) => {
+        console.error('Error fetching conversations:', error);
+      },
+    });
+  }
+
+  startChat(mentorId: number): void {
+    this.loadMessages(mentorId);
   }
 
   sendMessage(): void {

@@ -10,7 +10,6 @@ export class MentorShipService {
   private baseMessagesUrl = 'http://localhost:8800/api/messages';
   private mentorshipUrl = 'http://localhost:8800/api/mentorship';
 
-
   constructor(private http: HttpClient) { }
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -89,6 +88,16 @@ export class MentorShipService {
     return this.http.post<boolean>(`${this.mentorshipUrl}/isMentorshipExist`, mentorId, { headers }).pipe(
       catchError(error => {
         console.error('Error checking the availablaty of mentorship:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getAllMentorships(): Observable <any>{
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.mentorshipUrl}/getAllMentorShips`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching all od the mentorships:', error);
         return throwError(() => error);
       })
     );

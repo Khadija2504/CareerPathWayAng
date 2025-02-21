@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'error', loadChildren: () => import('./errors/errors.module').then(m=> m.ErrorsModule)},
   {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m=> m.ProfileModule)},
   {path: 'mentorShip-coaching', loadChildren: () => import('./mentor-ship/mentor-ship.module').then(m=> m.MentorShipModule)},
+  {path: 'notifications', loadChildren: ()=> import ('./notification/notification.module').then(m=> m.NotificationModule)},
   {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: '**', component: NotFoundComponent},
 

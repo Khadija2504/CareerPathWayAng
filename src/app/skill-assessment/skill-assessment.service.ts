@@ -7,7 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class SkillAssessmentService {
   private baseSkillUrl = 'http://localhost:8800/api/employee/skills';
-  private baseQuestionsUrm = 'http://localhost:8800/api/employee/questionnaires'
+  private baseQuestionsUrm = 'http://localhost:8800/api/employee/questionnaires';
    constructor(private http: HttpClient) {}
     getToken(): string | null {
       return localStorage.getItem('token');

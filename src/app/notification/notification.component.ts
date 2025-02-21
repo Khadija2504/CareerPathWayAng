@@ -22,8 +22,20 @@ export class NotificationComponent implements OnInit{
       next: (response)=> {
         this.notifications = response;
         console.log(response);
+        this.readNotifications();
       }, error : (error) => {
         console.error("error fetching notifications: " , error);
+        
+      }
+    });
+  }
+
+  readNotifications() : void {
+    this.notificationService.readNotifications().subscribe({
+      next: (response)=> {
+        console.log(response);
+      }, error : (error) => {
+        console.error("error updating notifications: " , error);
         
       }
     });

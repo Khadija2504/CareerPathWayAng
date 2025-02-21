@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 export class ProfileService {
   private baseUrl = 'http://localhost:8800/api/user';
   private baseGoalUrl = 'http://localhost:8800/api/employee/goal';
+  private baseNotifUrl = 'http://localhost:8800/api/notifications';
   private addGoalUrl = `${this.baseGoalUrl}/addGoal`;
   private getGoalsUrl = `${this.baseGoalUrl}/displayEmployeeGoals`;
   private updateGoalUrl = `${this.baseGoalUrl}/updateGoalStatus`;
@@ -16,6 +17,7 @@ export class ProfileService {
   private deleteGoalUrl = `${this.baseGoalUrl}/deleteGoal`;
   private getUserUrl = `${this.baseUrl}/details`;
   private updateUserUrl = `${this.baseUrl}/updateUserDetails`;
+  private remindersUrl = `${this.baseNotifUrl}/getReminders`;
   constructor(private http: HttpClient) {}
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -136,6 +138,16 @@ export class ProfileService {
         console.error('Error fetching goal details:', error);
         const errorMessage = error?.error?.message || 'Failed to fetch goal details.';
         return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getGoalReminders(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(this.remindersUrl, {headers}).pipe(
+      catchError(error => {
+        console.error('error fetching goal reminders:', error);
+        return throwError(()=> error);
       })
     );
   }

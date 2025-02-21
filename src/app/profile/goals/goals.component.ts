@@ -7,7 +7,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-goals',
   standalone: false,
   templateUrl: './goals.component.html',
-  styleUrl: './goals.component.css'
+  styleUrls: ['./goals.component.css'],
 })
 export class GoalsComponent implements OnInit {
   errorMessage: string | null = null;
@@ -20,6 +20,7 @@ export class GoalsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGoalsList();
+    this.getGoalsReminders();
   }
 
   getGoalsList(): void {
@@ -31,6 +32,19 @@ export class GoalsComponent implements OnInit {
       },
       error: (error) => {
         this.errorMessage = error.error?.message || 'Failed to load goals. Please try again.';
+      },
+    });
+  }
+
+  getGoalsReminders(): void {
+    this.errorMessage = null;
+
+    this.profileService.getGoalReminders().subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Failed to load goal reminders. Please try again.';
       },
     });
   }

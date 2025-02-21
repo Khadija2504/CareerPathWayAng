@@ -50,4 +50,13 @@ export class NotificationService {
       })
     );
   }
+  readNotifications() : Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.basenotif}/updateNotifications`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating notifs:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

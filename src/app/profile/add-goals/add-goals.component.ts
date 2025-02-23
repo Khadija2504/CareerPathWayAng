@@ -39,19 +39,27 @@ export class AddGoalsComponent {
   
     const goalData = this.goalForm.value;
     console.log(goalData);
-    
+  
     this.profileService.addGoal(goalData).subscribe({
       next: (response) => {
         console.log(response);
-        
-        this.successMessage = 'Goal added successfully!';
+  
+        this.successMessage = 'Successfully saved!';
         this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/profile/goals']), 2000);
+  
+        setTimeout(() => {
+          this.successMessage = null;
+          this.router.navigate(['/profile/goals']);
+        }, 5000);
       },
       error: (error) => {
         this.isLoading = false;
   
         this.errorMessage = error.message || 'Failed to add goal. Please try again.';
+  
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 5000);
   
         if (error.errors) {
           Object.keys(error.errors).forEach(field => {
@@ -61,7 +69,7 @@ export class AddGoalsComponent {
             }
           });
         }
-      }
+      },
     });
   }
 

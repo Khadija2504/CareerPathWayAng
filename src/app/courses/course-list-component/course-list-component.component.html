@@ -1,0 +1,24 @@
+<div class="course-list">
+    <h2>Available Courses</h2>
+  
+    <div *ngIf="isLoading" class="loading">
+      Loading courses...
+    </div>
+  
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="!isLoading && courses.length > 0" class="courses">
+      <div *ngFor="let course of courses" class="course-card">
+        <h3>{{ course.title }}</h3>
+        <p>{{ course.description }}</p>
+        <p><strong>Platform:</strong> {{ course.type }}</p>
+        <a [href]="course.url" target="_blank" class="btn">Enroll Now</a>
+      </div>
+    </div>
+  
+    <div *ngIf="!isLoading && courses.length === 0" class="empty">
+      No courses available at the moment.
+    </div>
+  </div>

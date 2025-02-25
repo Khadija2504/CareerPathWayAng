@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m=> m.ProfileModule)},
   {path: 'mentorShip-coaching', loadChildren: () => import('./mentor-ship/mentor-ship.module').then(m=> m.MentorShipModule)},
   {path: 'notifications', loadChildren: ()=> import ('./notification/notification.module').then(m=> m.NotificationModule)},
+  {path: 'courses', loadChildren: ()=> import ('./courses/courses.module').then(m=> m.CoursesModule)},
   {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: '**', component: NotFoundComponent},
 

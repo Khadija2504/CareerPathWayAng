@@ -6,7 +6,8 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class CourseService {
-  private apiUrl = 'http://localhost:8800/api/courses/employee';
+  private apiUrlEmployee = 'http://localhost:8800/api/courses/employee';
+  private apiUrlAdmin = 'http://localhost:8800/api/courses/admin'
 
   constructor(private http: HttpClient) {}
 
@@ -43,12 +44,24 @@ export class CourseService {
     }
 
   getAllCourses(): Observable <any>{
-      const headers = this.getHeaders();
-      return this.http.get<any>(`${this.apiUrl}/displayAllCourses`, { headers }).pipe(
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.apiUrlEmployee}/displayAllCourses`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching all of the courses:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  addCourse(courseData: any): Observable<any> {
+    const headers = this.getHeaders();
+    console.log("JWT Token being sent:", headers.get('Authorization'));
+
+    return this.http.post<any>(`${this.apiUrlAdmin}/createCourse`, courseData, { headers }).pipe(
         catchError(error => {
-          console.error('Error fetching all of the courses:', error);
-          return throwError(() => error);
+            console.error('Error creating new course:', error);
+            return throwError(() => error);
         })
-      );
-    }
+    );
+  }
 }

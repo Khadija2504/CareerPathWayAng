@@ -1,0 +1,48 @@
+<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-semibold text-center mb-4">Add a New Course</h2>
+  
+    <form [formGroup]="courseForm" (ngSubmit)="addCourse()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Title</label>
+        <input type="text" formControlName="title" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
+        <small *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched" class="text-red-500">Title is required</small>
+      </div>
+  
+      <div>
+        <label class="block text-sm font-medium mb-1">Description</label>
+        <textarea formControlName="description" rows="3" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300"></textarea>
+        <small *ngIf="courseForm.get('description')?.invalid && courseForm.get('description')?.touched" class="text-red-500">Description is required</small>
+      </div>
+  
+      <div>
+        <label class="block text-sm font-medium mb-1">Type</label>
+        <select formControlName="typeStr" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300">
+          <option value="" disabled>Select Type</option>
+          <option value="DOC">Docs</option>
+          <option value="VIDEO">Video</option>
+        </select>
+        <small *ngIf="courseForm.get('type')?.invalid && courseForm.get('type')?.touched" class="text-red-500">Type is required</small>
+      </div>
+  
+      <div>
+        <label class="block text-sm font-medium mb-1">Category</label>
+        <input type="text" formControlName="category" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
+        <small *ngIf="courseForm.get('category')?.invalid && courseForm.get('category')?.touched" class="text-red-500">Category is required</small>
+      </div>
+  
+      <div>
+        <label class="block text-sm font-medium mb-1">Course URL</label>
+        <input type="text" formControlName="url" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
+        <small *ngIf="courseForm.get('url')?.invalid && courseForm.get('url')?.touched" class="text-red-500">Enter a valid URL</small>
+      </div>
+  
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+        [disabled]="isLoading">
+        {{ isLoading ? 'Adding Course...' : 'Add Course' }}
+      </button>
+  
+      <p *ngIf="successMessage" class="text-green-600 text-center mt-2">{{ successMessage }}</p>
+      <p *ngIf="errorMessage" class="text-red-600 text-center mt-2">{{ errorMessage }}</p>
+    </form>
+  </div>
+  

@@ -1,24 +1,28 @@
-<div class="course-list">
-    <h2>Available Courses</h2>
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center mb-6">Available Courses</h1>
   
-    <div *ngIf="isLoading" class="loading">
+    <div *ngIf="isLoading" class="text-center text-blue-500 font-semibold">
       Loading courses...
     </div>
   
-    <div *ngIf="errorMessage" class="error">
+    <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
       {{ errorMessage }}
     </div>
   
-    <div *ngIf="!isLoading && courses.length > 0" class="courses">
-      <div *ngFor="let course of courses" class="course-card">
-        <h3>{{ course.title }}</h3>
-        <p>{{ course.description }}</p>
-        <p><strong>Platform:</strong> {{ course.type }}</p>
-        <a [href]="course.url" target="_blank" class="btn">Enroll Now</a>
+    <div *ngIf="!isLoading && courses.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let course of courses" class="bg-white shadow-lg rounded-lg p-5 border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800">{{ course.name }}</h2>
+        <p class="text-gray-600 mt-2">{{ course.description }}</p>
+        <p class="text-gray-500 mt-2"><strong>Duration:</strong> {{ course.duration }} hours</p>
+        <p class="text-gray-500"><strong>Instructor:</strong> {{ course.instructor }}</p>
+        <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+          Enroll Now
+        </button>
       </div>
     </div>
   
-    <div *ngIf="!isLoading && courses.length === 0" class="empty">
+    <div *ngIf="!isLoading && courses.length === 0" class="text-gray-500 text-center mt-6">
       No courses available at the moment.
     </div>
   </div>
+  

@@ -5,12 +5,14 @@ import { CoursesRoutingModule } from './courses-routing.module';
 import { CourseListComponent } from './course-list-component/course-list.component';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UpdateCourseComponent } from './update-course/update-course.component';
 
 
 @NgModule({
   declarations: [
     CourseListComponent,
-    AddCourseComponent
+    AddCourseComponent,
+    UpdateCourseComponent
   ],
   imports: [
     CommonModule,

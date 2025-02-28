@@ -28,4 +28,17 @@ export class MentorshipsListComponent implements OnInit{
       },
     });
   }
+
+  updateStatus(status: any, mentorhsipId: any): void {
+    this.mentorShipService.updateMentorshipStatus(status, mentorhsipId).subscribe({
+      next: (response) => {
+        response;
+        console.log(response);
+        this.successMessage = "updated status successfully";
+      },
+      error: (error) => {
+        console.error('Error updating mentorship status:', error);
+      },
+    });
+  }
 }

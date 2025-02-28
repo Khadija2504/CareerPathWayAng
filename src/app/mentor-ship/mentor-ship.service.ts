@@ -112,4 +112,14 @@ export class MentorShipService {
       })
     );
   }
+
+  updateMentorshipStatus(status: any, mentorhsipId: any): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.put<any[]>(`${this.mentorshipUrl}/mentor/updateMentorshipStatus/${mentorhsipId}`, status, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating mentorship status:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

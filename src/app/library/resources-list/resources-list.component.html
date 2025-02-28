@@ -1,0 +1,24 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center mb-6">Available resources</h1>
+  
+    <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="resources.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let resource of resources" class="bg-white shadow-lg rounded-lg p-5 border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800">{{ resource.title }}</h2>
+        <p class="text-gray-600 mt-2">{{ resource.type }}</p>
+        <p class="text-gray-500 mt-2"> {{ resource.category }}</p>
+        <p class="text-gray-500"> {{ resource.resourceUrl }}</p>
+        <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+          Enroll Now
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="resources.length === 0" class="text-gray-500 text-center mt-6">
+      No resources available at the moment.
+    </div>
+  </div>
+  

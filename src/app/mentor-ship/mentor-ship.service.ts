@@ -93,11 +93,21 @@ export class MentorShipService {
     );
   }
 
-  getAllMentorships(): Observable <any>{
+  getAllEmployeeMentorships(): Observable <any>{
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.mentorshipUrl}/getAllMentorShips`, { headers }).pipe(
+    return this.http.get<any>(`${this.mentorshipUrl}/employee/getAllEmployeeMentorShips`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching all od the mentorships:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getAllMentorMentorships(): Observable <any>{
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.mentorshipUrl}/mentor/getAllMentorMentorShips`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching all all metor mentorships:', error);
         return throwError(() => error);
       })
     );

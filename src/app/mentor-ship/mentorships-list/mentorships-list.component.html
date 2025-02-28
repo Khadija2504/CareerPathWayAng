@@ -1,0 +1,33 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let mentorship of mentorships" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
+          <div class="flex items-center gap-4">
+            <img [src]="mentorship.mentee.profilePicture || 'assets/default-avatar.png'" alt="{{ mentorship.mentee.firstName }} {{ mentorship.mentee.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">
+                {{ mentorship.mentee.firstName }} {{ mentorship.mentee.lastName }}
+              </h3>
+              <p class="text-gray-500 text-sm">{{ mentorship.startDate }} - {{ mentorship.endDate }}</p>
+              <p class="text-gray-400 text-xs">{{ mentorship.status }}</p>
+            </div>
+          </div>
+          <div class="mt-6 flex space-x-3">
+            <button
+              class="flex-1 bg-blue-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              Connect
+            </button>
+            <button
+              class="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-lg hover:bg-gray-200 transition"
+            >
+              Message
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="successMessage" class="mt-6 text-center text-green-500 text-sm">
+        {{ successMessage }}
+      </div>
+    </div>
+  </div>

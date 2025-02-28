@@ -73,7 +73,7 @@ export class ChatComponent implements OnInit {
   }
 
   loadMentors(): void {
-    this.mentorShipService.getAllMentorships().subscribe({
+    this.mentorShipService.getAllEmployeeMentorships().subscribe({
       next: (response) => {
         this.conversations = response;
         console.log(response);

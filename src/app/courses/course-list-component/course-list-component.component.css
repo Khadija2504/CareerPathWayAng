@@ -1,0 +1,74 @@
+/* Lightbox Overlay */
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .bg-black {
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  .z-50 {
+    z-index: 50;
+  }
+  
+  /* Lightbox Content */
+  .bg-white {
+    background-color: white;
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  .p-6 {
+    padding: 1.5rem;
+  }
+  
+  
+  .relative {
+    position: relative;
+  }
+  
+  .absolute {
+    position: absolute;
+  }
+  
+  .top-2 {
+    top: 0.5rem;
+  }
+  
+  .right-2 {
+    right: 0.5rem;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  .hover\:text-gray-900:hover {
+    color: #1f2937;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .h-96 {
+    height: 24rem;
+  }

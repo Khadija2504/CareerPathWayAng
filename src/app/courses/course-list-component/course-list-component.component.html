@@ -10,14 +10,28 @@
     </div>
   
     <div *ngIf="!isLoading && courses.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div *ngFor="let course of courses" class="bg-white shadow-lg rounded-lg p-5 border border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800">{{ course.name }}</h2>
-        <p class="text-gray-600 mt-2">{{ course.description }}</p>
-        <p class="text-gray-500 mt-2"><strong>Duration:</strong> {{ course.duration }} hours</p>
-        <p class="text-gray-500"><strong>Instructor:</strong> {{ course.instructor }}</p>
-        <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-          Enroll Now
-        </button>
+      <div *ngFor="let course of courses" class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="relative h-48 bg-gray-200">
+          <video *ngIf="course.type === 'VIDEO'" class="w-full h-full object-cover" controls>
+            <source [src]="course.url" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+  
+          <iframe *ngIf="course.type === 'DOC'" [src]="getDocumentCover(course.url)" class="w-full h-full" frameborder="0"></iframe>
+        </div>
+  
+        <div class="p-6">
+          <h2 class="text-xl font-semibold text-gray-800">{{ course.title }}</h2>
+          <p class="text-gray-600 mt-2">{{ course.description }}</p>
+          <p class="text-gray-500 mt-2"><strong>Category:</strong> {{ course.category }}</p>
+  
+          <button
+            (click)="openLightbox(course)"
+            class="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+            View Full
+          </button>
+        </div>
       </div>
     </div>
   
@@ -26,3 +40,22 @@
     </div>
   </div>
   
+  <div *ngIf="isLightboxOpen" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-11/12 md:w-3/4 lg:w-1/2 relative">
+      <button
+        (click)="closeLightbox()"
+        class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+      >
+        &times;
+      </button>
+  
+      <div class="mt-4">
+        <video *ngIf="selectedCourse?.type === 'VIDEO'" class="w-full" controls>
+          <source [src]="selectedCourse?.url" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+  
+        <iframe *ngIf="selectedCourse?.type === 'DOC'" [src]="getDocumentCover(selectedCourse?.url)" class="w-full h-96" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>

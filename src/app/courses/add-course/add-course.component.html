@@ -18,10 +18,10 @@
         <label class="block text-sm font-medium mb-1">Type</label>
         <select formControlName="typeStr" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300">
           <option value="" disabled>Select Type</option>
-          <option value="DOC">Docs</option>
           <option value="VIDEO">Video</option>
+          <option value="DOC">Document</option>
         </select>
-        <small *ngIf="courseForm.get('type')?.invalid && courseForm.get('type')?.touched" class="text-red-500">Type is required</small>
+        <small *ngIf="courseForm.get('typeStr')?.invalid && courseForm.get('typeStr')?.touched" class="text-red-500">Type is required</small>
       </div>
   
       <div>
@@ -31,9 +31,13 @@
       </div>
   
       <div>
-        <label class="block text-sm font-medium mb-1">Course URL</label>
-        <input type="text" formControlName="url" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="courseForm.get('url')?.invalid && courseForm.get('url')?.touched" class="text-red-500">Enter a valid URL</small>
+        <label class="block text-sm font-medium mb-1">Upload File</label>
+        <input
+          type="file"
+          (change)="onFileChange($event)"
+          class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300"
+        />
+        <small *ngIf="!file && formSubmitted" class="text-red-500">File is required</small>
       </div>
   
       <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"

@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CourseService } from '../course-service.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-course-list-component',
@@ -7,13 +10,18 @@ import { CourseService } from '../course-service.service';
   templateUrl: './course-list-component.component.html',
   styleUrl: './course-list-component.component.css'
 })
-export class CourseListComponent implements OnInit{
 
+export class CourseListComponent implements OnInit {
   courses: any[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
+  isLightboxOpen: boolean = false;
+  selectedCourse: any = null;
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.fetchCourses();
@@ -36,4 +44,17 @@ export class CourseListComponent implements OnInit{
     });
   }
 
+  getDocumentCover(docUrl: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(docUrl);
+  }
+
+  openLightbox(course: any): void {
+    this.selectedCourse = course;
+    this.isLightboxOpen = true;
+  }
+
+  closeLightbox(): void {
+    this.isLightboxOpen = false;
+    this.selectedCourse = null;
+  }
 }

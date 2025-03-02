@@ -10,6 +10,8 @@ import { CourseService } from '../course-service.service';
 })
 export class AddCourseComponent {
   courseForm: FormGroup;
+  file: File | null = null;
+  formSubmitted = false;
   isLoading = false;
   successMessage = '';
   errorMessage = '';
@@ -19,14 +21,22 @@ export class AddCourseComponent {
       title: ['', Validators.required],
       description: ['', Validators.required],
       typeStr: ['', Validators.required],
-      category: ['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern('(https?://.*)')]]
+      category: ['', Validators.required]
     });
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+    }
+  }
+
   addCourse() {
-    if (this.courseForm.invalid) {
-      this.errorMessage = 'Please fill in all fields correctly.';
+    this.formSubmitted = true;
+
+    if (this.courseForm.invalid || !this.file) {
+      this.errorMessage = 'Please fill in all fields correctly and upload a file.';
       return;
     }
 
@@ -34,11 +44,20 @@ export class AddCourseComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    this.courseService.addCourse(this.courseForm.value).subscribe({
+    const formData = new FormData();
+    formData.append('title', this.courseForm.value.title);
+    formData.append('description', this.courseForm.value.description);
+    formData.append('type', this.courseForm.value.typeStr);
+    formData.append('category', this.courseForm.value.category);
+    formData.append('file', this.file);
+
+    this.courseService.addCourse(formData).subscribe({
       next: (response) => {
         this.successMessage = 'Course added successfully!';
         console.log(response);
         this.courseForm.reset();
+        this.file = null;
+        this.formSubmitted = false;
       },
       error: (error) => {
         console.error('Error:', error);

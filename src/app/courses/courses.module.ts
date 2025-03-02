@@ -6,6 +6,7 @@ import { CourseListComponent } from './course-list-component/course-list.compone
 import { AddCourseComponent } from './add-course/add-course.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateCourseComponent } from './update-course/update-course.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { UpdateCourseComponent } from './update-course/update-course.component';
   imports: [
     CommonModule,
     CoursesRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule.forRoot()
   ]
 })
 export class CoursesModule { }

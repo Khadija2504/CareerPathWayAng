@@ -13,6 +13,7 @@ import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
 import { SkillAssessmentComponent } from './skill-assessment/skill-assessment.component';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     MentorNavComponent,
     AdminNavComponent,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

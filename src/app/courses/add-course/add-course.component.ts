@@ -51,6 +51,8 @@ export class AddCourseComponent {
     formData.append('category', this.courseForm.value.category);
     formData.append('file', this.file);
 
+    console.log(formData);
+    
     this.courseService.addCourse(formData).subscribe({
       next: (response) => {
         this.successMessage = 'Course added successfully!';

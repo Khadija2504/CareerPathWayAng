@@ -7,7 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class LibraryService {
 
-  private apiResourcesUrl = 'http://localhost:8800/api/resources/';
+  private apiResourcesUrl = 'http://localhost:8800/api/resources';
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
@@ -20,33 +20,41 @@ export class LibraryService {
 
   private getHeaders(): HttpHeaders {
     const tokenString = this.getToken();
-    if(tokenString) {
+    if (tokenString) {
       try {
         const tokenObj = JSON.parse(tokenString);
         const jwtToken = tokenObj.token;
-        if(jwtToken) {
+        if (jwtToken) {
           return new HttpHeaders({
             Authorization: `Bearer ${jwtToken}`,
-            'content-type' : 'application/json',
+            // Remove 'Content-Type' for multipart/form-data requests
           });
         }
       } catch (error) {
-        console.error('error parsing token:', error);
-        return new HttpHeaders({
-          'content-type' : 'application/json'
-        });
+        console.error('Error parsing token:', error);
+        return new HttpHeaders();
       }
     }
-    return new HttpHeaders({
-      'content-type': 'application/json'
-    });
+    return new HttpHeaders();
   }
 
   getAllResources(): Observable <any>{
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.apiResourcesUrl}/getAllResources`, { headers }).pipe(
+    return this.http.get<any>(`${this.apiResourcesUrl}/user/getAllResources`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching all resources:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  addResource(resourceData: FormData): Observable<any> {
+    const headers = this.getHeaders();
+    console.log("JWT Token being sent:", headers.get('Authorization'));
+
+    return this.http.post<any>(`${this.apiResourcesUrl}/admin/addResource`, resourceData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error creating new resource:', error);
         return throwError(() => error);
       })
     );

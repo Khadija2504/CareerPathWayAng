@@ -5,15 +5,14 @@ import { UpdateProfileComponent } from './update-profile/update-profile.componen
 import { AddGoalsComponent } from './add-goals/add-goals.component';
 import { GoalsComponent } from './goals/goals.component';
 import { EditGoalComponent } from './edit-goal/edit-goal.component';
-import { AuthGuard } from '../auth/auth.guard';
 import { RoleGuard } from '../auth/role.guard';
 
 const routes: Routes = [
   {path: '', component: UserDetailsComponent},
   {path: 'edit-profile', component: UpdateProfileComponent},
-  {path: 'addGoal', component: AddGoalsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
-  {path: 'goals', component: GoalsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
-  { path: 'edit-goal/:goalId', component: EditGoalComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
+  {path: 'addGoal', component: AddGoalsComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
+  {path: 'goals', component: GoalsComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
+  { path: 'edit-goal/:goalId', component: EditGoalComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
 ];
 
 @NgModule({

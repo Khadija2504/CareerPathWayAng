@@ -3,10 +3,10 @@
     <app-emplyee-nav></app-emplyee-nav>
   </ng-container>
   <ng-container *ngIf="hasRole('MENTOR')">
-    <app-emplyee-nav></app-emplyee-nav>
+    <app-mentor-nav></app-mentor-nav>
   </ng-container>
   <ng-container *ngIf="hasRole('ADMIN')">
-    <app-emplyee-nav></app-emplyee-nav>
+    <app-admin-nav></app-admin-nav>
   </ng-container>
 </nav>
   <router-outlet />

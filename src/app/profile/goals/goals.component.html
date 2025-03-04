@@ -1,21 +1,25 @@
 <div class="min-h-screen bg-gray-100 p-4 sm:p-6">
-  <div *ngIf="deleteSuccessMessage" class="fixed top-20 right-4 bg-white border border-gray-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
-    <div>
-      <p class="text-sm font-medium text-gray-800">Successfully deleted!</p>
-      <p class="text-xs text-gray-500">The goal has been removed.</p>
+  <div *ngIf="actionSuccessMessage" class="fixed top-220 left-100 z-50 w-80">
+    <div class="bg-white border border-green-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
+      <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-gray-800">Success!</p>
+        <p class="text-xs text-gray-500">{{ actionSuccessMessage }}</p>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="deleteErrorMessage" class="fixed top-4 right-4 bg-white border border-red-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-    <div>
-      <p class="text-sm font-medium text-gray-800">Error</p>
-      <p class="text-xs text-gray-500">{{ deleteErrorMessage }}</p>
+  <div *ngIf="deleteErrorMessage" class="fixed top-4 right-4 z-50 w-80">
+    <div class="bg-white border border-red-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
+      <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-gray-800">Error</p>
+        <p class="text-xs text-gray-500">{{ deleteErrorMessage }}</p>
+      </div>
     </div>
   </div>
 

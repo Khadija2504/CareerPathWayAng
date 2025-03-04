@@ -16,7 +16,7 @@ export class GoalsComponent implements OnInit {
   selectedGoal: any = null;
   faEdit = faEdit;
   faTrash = faTrash;
-  deleteSuccessMessage: string | null = null;
+  actionSuccessMessage: string | null = null;
   deleteErrorMessage: string | null = null;
   userRole: string | null = null;
 
@@ -98,9 +98,9 @@ export class GoalsComponent implements OnInit {
       next: () => {
         this.goals = this.goals.filter((goal) => goal.id !== goalId);
 
-        this.deleteSuccessMessage = 'Goal deleted successfully!';
+        this.actionSuccessMessage = 'Goal deleted successfully!';
         setTimeout(() => {
-          this.deleteSuccessMessage = null;
+          this.actionSuccessMessage = null;
         }, 5000);
       },
       error: (error) => {
@@ -124,9 +124,20 @@ export class GoalsComponent implements OnInit {
       this.profileService.supportGoal(goalId, newSupportedStatus).subscribe({
         next: (response) => {
           goal.supported = newSupportedStatus;
+          if(newSupportedStatus === true) {
+          this.actionSuccessMessage = 'Goal supported successfully!';
+          } else {
+            this.actionSuccessMessage = 'Goal unsupported successfully!'
+          }
+          setTimeout(() => {
+            this.actionSuccessMessage = null;
+          }, 1199000);
         },
         error: (error) => {
           this.errorMessage = error.error?.message || 'Failed to update support status. Please try again.';
+          setTimeout(() => {
+            this.deleteErrorMessage = null;
+          }, 5000);
         },
       });
     }

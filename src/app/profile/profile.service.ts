@@ -151,4 +151,27 @@ export class ProfileService {
       })
     );
   }
+
+  supportGoal(goalId: number, supported: boolean): Observable<any> {
+    const headers = this.getHeaders();
+    console.log(goalId, supported);
+  
+    return this.http.post<any>(`${this.baseGoalUrl}/GoalSupported/${goalId}`, supported, { headers }).pipe(
+      catchError(error => {
+        console.error('Error supporting goal:', error);
+        const errorMessage = error?.error?.message || 'Failed to support goal, please try again';
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getAllGoals(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.baseGoalUrl}/allGoals`, {headers}).pipe(
+      catchError(error => {
+        console.error('error fetching goals:', error);
+        return throwError(()=> error);
+      })
+    )
+  }
 }

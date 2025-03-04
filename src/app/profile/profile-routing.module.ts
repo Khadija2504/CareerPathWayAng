@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', component: UserDetailsComponent},
   {path: 'edit-profile', component: UpdateProfileComponent},
   {path: 'addGoal', component: AddGoalsComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
-  {path: 'goals', component: GoalsComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
+  {path: 'goals', component: GoalsComponent},
   { path: 'edit-goal/:goalId', component: EditGoalComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
 ];
 

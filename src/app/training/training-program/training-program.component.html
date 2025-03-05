@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+  <div class="max-w-6xl mx-auto mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Your Training Program</h2>
+    <div *ngIf="isLoading" class="text-center py-6">
+      <span class="text-gray-600 animate-pulse">Loading your program...</span>
+    </div>
+    <div *ngFor="let training of displayedTrainingPrograms" class="bg-white rounded-xl shadow-lg p-8 mb-6 transform hover:scale-105 transition-transform duration-300">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ training.title }}</h3>
+      <p class="text-gray-600 mb-6">{{ training.description }}</p>
+      <div class="flex items-center text-sm text-gray-500 space-x-6">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ training.duration }} hours
+        </span>
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Level: {{ training.level }}
+        </span>
+      </div>
+    </div>
+    <button
+      *ngIf="hasMorePrograms"
+      (click)="loadMoreTrainingPrograms()"
+      class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center"
+    >
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      Load More
+    </button>
+  </div>
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommended Courses</h2>
+      <div *ngFor="let course of recommendedCourses" class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ course.title }}</h3>
+        <p class="text-gray-600 mb-4">{{ course.description }}</p>
+        <a
+          [href]="course.url"
+          target="_blank"
+          class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-300"
+        >
+          <span>Enroll Now</span>
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommended Resources</h2>
+      <div *ngFor="let resource of recommendedResources" class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ resource.title }}</h3>
+        <p class="text-gray-600 mb-4">{{ resource.type }}</p>
+        <a
+          [href]="resource.resourceUrl"
+          target="_blank"
+          class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-300"
+        >
+          <span>View Resource</span>
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ const routes: Routes = [
   {path: 'notifications', loadChildren: ()=> import ('./notification/notification.module').then(m=> m.NotificationModule), canActivate: [AuthGuard]},
   {path: 'resources', loadChildren: ()=> import ('./library/library.module').then(m=> m.LibraryModule), canActivate: [AuthGuard]},
   {path: 'courses', loadChildren: ()=> import ('./courses/courses.module').then(m=> m.CoursesModule), canActivate: [AuthGuard]},
+  {path: 'training-programs', loadChildren: ()=> import ('./training/training.module').then(m=> m.TrainingModule), canActivate: [AuthGuard]},
   {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: '**', component: NotFoundComponent},
 

@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { CareerPath } from './create-career-path/career-path.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LibraryService {
+export class CareerPathService {
 
-  private apiResourcesUrl = 'http://localhost:8800/api/resources';
+ private apiCareerPathUrl = 'http://localhost:8800/api/careerPath';
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
@@ -36,26 +37,18 @@ export class LibraryService {
     }
     return new HttpHeaders();
   }
-
-  getAllResources(): Observable <any>{
+  createCareerPath(careerPath: CareerPath): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.apiResourcesUrl}/user/getAllResources`, { headers }).pipe(
-      catchError(error => {
-        console.error('Error fetching all resources:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+    console.log('JWT Token being sent:', headers.get('Authorization'));
 
-  addResource(resourceData: FormData): Observable<any> {
-    const headers = this.getHeaders();
-    console.log("JWT Token being sent:", headers.get('Authorization'));
-
-    return this.http.post<any>(`${this.apiResourcesUrl}/admin/addResource`, resourceData, { headers }).pipe(
-      catchError(error => {
-        console.error('Error creating new resource:', error);
-        return throwError(() => error);
-      })
-    );
+    return this.http
+      .post<any>(`${this.apiCareerPathUrl}/admin/create-careerPath`, careerPath, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error creating new career path:', error);
+          return throwError(() => error);
+        })
+      );
   }
+   
 }

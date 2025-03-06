@@ -33,6 +33,7 @@ export class CreateCareerPathComponent implements OnInit {
   ngOnInit(): void {
     this.loadSkills();
     this.loadEmployees();
+    this.loadCareerPaths();
     this.addStep();
   }
 
@@ -51,6 +52,13 @@ export class CreateCareerPathComponent implements OnInit {
     this.careerPathService.loadEmployees().subscribe({
       next: (employees) => (this.employees = employees),
       error: (err) => console.error('Failed to load employees:', err)
+    });
+  }
+
+  loadCareerPaths(): void {
+    this.careerPathService.loadCareerPaths().subscribe({
+      next: (careerPath) => (this.existingCareerPaths = careerPath),
+      error: (err) => console.error('Failed to load career paths:', err)
     });
   }
 

@@ -63,5 +63,29 @@ export class CareerPathService {
         })
       );
   }
+
+  loadCareerPaths(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiCareerPathUrl}/admin/getAllCareerPaths`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching employee careerPaths:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  loadEmployeeCareerPaths(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiCareerPathUrl}/employee/getAllCareerPaths`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching employee careerPaths:', error);
+          return throwError(() => error);
+        })
+      );
+  }
    
 }

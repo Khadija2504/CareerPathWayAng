@@ -1,110 +1,127 @@
 <div class="min-h-screen bg-gray-50 p-8">
     <div class="max-w-7xl mx-auto">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6">Update Career Path</h2>
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+        <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        </svg>
+        Update Career Path
+      </h2>
+  
       <form [formGroup]="careerPathForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Career Path Name <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              formControlName="name"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="careerPathForm.get('name')?.invalid && careerPathForm.get('name')?.touched"
-              class="text-red-500 text-sm mt-1"
-            >
-              Career Path Name is required.
-            </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea
-              formControlName="description"
-              rows="3"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            ></textarea>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Career Path Name <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          />
+          <div
+            *ngIf="careerPathForm.get('name')?.invalid && careerPathForm.get('name')?.touched"
+            class="text-red-500 text-sm mt-1"
+          >
+            Career Path Name is required.
           </div>
         </div>
   
-        <div class="space-y-6">
-          <div class="border-t border-gray-200 pt-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Career Steps</h3>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea
+            formControlName="description"
+            rows="3"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          ></textarea>
+        </div>
   
-            <div formArrayName="steps">
-              <div
-                *ngFor="let step of steps.controls; let i = index"
-                [formGroupName]="i"
-                class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200"
-              >
-                <div class="flex justify-between items-center mb-3">
-                  <span class="text-sm font-medium text-gray-600">Step {{ i + 1 }}</span>
-                  <button
-                    type="button"
-                    (click)="removeStep(i)"
-                    class="text-red-500 hover:text-red-700 text-sm font-medium"
-                  >
-                    Remove
-                  </button>
-                </div>
+        <div class="border-t border-gray-200 pt-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Career Steps
+          </h3>
   
-                <div class="space-y-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                      Step Title <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      formControlName="title"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    <div
-                      *ngIf="step.get('title')?.invalid && step.get('title')?.touched"
-                      class="text-red-500 text-sm mt-1"
-                    >
-                      Step Title is required.
-                    </div>
-                  </div>
+          <div formArrayName="steps">
+            <div
+              *ngFor="let step of steps.controls; let i = index"
+              [formGroupName]="i"
+              class="mb-6 p-6 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-sm font-medium text-gray-600 flex items-center">
+                  <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  Step {{ i + 1 }}
+                </span>
+                <button
+                  type="button"
+                  (click)="removeStep(i)"
+                  class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center"
+                >
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  Remove
+                </button>
+              </div>
   
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea
-                      formControlName="description"
-                      rows="2"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    ></textarea>
-                  </div>
-  
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Required Skill</label>
-                    <select
-                      formControlName="requiredSkillId"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="">Select a skill</option>
-                      <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
-                    </select>
-                  </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Step Title <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="title"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+                <div
+                  *ngIf="step.get('title')?.invalid && step.get('title')?.touched"
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Step Title is required.
                 </div>
               </div>
-            </div>
   
-            <button
-              type="button"
-              (click)="addStep()"
-              class="w-full mt-4 py-2 px-4 border border-dashed border-gray-300 rounded-lg hover:border-gray-400 text-gray-600 hover:text-gray-700 transition-colors"
-            >
-              + Add Step
-            </button>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea
+                  formControlName="description"
+                  rows="2"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                ></textarea>
+              </div>
+  
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Required Skill</label>
+                <select
+                  formControlName="requiredSkillId"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <option value="">Select a skill</option>
+                  <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+                </select>
+              </div>
+            </div>
           </div>
+  
+          <button
+            type="button"
+            (click)="addStep()"
+            class="w-full mt-4 py-2 px-4 border border-dashed border-gray-300 rounded-lg hover:border-gray-400 text-gray-600 hover:text-gray-700 transition-colors flex items-center justify-center"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Add Step
+          </button>
         </div>
   
         <button
           type="submit"
           [disabled]="careerPathForm.invalid"
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+          class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Update Career Path
         </button>

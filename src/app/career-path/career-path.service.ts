@@ -8,7 +8,8 @@ import { CareerPath } from './create-career-path/career-path.model';
 })
 export class CareerPathService {
 
- private apiCareerPathUrl = 'http://localhost:8800/api/careerPath';
+  private apiCareerPathUrl = 'http://localhost:8800/api/careerPath';
+  private apiUserhUrl = 'http://localhost:8800/api/user';
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
@@ -46,6 +47,18 @@ export class CareerPathService {
       .pipe(
         catchError((error) => {
           console.error('Error creating new career path:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  loadEmployees(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiUserhUrl}/allEmployees`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching employees:', error);
           return throwError(() => error);
         })
       );

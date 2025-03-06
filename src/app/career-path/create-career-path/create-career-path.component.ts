@@ -4,6 +4,7 @@ import { CareerPath, Skill, User } from './career-path.model';
 import { CareerPathService } from '../career-path.service';
 import { SkillAssessmentService } from '../../skill-assessment/skill-assessment.service';
 import { Router } from '@angular/router';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-create-career-path',
@@ -17,6 +18,7 @@ export class CreateCareerPathComponent implements OnInit {
   skills: Skill[] = [];
   employees: User[] = [];
   showModal: boolean = false;
+  faTrash = faTrash;
 
   constructor(
     private fb: FormBuilder,
@@ -111,5 +113,21 @@ export class CreateCareerPathComponent implements OnInit {
 
   update(careerPathId: any): void {
     this.router.navigate(['/career-path/update', careerPathId]);
+  }
+
+  deleteCareerPath(careerPathId: any): void {
+    this.careerPathService.deleteCareerPath(careerPathId).subscribe({
+      next: (data) => {
+        console.log('Career path deleted successfully:', data);
+        this.existingCareerPaths = this.existingCareerPaths.filter(
+          (path) => path.id !== careerPathId
+        );
+        alert('Career path deleted successfully!');
+      },
+      error: (err) => {
+        console.error('Failed to delete career path:', err);
+        alert('Failed to delete career path. Please try again.');
+      },
+    });
   }
 }

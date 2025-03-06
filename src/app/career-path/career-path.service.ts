@@ -128,4 +128,17 @@ export class CareerPathService {
         })
       );
   }
+
+  updateStepStatus(done: boolean, stepId: number): Observable<any> {
+    const headers = this.getHeaders();
+    const body = { done };
+    return this.http
+      .post<any>(`${this.apiCareerPathUrl}/employee/updateStepStatus/${stepId}`, body, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error updating step status:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }

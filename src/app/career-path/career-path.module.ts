@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CareerPathRoutingModule } from './career-path-routing.module';
 import { CreateCareerPathComponent } from './create-career-path/create-career-path.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CareerPathsListComponent } from './career-paths-list/career-paths-list.component';
 import { UpdateCareerPathComponent } from './update-career-path/update-career-path.component';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +21,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CommonModule,
     CareerPathRoutingModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ]
 })
 export class CareerPathModule {

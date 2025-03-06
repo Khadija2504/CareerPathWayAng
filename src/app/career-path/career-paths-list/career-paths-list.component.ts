@@ -29,4 +29,15 @@ export class CareerPathsListComponent implements OnInit {
     });
   }
 
+  updateStep(stepId: any, done: boolean): void {
+    console.log(done);
+    
+    this.careerPathService.updateStepStatus(done, stepId).subscribe({
+      next: (res) => {
+        console.log('Step status updated successfully:', res);
+        this.loadCareerPaths();
+      },
+      error: (err) => console.error('Failed to update step status:', err),
+    });
+  }
 }

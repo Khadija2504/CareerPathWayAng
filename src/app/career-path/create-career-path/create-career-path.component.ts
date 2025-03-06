@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CareerPath, Skill } from './career-path.model';
+import { CareerPath, Skill, User } from './career-path.model';
 import { CareerPathService } from '../career-path.service';
 import { SkillAssessmentService } from '../../skill-assessment/skill-assessment.service';
 
@@ -14,6 +14,7 @@ export class CreateCareerPathComponent implements OnInit {
   careerPathForm: FormGroup;
   existingCareerPaths: CareerPath[] = [];
   skills: Skill[] = [];
+  employees: User[] = [];
   showModal: boolean = false;
 
   constructor(
@@ -24,12 +25,14 @@ export class CreateCareerPathComponent implements OnInit {
     this.careerPathForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
+      employeeId: [Validators.required],
       steps: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
     this.loadSkills();
+    this.loadEmployees();
     this.addStep();
   }
 
@@ -41,6 +44,13 @@ export class CreateCareerPathComponent implements OnInit {
     this.skillService.getAllSkills().subscribe({
       next: (skills) => (this.skills = skills),
       error: (err) => console.error('Failed to load skills:', err),
+    });
+  }
+
+  loadEmployees(): void {
+    this.careerPathService.loadEmployees().subscribe({
+      next: (employees) => (this.employees = employees),
+      error: (err) => console.error('Failed to load employees:', err)
     });
   }
 
@@ -72,6 +82,7 @@ export class CreateCareerPathComponent implements OnInit {
     }
 
     const careerPath: CareerPath = this.careerPathForm.value;
+    console.log(careerPath);
     this.careerPathService.createCareerPath(careerPath).subscribe({
       next: (createdPath) => {
         this.existingCareerPaths.push(createdPath);

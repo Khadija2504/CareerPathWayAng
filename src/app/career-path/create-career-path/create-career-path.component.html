@@ -64,6 +64,30 @@
                   ></textarea>
                 </div>
               </div>
+
+                <div class="space-y-4">
+                    <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Assign to Employee <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        formControlName="employeeId"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                        <option value="">Select an employee</option>
+                        <option *ngFor="let employee of employees" [value]="employee.id">
+                        {{ employee.firstName }} {{employee.lastName}} ({{ employee.email }})
+                        </option>
+                    </select>
+                    <div
+                        *ngIf="careerPathForm.get('employeeId')?.invalid && careerPathForm.get('employeeId')?.touched"
+                        class="text-red-500 text-sm mt-1"
+                    >
+                        Employee selection is required.
+                    </div>
+                    </div>
+                
+                </div>
   
               <div class="space-y-6">
                 <div class="border-t border-gray-200 pt-6">
@@ -165,6 +189,12 @@
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button class="text-blue-600 hover:text-blue-800">Edit</button>
                 <button class="text-red-600 hover:text-red-800">Delete</button>
+              </div>
+
+              <div class="mt-2">
+                <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                  Assigned to: {{ path.employee?.lastName || 'Unassigned' }} {{path.employee?.firstName || 'Unassigned'}}
+                </span>
               </div>
             </div>
   

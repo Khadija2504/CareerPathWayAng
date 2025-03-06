@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CareerPath, Skill, User } from './career-path.model';
 import { CareerPathService } from '../career-path.service';
 import { SkillAssessmentService } from '../../skill-assessment/skill-assessment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-career-path',
@@ -20,7 +21,8 @@ export class CreateCareerPathComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private careerPathService: CareerPathService,
-    private skillService: SkillAssessmentService
+    private skillService: SkillAssessmentService,
+    private router: Router,
   ) {
     this.careerPathForm = this.fb.group({
       name: ['', Validators.required],
@@ -105,5 +107,9 @@ export class CreateCareerPathComponent implements OnInit {
     this.careerPathForm.reset();
     this.steps.clear();
     this.addStep();
+  }
+
+  update(careerPathId: any): void {
+    this.router.navigate(['/career-path/update', careerPathId]);
   }
 }

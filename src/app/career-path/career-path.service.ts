@@ -87,5 +87,34 @@ export class CareerPathService {
         })
       );
   }
-   
+
+  getCareerPathById(careerPathId: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiCareerPathUrl}/admin/getCareerPath/${careerPathId}`, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error fetching careerPath details:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  updateCareerPath(updatedCareerPath: CareerPath, careerPathId: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .put<any>(`${this.apiCareerPathUrl}/admin/updateCareerPath/${careerPathId}`, updatedCareerPath, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error updating careerPath details:', error);
+  
+          if (error.status === 400 && error.error && Array.isArray(error.error)) {
+            const validationErrors = error.error as string[];
+            console.error('Validation errors:', validationErrors);
+            return throwError(() => validationErrors);
+          } else {
+            return throwError(() => 'An unexpected error occurred. Please try again.');
+          }
+        })
+      );
+  }
 }

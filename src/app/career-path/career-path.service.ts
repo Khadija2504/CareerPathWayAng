@@ -117,4 +117,15 @@ export class CareerPathService {
         })
       );
   }
+
+  deleteCareerPath(careerPathId: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiCareerPathUrl}/admin/deleteCareerPath/${careerPathId}`, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error deleting career path:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }

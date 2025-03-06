@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: 'update/:careerPathId', component: UpdateCareerPathComponent, canActivate: [RoleGuard], data: {expectedRole: 'ADMIN'}},
   {path: '', component: CareerPathsListComponent, canActivate: [RoleGuard], data: {expectedRole: 'EMPLOYEE'}},
 ];
-
+  
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

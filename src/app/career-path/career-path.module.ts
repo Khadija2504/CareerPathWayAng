@@ -6,6 +6,9 @@ import { CreateCareerPathComponent } from './create-career-path/create-career-pa
 import { ReactiveFormsModule } from '@angular/forms';
 import { CareerPathsListComponent } from './career-paths-list/career-paths-list.component';
 import { UpdateCareerPathComponent } from './update-career-path/update-career-path.component';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -17,7 +20,12 @@ import { UpdateCareerPathComponent } from './update-career-path/update-career-pa
   imports: [
     CommonModule,
     CareerPathRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ]
 })
-export class CareerPathModule { }
+export class CareerPathModule {
+  constructor() {
+      library.add(faTrash);
+    }
+}

@@ -20,6 +20,7 @@ export interface CareerPath {
     description: string;
     requiredSkillId: number | null;
     requiredSkill?: Skill;
+    done: boolean;
   }
   
   export interface Skill {

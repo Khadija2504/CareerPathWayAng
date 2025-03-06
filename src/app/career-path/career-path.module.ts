@@ -5,12 +5,14 @@ import { CareerPathRoutingModule } from './career-path-routing.module';
 import { CreateCareerPathComponent } from './create-career-path/create-career-path.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CareerPathsListComponent } from './career-paths-list/career-paths-list.component';
+import { UpdateCareerPathComponent } from './update-career-path/update-career-path.component';
 
 
 @NgModule({
   declarations: [
     CreateCareerPathComponent,
-    CareerPathsListComponent
+    CareerPathsListComponent,
+    UpdateCareerPathComponent
   ],
   imports: [
     CommonModule,

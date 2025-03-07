@@ -65,6 +65,7 @@ export class MentorShipService {
 
   getMessagesBetweenUsers(receiverId: number): Observable<any[]> {
     const headers = this.getHeaders();
+    console.log(receiverId);
     return this.http.get<any[]>(`${this.baseMessagesUrl}/between?receiverId=${receiverId}`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching messages list:', error);
@@ -75,10 +76,16 @@ export class MentorShipService {
 
   creatMentorship(mentorshipData: any): Observable<any>{
     const headers = this.getHeaders();
-    return this.http.post<any[]>(`${this.mentorshipUrl}/create-mentorship`, mentorshipData, { headers }).pipe(
+    return this.http.post<any[]>(`${this.mentorshipUrl}/employee/create-mentorship`, mentorshipData, { headers }).pipe(
       catchError(error => {
         console.error('Error creating new mentorship:', error);
-        return throwError(() => error);
+        if (error.status === 400 && error.error && Array.isArray(error.error)) {
+          const validationErrors = error.error as string[];
+          console.error('Validation errors:', validationErrors);
+          return throwError(() => validationErrors);
+        } else {
+          return throwError(() => 'An unexpected error occurred. Please try again.');
+        }
       })
     );
   }
@@ -95,7 +102,7 @@ export class MentorShipService {
 
   getAllEmployeeMentorships(): Observable <any>{
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.mentorshipUrl}/employee/getAllEmployeeMentorShips`, { headers }).pipe(
+    return this.http.get<any>(`${this.mentorshipUrl}/user/getAllEmployeeMentorShips`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching all od the mentorships:', error);
         return throwError(() => error);

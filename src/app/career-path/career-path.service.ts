@@ -10,6 +10,7 @@ export class CareerPathService {
 
   private apiCareerPathUrl = 'http://localhost:8800/api/careerPath';
   private apiUserhUrl = 'http://localhost:8800/api/user';
+  private apiCertificationUrl = 'http://localhost:8800/api/certifications';
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
@@ -144,13 +145,23 @@ export class CareerPathService {
 
   completeCareerPath(careerPathId: number): Observable<any> {
     const headers = this.getHeaders();
-    console.log(careerPathId);
-    
     return this.http
       .get<any>(`${this.apiCareerPathUrl}/employee/completeCareerPath/${careerPathId}`, { headers })
       .pipe(
         catchError((error) => {
           console.error('Error updating career status:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  
+  getCareerPathCertification(careerPathId: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http
+      .get<any>(`${this.apiCertificationUrl}/${careerPathId}`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching career path certfification:', error);
           return throwError(() => error);
         })
       );

@@ -3,6 +3,7 @@ import { MentorShipService } from '../mentor-ship.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from '../../profile/profile.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-chat',
@@ -27,7 +28,8 @@ export class ChatComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
@@ -37,6 +39,10 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserDetails();
     this.loadMentors();
+  }
+
+  hasRole(role: string): boolean {
+    return this.authService.getUserRole() === role;
   }
 
   fetchUserDetails(): void {
@@ -57,10 +63,13 @@ export class ChatComponent implements OnInit {
 
   loadMessages(mentorId: number): void {
     if (mentorId !== null) {
+      console.log(mentorId);
+      
       this.receiverId = mentorId
       this.mentorShipService.getMessagesBetweenUsers(mentorId).subscribe({
         next: (response) => {
           this.messages = response;
+          console.log(response);
           this.isMessagesOpen = true; 
         },
         error: (error) => {

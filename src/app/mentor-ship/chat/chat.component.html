@@ -5,13 +5,22 @@
       </div>
       <div class="flex-1 overflow-y-auto p-4 space-y-2">
         <div *ngFor="let conversation of conversations">
-          <button (click)="startChat(conversation.mentor.id)" class="w-full text-left p-3 flex items-center space-x-3 hover:bg-gray-100 rounded-lg transition">
+          <button *ngIf="hasRole('EMPLOYEE')" (click)="startChat(conversation.mentor.id)" class="w-full text-left p-3 flex items-center space-x-3 hover:bg-gray-100 rounded-lg transition">
             <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
               <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
               </svg>
             </div>
             <p class="text-sm font-medium text-gray-800">{{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}</p>
+          </button>
+      
+          <button *ngIf="hasRole('MENTOR')" (click)="startChat(conversation.mentee.id)" class="w-full text-left p-3 flex items-center space-x-3 hover:bg-gray-100 rounded-lg transition">
+            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <p class="text-sm font-medium text-gray-800">{{ conversation.mentee.firstName }} {{ conversation.mentee.lastName }}</p>
           </button>
         </div>
       </div>

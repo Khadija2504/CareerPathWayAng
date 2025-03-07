@@ -141,4 +141,18 @@ export class CareerPathService {
         })
       );
   }
+
+  completeCareerPath(careerPathId: number): Observable<any> {
+    const headers = this.getHeaders();
+    console.log(careerPathId);
+    
+    return this.http
+      .get<any>(`${this.apiCareerPathUrl}/employee/completeCareerPath/${careerPathId}`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error updating career status:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }

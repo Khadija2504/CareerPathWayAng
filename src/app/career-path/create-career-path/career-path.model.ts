@@ -5,6 +5,7 @@ export interface CareerPath {
     employeeId: number | null;
     steps: CareerPathStep[];
     employee?: User;
+    done: boolean
   }
 
   export interface User {

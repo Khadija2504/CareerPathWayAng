@@ -37,50 +37,15 @@
   
                 <div class="mt-4">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <ng-container *ngIf="path.done === false">
                   <div class="relative">
                     <select
                       [(ngModel)]="step.done"
                       (change)="updateStep(step.id, step.done)"
                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                     >
-                      <option [value]="false">
-                        <span class="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 mr-2 text-gray-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                          Not Done
-                        </span>
-                      </option>
-                      <option [value]="true">
-                        <span class="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 mr-2 text-green-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          Done
-                        </span>
-                      </option>
+                      <option [value]="false">Not Done</option>
+                      <option [value]="true">Done</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                       <svg
@@ -97,6 +62,10 @@
                       </svg>
                     </div>
                   </div>
+                </ng-container>
+                <ng-container *ngIf="path.done === true">
+                    {{step.done}}
+                </ng-container>
                 </div>
               </div>
             </div>

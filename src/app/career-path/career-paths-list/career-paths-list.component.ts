@@ -29,15 +29,32 @@ export class CareerPathsListComponent implements OnInit {
     });
   }
 
-  updateStep(stepId: any, done: boolean): void {
-    console.log(done);
-    
+  updateStep(stepId: any, done: boolean): void {    
     this.careerPathService.updateStepStatus(done, stepId).subscribe({
       next: (res) => {
         console.log('Step status updated successfully:', res);
         this.loadCareerPaths();
+        const careerPath = this.existingCareerPaths.find(path => path.steps.some(step => step.id === stepId));
+        if (careerPath && careerPath.steps.every(step => step.done)) {
+          this.showCompletionConfirmation(careerPath.id);
+        }
       },
       error: (err) => console.error('Failed to update step status:', err),
     });
+  }
+  
+  showCompletionConfirmation(careerPathId: any): void {
+    const confirmed = confirm('You have completed all steps. Do you want to finish this career path and generate a certification?');
+    if (confirmed) {
+      console.log(careerPathId);
+      this.careerPathService.completeCareerPath(careerPathId).subscribe({
+        next: (certification) => {
+          console.log('Career path completed and certification generated:', certification);
+          alert('Career path completed successfully! Your certification is ready.');
+          this.loadCareerPaths();
+        },
+        error: (err) => console.error('Failed to complete career path:', err),
+      });
+    }
   }
 }

@@ -6,7 +6,14 @@ export interface CareerPath {
     steps: CareerPathStep[];
     employee?: User;
     done: boolean
-  }
+    certification?: Certification;
+}
+
+export interface Certification {
+    id?: number;
+    certificateUrl: string;
+    certificationDate?: string;
+}
 
   export interface User {
     id?: number;

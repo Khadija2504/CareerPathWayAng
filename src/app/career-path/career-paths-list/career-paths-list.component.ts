@@ -1,22 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CareerPathService } from '../career-path.service';
 import { CareerPath } from '../create-career-path/career-path.model';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-career-paths-list',
   standalone: false,
   templateUrl: './career-paths-list.component.html',
-  styleUrl: './career-paths-list.component.css'
+  styleUrls: ['./career-paths-list.component.css']
 })
 export class CareerPathsListComponent implements OnInit {
   existingCareerPaths: CareerPath[] = [];
-  showModal: boolean = false;
+  isLightboxOpen: boolean = false;
+  safeCertificateUrl: SafeResourceUrl | null = null;
+  selectedCareerPathId: number | null = null;
 
   constructor(
     private careerPathService: CareerPathService,
-  ) {
-    
-  }
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.loadCareerPaths();
@@ -24,29 +26,32 @@ export class CareerPathsListComponent implements OnInit {
 
   loadCareerPaths(): void {
     this.careerPathService.loadEmployeeCareerPaths().subscribe({
-      next: (careerPath) => (this.existingCareerPaths = careerPath),
-      error: (err) => console.error('Failed to load career paths:', err)
+      next: (careerPaths) => (this.existingCareerPaths = careerPaths),
+      error: (err) => console.error('Failed to load career paths:', err),
     });
   }
 
-  updateStep(stepId: any, done: boolean): void {    
+  updateStep(stepId: any, done: boolean): void {
     this.careerPathService.updateStepStatus(done, stepId).subscribe({
       next: (res) => {
         console.log('Step status updated successfully:', res);
         this.loadCareerPaths();
-        const careerPath = this.existingCareerPaths.find(path => path.steps.some(step => step.id === stepId));
-        if (careerPath && careerPath.steps.every(step => step.done)) {
+        const careerPath = this.existingCareerPaths.find((path) =>
+          path.steps.some((step) => step.id === stepId)
+        );
+        if (careerPath && careerPath.steps.every((step) => step.done)) {
           this.showCompletionConfirmation(careerPath.id);
         }
       },
       error: (err) => console.error('Failed to update step status:', err),
     });
   }
-  
+
   showCompletionConfirmation(careerPathId: any): void {
-    const confirmed = confirm('You have completed all steps. Do you want to finish this career path and generate a certification?');
+    const confirmed = confirm(
+      'You have completed all steps. Do you want to finish this career path and generate a certification?'
+    );
     if (confirmed) {
-      console.log(careerPathId);
       this.careerPathService.completeCareerPath(careerPathId).subscribe({
         next: (certification) => {
           console.log('Career path completed and certification generated:', certification);
@@ -57,4 +62,27 @@ export class CareerPathsListComponent implements OnInit {
       });
     }
   }
+
+  viewCertificate(careerPathId: any): void {
+    this.careerPathService.getCareerPathCertification(careerPathId).subscribe({
+      next: (certification) => {
+        console.log(certification);
+        
+        const certificateUrl = `${certification.certificateUrl}`;
+        console.log(certificateUrl);
+        
+        this.safeCertificateUrl = this.sanitizer.bypassSecurityTrustResourceUrl(certificateUrl);
+        this.selectedCareerPathId = careerPathId;
+        this.isLightboxOpen = true;
+      },
+      error: (err) => console.error('Failed to fetch certificate URL:', err),
+    });
+  }
+
+  closeLightbox(): void {
+    this.isLightboxOpen = false;
+    this.safeCertificateUrl = null;
+    this.selectedCareerPathId = null;
+  }
+
 }

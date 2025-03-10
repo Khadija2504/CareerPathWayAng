@@ -9,20 +9,22 @@ import { UpdateCareerPathComponent } from './update-career-path/update-career-pa
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SafeUrlPipe } from './safe-url.pipe';
 
 
 @NgModule({
   declarations: [
     CreateCareerPathComponent,
     CareerPathsListComponent,
-    UpdateCareerPathComponent
+    UpdateCareerPathComponent,
   ],
   imports: [
     CommonModule,
     CareerPathRoutingModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    SafeUrlPipe
   ]
 })
 export class CareerPathModule {

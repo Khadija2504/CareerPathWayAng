@@ -22,6 +22,15 @@
             >
               Message
             </button>
+            <button
+              (click)="openFeedbackDialog(mentorship.id)"
+              class="flex-1 bg-green-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              Feedback
+            </button>
           </div>
         </div>
       </div>
@@ -75,6 +84,56 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="isFeedbackDialogOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold text-gray-800">Submit Feedback</h3>
+      <button (click)="closeFeedbackDialog()" class="text-gray-500 hover:text-gray-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+        <div class="flex space-x-2">
+          <button *ngFor="let star of [1,2,3,4,5]" type="button" 
+                  (click)="setRating(star)"
+                  class="p-2 rounded-full transition-colors"
+                  [ngClass]="{
+                    'text-yellow-400': star <= feedbackForm.get('rating')?.value,
+                    'text-gray-300': star > feedbackForm.get('rating')?.value
+                  }">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+        <textarea formControlName="feedback" rows="4"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Share your experience..."></textarea>
+      </div>
+
+      <button type="submit" [disabled]="feedbackForm.invalid" 
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors
+                     disabled:bg-gray-300 disabled:cursor-not-allowed">
+        Submit Feedback
+      </button>
+
+      <div *ngIf="feedbackSubmitted" class="text-center p-3 rounded-lg"
+           [ngClass]="feedbackSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+        {{ feedbackMessage }}
+      </div>
+    </form>
   </div>
 </div>
 

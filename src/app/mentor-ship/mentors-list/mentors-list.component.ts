@@ -31,6 +31,13 @@ export class MentorsListComponent implements OnInit {
   isConversationsOpen: boolean = false;
   isMessagesOpen: boolean = false;
 
+  isFeedbackDialogOpen = false;
+  feedbackForm: FormGroup;
+  selectedMentorshipId: number | null = null;
+  feedbackSubmitted = false;
+  feedbackSuccess = false;
+  feedbackMessage = '';
+
   constructor(
     private mentorShipService: MentorShipService,
     private route: ActivatedRoute,
@@ -40,6 +47,10 @@ export class MentorsListComponent implements OnInit {
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
+    });
+    this.feedbackForm = this.fb.group({
+      rating: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
+      feedback: ['', [Validators.required, Validators.maxLength(1000)]]
     });
   }
 
@@ -56,6 +67,48 @@ export class MentorsListComponent implements OnInit {
     this.fetchUserDetails();
     this.loadActiveMenteeMentorships();
   }
+
+  openFeedbackDialog(mentorshipId: number): void {
+    this.selectedMentorshipId = mentorshipId;
+    this.isFeedbackDialogOpen = true;
+    this.feedbackForm.reset();
+    this.feedbackSubmitted = false;
+  }
+
+  closeFeedbackDialog(): void {
+    this.isFeedbackDialogOpen = false;
+    this.selectedMentorshipId = null;
+  }
+
+  setRating(rating: number): void {
+    this.feedbackForm.patchValue({ rating });
+  }
+
+  submitFeedback(): void {
+    if (this.feedbackForm.valid && this.selectedMentorshipId) {
+      const feedbackData = {
+        mentorshipId: this.selectedMentorshipId,
+        ...this.feedbackForm.value
+      };
+
+      this.mentorShipService.createFeedback(feedbackData).subscribe({
+        next: (response) => {
+          this.feedbackSuccess = true;
+          this.feedbackMessage = 'Feedback submitted successfully!';
+          this.feedbackSubmitted = true;
+          console.log(response);
+          
+          setTimeout(() => this.closeFeedbackDialog(), 2000);
+        },
+        error: (error) => {
+          this.feedbackSuccess = false;
+          this.feedbackMessage = 'Error submitting feedback. Please try again.';
+          this.feedbackSubmitted = true;
+        }
+      });
+    }
+  }
+
 
   loadMoreMentors(): void {
     const startIndex = (this.currentMentorsPage - 1) * this.pageSize;

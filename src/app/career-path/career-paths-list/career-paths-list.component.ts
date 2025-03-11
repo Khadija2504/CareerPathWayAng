@@ -26,7 +26,9 @@ export class CareerPathsListComponent implements OnInit {
 
   loadCareerPaths(): void {
     this.careerPathService.loadEmployeeCareerPaths().subscribe({
-      next: (careerPaths) => (this.existingCareerPaths = careerPaths),
+      next: (careerPaths) => {this.existingCareerPaths = careerPaths
+        console.log(this.existingCareerPaths);
+      },
       error: (err) => console.error('Failed to load career paths:', err),
     });
   }

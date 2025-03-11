@@ -1,7 +1,44 @@
 <div class="min-h-screen bg-gray-50 p-6">
-    <div class="max-w-7xl mx-auto">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Active Mentorships</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let mentor of mentors" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
+        <div *ngFor="let mentorship of displayedActiveMentorships" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
+          <div class="flex items-center gap-4">
+            <img [src]="mentorship.mentor.profilePicture || 'assets/default-avatar.png'" alt="{{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">
+                {{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded-md ml-2">{{ mentorship.mentor.role }}</span>
+              </h3>
+              <p class="text-gray-500 text-sm">{{ mentorship.mentor.expertiseArea }}</p>
+              <p class="text-gray-400 text-xs">{{ mentorship.mentor.yearsOfExperience }} years of experience</p>
+            </div>
+          </div>
+          <div class="mt-6 flex space-x-3">
+            <button
+              (click)="startChat(mentorship.mentor.id)"
+              class="flex-1 bg-blue-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              Message
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="activeMentorships.length > displayedActiveMentorships.length" class="mt-6 text-center">
+        <button
+          (click)="loadMoreActiveMentorships()"
+          class="bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        >
+          Load More Active Mentorships
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Recommended Mentors</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let mentor of displayedMentors" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
           <div class="flex items-center gap-4">
             <img [src]="mentor.profilePicture || 'assets/default-avatar.png'" alt="{{ mentor.firstName }} {{ mentor.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
             <div>
@@ -21,7 +58,7 @@
               Connect
             </button>
             <button
-            (click)="isConversationExist(mentor.id)"
+              (click)="isConversationExist(mentor.id)"
               class="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-lg hover:bg-gray-200 transition"
             >
               Message
@@ -29,11 +66,17 @@
           </div>
         </div>
       </div>
-      <div *ngIf="successMessage" class="mt-6 text-center text-green-500 text-sm">
-        {{ successMessage }}
+      <div *ngIf="mentors.length > displayedMentors.length" class="mt-6 text-center">
+        <button
+          (click)="loadMoreMentors()"
+          class="bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        >
+          Load More Mentors
+        </button>
       </div>
     </div>
   </div>
+</div>
 
   <div>
     <div class="fixed bottom-6 right-6 flex flex-col w-96 bg-white rounded-lg shadow-xl overflow-hidden">

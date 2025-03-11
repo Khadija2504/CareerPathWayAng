@@ -61,4 +61,24 @@ export class SkillService {
     );
   }
 
+  deleteSkill(skillId: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${this.skillUrl}/admin/deleteSkill/${skillId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting skill with id:' + skillId, error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  updateSkill(skillId: number, skillData: any):Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put<any>(`${this.skillUrl}/admin/updateSkill${skillId}`, skillData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating skill details:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }

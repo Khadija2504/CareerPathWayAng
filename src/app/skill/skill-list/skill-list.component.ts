@@ -12,6 +12,8 @@ import { Skill } from '../skill.model';
 export class SkillListComponent implements OnInit {
   skills: Skill[] = [];
   isAddSkillModalOpen = false;
+  isUpdateSkillModalOpen = false;
+  selectedSkill: Skill | null = null;
   skillForm: FormGroup;
 
   constructor(private skillService: SkillService, private fb: FormBuilder) {
@@ -42,6 +44,22 @@ export class SkillListComponent implements OnInit {
     this.skillForm.reset();
   }
 
+  openUpdateSkillModal(skill: Skill): void {
+    this.selectedSkill = skill;
+    this.skillForm.patchValue({
+      name: skill.name,
+      description: skill.description,
+      category: skill.category
+    });
+    this.isUpdateSkillModalOpen = true;
+  }
+
+  closeUpdateSkillModal(): void {
+    this.isUpdateSkillModalOpen = false;
+    this.skillForm.reset();
+    this.selectedSkill = null;
+  }
+
   onSubmit(): void {
     if (this.skillForm.invalid) return;
 
@@ -54,4 +72,26 @@ export class SkillListComponent implements OnInit {
     });
   }
 
+  onUpdateSubmit(): void {
+    if (this.skillForm.invalid || !this.selectedSkill) return;
+
+    const updatedSkill = { ...this.selectedSkill, ...this.skillForm.value };
+    this.skillService.updateSkill(updatedSkill, this.selectedSkill.id).subscribe({
+      next: (skill) => {
+        const index = this.skills.findIndex((s) => s.id === skill.id);
+        if (index !== -1) this.skills[index] = skill;
+        this.closeUpdateSkillModal();
+      },
+      error: (error) => console.error('Error updating skill:', error)
+    });
+  }
+
+  deleteSkill(skillId: number): void {
+    this.skillService.deleteSkill(skillId).subscribe({
+      next: () => {
+        this.skills = this.skills.filter((skill) => skill.id !== skillId);
+      },
+      error: (error) => console.error('Error deleting skill:', error)
+    });
+  }
 }

@@ -129,4 +129,24 @@ export class MentorShipService {
       })
     );
   }
+
+  createFeedback(feedbackData: any): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.post<any[]>(`${this.mentorshipUrl}/employee/mentorshipFeedback/create`, feedbackData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error creating new feedback:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getActiveMenteeMentorships(): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.mentorshipUrl}/employee/getAllActiveMenteeMentorShips`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching active mentee mentorships:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

@@ -10,49 +10,80 @@ import { ProfileService } from '../../profile/profile.service';
   templateUrl: './mentors-list.component.html',
   styleUrl: './mentors-list.component.css'
 })
-export class MentorsListComponent implements OnInit{
-  mentors: any[]= [];
-  successMessage: string | null= null;
-  isExist: boolean | null= false;
+export class MentorsListComponent implements OnInit {
+  mentors: any[] = [];
+  displayedMentors: any[] = [];
+  activeMentorships: any[] = [];
+  displayedActiveMentorships: any[] = [];
+  pageSize = 3;
+  currentMentorsPage = 1;
+  currentActiveMentorshipsPage = 1;
+
+  successMessage: string | null = null;
+  isExist: boolean | null = false;
   messages: any[] = [];
   chatForm: FormGroup;
   receiverId: number | null = null;
   loggedinUser: any = null;
   isLoading = true;
   errorMessage: string | null = null;
-  conversations : any[] = [];
-  mentor: number | null = null;
+  conversations: any[] = [];
   isConversationsOpen: boolean = false;
   isMessagesOpen: boolean = false;
 
-  constructor(private mentorShipService: MentorShipService,
-        private route: ActivatedRoute,
-        private fb: FormBuilder,
-        private profileService: ProfileService,
-        private router: Router
+  constructor(
+    private mentorShipService: MentorShipService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private profileService: ProfileService,
+    private router: Router
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
     });
   }
+
   ngOnInit(): void {
     this.mentorShipService.getAllMentors().subscribe({
       next: (response) => {
         this.mentors = response;
+        this.loadMoreMentors();
       },
       error: (error) => {
         console.error('Error fetching mentors:', error);
       },
     });
     this.fetchUserDetails();
-    this.loadMentors();
+    this.loadActiveMenteeMentorships();
   }
 
-  // startChat(mentorId: number): void {
-  //   this.router.navigate(['/mentorShip-coaching/chat']);
-  // }
+  loadMoreMentors(): void {
+    const startIndex = (this.currentMentorsPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayedMentors = this.mentors.slice(0, endIndex);
+    this.currentMentorsPage++;
+  }
 
-  createMentorship(mentorId: number): void{
+  loadMoreActiveMentorships(): void {
+    const startIndex = (this.currentActiveMentorshipsPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayedActiveMentorships = this.activeMentorships.slice(0, endIndex);
+    this.currentActiveMentorshipsPage++;
+  }
+
+  loadActiveMenteeMentorships(): void {
+    this.mentorShipService.getActiveMenteeMentorships().subscribe({
+      next: (response) => {
+        this.activeMentorships = response;
+        this.displayedActiveMentorships = this.activeMentorships.slice(0, this.pageSize); // Display first 3 items
+      },
+      error: (error) => {
+        console.error('Error fetching active mentee mentorships:', error);
+      },
+    });
+  }
+
+  createMentorship(mentorId: number): void {
     const mentorshipData = {
       mentorId: mentorId,
       status: "Active",
@@ -60,38 +91,37 @@ export class MentorsListComponent implements OnInit{
 
     this.mentorShipService.creatMentorship(mentorshipData).subscribe({
       next: (response) => {
-        this.successMessage = 'mentroship created successfully!';
+        this.successMessage = 'Mentorship created successfully!';
         console.log(response);
       },
       error: (error) => {
-        console.error('Error sending the mentorhsip data:', error);
+        console.error('Error sending the mentorship data:', error);
       }
     });
   }
 
-  isMentorshipExist(mentorId: number): void{
-
+  isMentorshipExist(mentorId: number): void {
     this.mentorShipService.isMentorshipExist(mentorId).subscribe({
       next: (response) => {
         this.isExist = response;
         console.log(response);
       },
       error: (error) => {
-        console.error('Error sending the mentorhsip data:', error);
+        console.error('Error checking mentorship existence:', error);
       }
     });
   }
 
   isConversationExist(mentorId: number): void {
     this.isMentorshipExist(mentorId);
-    if(this.isExist == true){
+    if (this.isExist == true) {
       this.startChat(mentorId);
     }
   }
 
-  isMentorExist(mentorId: number): void{
+  isMentorExist(mentorId: number): void {
     this.isMentorshipExist(mentorId);
-    if(this.isExist == false) {
+    if (this.isExist == false) {
       this.createMentorship(mentorId);
     }
   }
@@ -112,13 +142,17 @@ export class MentorsListComponent implements OnInit{
     });
   }
 
+  startChat(mentorId: number): void {
+    this.loadMessages(mentorId);
+  }
+
   loadMessages(mentorId: number): void {
     if (mentorId !== null) {
-      this.receiverId = mentorId
+      this.receiverId = mentorId;
       this.mentorShipService.getMessagesBetweenUsers(mentorId).subscribe({
         next: (response) => {
           this.messages = response;
-          this.isMessagesOpen = true; 
+          this.isMessagesOpen = true;
         },
         error: (error) => {
           console.error('Error fetching messages:', error);
@@ -127,23 +161,6 @@ export class MentorsListComponent implements OnInit{
     } else {
       console.error('Receiver ID is not set.');
     }
-  }
-
-  loadMentors(): void {
-    this.mentorShipService.getAllEmployeeMentorships().subscribe({
-      next: (response) => {
-        this.conversations = response;
-        console.log(response);
-        
-      },
-      error: (error) => {
-        console.error('Error fetching conversations:', error);
-      },
-    });
-  }
-
-  startChat(mentorId: number): void {
-    this.loadMessages(mentorId);
   }
 
   sendMessage(): void {

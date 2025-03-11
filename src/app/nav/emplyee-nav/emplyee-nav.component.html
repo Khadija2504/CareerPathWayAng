@@ -61,7 +61,7 @@
             <div *ngIf="userDetails && !isLoading" class="relative ml-3">
               <button (click)="isDropdownOpen = !isDropdownOpen"
                       class="flex items-center text-sm text-white focus:outline-none">
-                <img [src]="" class="h-8 w-8 rounded-full border-2 border-white" />
+                <img [src]="userDetails.imgUrl" class="h-8 w-8 rounded-full border-2 border-white" />
               </button>
             
               <div *ngIf="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
@@ -143,8 +143,9 @@
       </div>
       <div class="pt-4 pb-3 border-t border-blue-400">
         <div *ngIf="userDetails && !isLoading" class="flex items-center px-5">
-          <div class="h-10 w-10 rounded-full bg-blue-200 flex items-center justify-center">
-            <span class="text-blue-600 font-medium">user</span>
+          <div class="flex items-center text-sm text-white focus:outline-none">
+            <img [src]="userDetails.imgUrl" class="h-8 w-8 rounded-full border-2 border-white" />
+
           </div>
           <div class="ml-3">
             <div class="text-white text-sm font-medium">{{ userDetails.firstName }} {{ userDetails.lastName }}</div>

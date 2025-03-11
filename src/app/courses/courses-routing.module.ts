@@ -6,7 +6,7 @@ import { UpdateCourseComponent } from './update-course/update-course.component';
 import { RoleGuard } from '../auth/role.guard';
 
 const routes: Routes = [
-  {path: '', component: CourseListComponent, canActivate: [RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
+  {path: '', component: CourseListComponent},
   {path: 'add-course', component: AddCourseComponent, canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
   {path: 'update-course/:courseId', component: UpdateCourseComponent, canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' } },
 ];

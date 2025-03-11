@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CourseService } from '../course-service.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class CourseListComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -56,5 +58,9 @@ export class CourseListComponent implements OnInit {
   closeLightbox(): void {
     this.isLightboxOpen = false;
     this.selectedCourse = null;
+  }
+
+  hasRole(role: string): boolean {
+    return this.authService.getUserRole() === role;
   }
 }

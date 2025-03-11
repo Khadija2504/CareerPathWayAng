@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { Skill } from './skill.model';
 
 @Injectable({
   providedIn: 'root'
@@ -71,9 +72,9 @@ export class SkillService {
     );
   }
 
-  updateSkill(skillId: number, skillData: any):Observable<any> {
+  updateSkill(skillData: Skill, skillId: number):Observable<any> {
     const headers = this.getHeaders();
-    return this.http.put<any>(`${this.skillUrl}/admin/updateSkill${skillId}`, skillData, { headers }).pipe(
+    return this.http.put<any>(`${this.skillUrl}/admin/updateSkill/${skillId}`, skillData, { headers }).pipe(
       catchError(error => {
         console.error('Error updating skill details:', error);
         return throwError(() => error);

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SkillAssessmentComponent } from './skill-assessment.component';
 import { InteractiveQuestionnairesComponent } from './interactive-questionnaires/interactive-questionnaires.component';
+import { RoleGuard } from '../auth/role.guard';
 
 const routes: Routes = [
   {path: '', component: SkillAssessmentComponent},

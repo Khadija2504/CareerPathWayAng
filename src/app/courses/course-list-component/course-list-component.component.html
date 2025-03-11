@@ -5,6 +5,11 @@
       Loading courses...
     </div>
   
+    <a *ngIf="hasRole('ADMIN')" routerLink="/courses/add-course"
+        class="mb-4 sm:mb-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors font-medium w-full sm:w-auto"
+      >
+        Add new course
+    </a>
     <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
       {{ errorMessage }}
     </div>
@@ -31,6 +36,11 @@
           >
             View Full
           </button>
+          <a *ngIf="hasRole('ADMIN')" routerLink="/courses/update-course/{{course.id}}"
+            class="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+            Update course
+          </a>
         </div>
       </div>
     </div>

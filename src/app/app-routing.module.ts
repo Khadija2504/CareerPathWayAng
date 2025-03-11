@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'resources', loadChildren: ()=> import ('./library/library.module').then(m=> m.LibraryModule), canActivate: [AuthGuard]},
   {path: 'courses', loadChildren: ()=> import ('./courses/courses.module').then(m=> m.CoursesModule), canActivate: [AuthGuard]},
   {path: 'career-path', loadChildren: ()=> import ('./career-path/career-path.module').then(m=> m.CareerPathModule), canActivate: [AuthGuard]},
-  {path: 'training-programs', loadChildren: ()=> import ('./training/training.module').then(m=> m.TrainingModule), canActivate: [AuthGuard]},
+  {path: 'training-programs', loadChildren: ()=> import ('./training/training.module').then(m=> m.TrainingModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: '**', component: NotFoundComponent},
 

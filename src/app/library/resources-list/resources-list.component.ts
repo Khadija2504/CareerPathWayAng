@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class ResourcesListComponent implements OnInit{
   errorMessage: any | null = null;
   resources: any[] = [];
+  isLoading = true;
   
   constructor(private libraryService: LibraryService, private router: Router){}
 
@@ -25,7 +26,7 @@ export class ResourcesListComponent implements OnInit{
       next: (data) => {
         this.resources = data;
         console.log(data);
-        
+        this.isLoading = false;
       },
       error: (err) => {
         this.errorMessage = 'Failed to fetch resources. Please try again later.';

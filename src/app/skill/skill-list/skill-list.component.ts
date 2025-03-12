@@ -15,6 +15,7 @@ export class SkillListComponent implements OnInit {
   isUpdateSkillModalOpen = false;
   selectedSkill: Skill | null = null;
   skillForm: FormGroup;
+  isLoading = true;
 
   constructor(private skillService: SkillService, private fb: FormBuilder) {
     this.skillForm = this.fb.group({
@@ -30,7 +31,9 @@ export class SkillListComponent implements OnInit {
 
   loadSkills(): void {
     this.skillService.getAllSkills().subscribe({
-      next: (skills) => (this.skills = skills),
+      next: (skills) => {this.skills = skills
+        this.isLoading = false;
+      },
       error: (error) => console.error('Error loading skills:', error)
     });
   }

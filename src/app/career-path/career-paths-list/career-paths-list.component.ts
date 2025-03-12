@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CareerPathService } from '../career-path.service';
 import { CareerPath } from '../create-career-path/career-path.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-career-paths-list',
@@ -14,6 +15,7 @@ export class CareerPathsListComponent implements OnInit {
   isLightboxOpen: boolean = false;
   safeCertificateUrl: SafeResourceUrl | null = null;
   selectedCareerPathId: number | null = null;
+  isLoading = true;
 
   constructor(
     private careerPathService: CareerPathService,
@@ -28,6 +30,7 @@ export class CareerPathsListComponent implements OnInit {
     this.careerPathService.loadEmployeeCareerPaths().subscribe({
       next: (careerPaths) => {this.existingCareerPaths = careerPaths
         console.log(this.existingCareerPaths);
+        this.isLoading = false;
       },
       error: (err) => console.error('Failed to load career paths:', err),
     });
@@ -44,6 +47,7 @@ export class CareerPathsListComponent implements OnInit {
         if (careerPath && careerPath.steps.every((step) => step.done)) {
           this.showCompletionConfirmation(careerPath.id);
         }
+        this.isLoading = false;
       },
       error: (err) => console.error('Failed to update step status:', err),
     });
@@ -59,6 +63,7 @@ export class CareerPathsListComponent implements OnInit {
           console.log('Career path completed and certification generated:', certification);
           alert('Career path completed successfully! Your certification is ready.');
           this.loadCareerPaths();
+          this.isLoading = false;
         },
         error: (err) => console.error('Failed to complete career path:', err),
       });

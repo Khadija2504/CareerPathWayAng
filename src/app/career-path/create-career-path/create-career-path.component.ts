@@ -19,6 +19,7 @@ export class CreateCareerPathComponent implements OnInit {
   employees: User[] = [];
   showModal: boolean = false;
   faTrash = faTrash;
+  isLoading = true;
 
   constructor(
     private fb: FormBuilder,
@@ -61,7 +62,9 @@ export class CreateCareerPathComponent implements OnInit {
 
   loadCareerPaths(): void {
     this.careerPathService.loadCareerPaths().subscribe({
-      next: (careerPath) => (this.existingCareerPaths = careerPath),
+      next: (careerPath) => {this.existingCareerPaths = careerPath
+        this.isLoading = false;
+      },
       error: (err) => console.error('Failed to load career paths:', err)
     });
   }

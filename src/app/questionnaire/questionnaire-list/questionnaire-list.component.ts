@@ -15,6 +15,7 @@ export class QuestionnaireListComponent implements OnInit {
   isModalOpen = false;
   isLoading = true;
   questionnaireForm: FormGroup;
+  visibleOptions: { [key: number]: number } = {};
 
   constructor(
     private service: QuestionnaireService,
@@ -42,6 +43,9 @@ export class QuestionnaireListComponent implements OnInit {
     this.service.getAllQuestionnaires().subscribe({
       next: (data) => {
         this.questionnaires = data;
+        this.questionnaires.forEach((q, index) => {
+          this.visibleOptions[index] = 3;
+        });
         this.isLoading = false;
       },
       error: (err) => this.handleError(err)
@@ -51,6 +55,10 @@ export class QuestionnaireListComponent implements OnInit {
       next: (skills) => this.skills = skills,
       error: (err) => this.handleError(err)
     });
+  }
+
+  loadMoreOptions(index: number): void {
+    this.visibleOptions[index] += 3;
   }
 
   get optionsArray(): FormArray {
@@ -117,5 +125,15 @@ export class QuestionnaireListComponent implements OnInit {
       Medium: 'bg-yellow-100 text-yellow-800',
       Hard: 'bg-red-100 text-red-800'
     };
+  }
+
+  public deleteQuestionnaire(id:  number): void {
+    this.service.deleteQuestionnaire(id).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.questionnaires = this.questionnaires.filter((questionnaire) => questionnaire.id !== id);
+      },
+      error: (err) => this.handleError(err)
+    });
   }
 }

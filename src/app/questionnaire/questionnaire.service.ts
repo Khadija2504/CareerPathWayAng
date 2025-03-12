@@ -72,4 +72,14 @@ export class QuestionnaireService {
       })
     );
   }
+
+  deleteQuestionnaire(id: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.questionUrl}/admin/deleteQuestionnaire/${id}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting questionnaire:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

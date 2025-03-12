@@ -17,140 +17,172 @@
         </button>
       </div>
   
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let q of questionnaires"
-          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          *ngFor="let q of questionnaires; let i = index"
+          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col justify-between"
         >
-  
           <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ q.questionText }}</h3>
   
           <div class="space-y-3 mb-6">
-            <div 
-              *ngFor="let option of q.options"
-              class="flex items-center p-3 rounded-lg border"
+            <div
+              *ngFor="let option of q.options | slice: 0:visibleOptions[i]"
+              class="flex items-center p-3 rounded-lg border transition-all"
               [class.border-green-200]="option === q.correctAnswer"
               [class.bg-green-50]="option === q.correctAnswer"
             >
-              <div 
-                class="h-5 w-5 rounded-full mr-3 flex items-center justify-center shrink-0"
+              <div
+                class="h-5 w-5 rounded-full mr-3 flex items-center justify-center shrink-0 transition-colors"
                 [class.bg-green-500]="option === q.correctAnswer"
                 [class.bg-gray-200]="option !== q.correctAnswer"
               >
-                <svg 
+                <svg
                   *ngIf="option === q.correctAnswer"
                   class="w-3 h-3 text-white"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
               <span class="text-gray-700">{{ option }}</span>
             </div>
           </div>
   
+          <div *ngIf="q.options.length > visibleOptions[i]" class="text-center">
+            <button
+              (click)="loadMoreOptions(i)"
+              class="text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Load More
+            </button>
+          </div>
+  
           <div class="flex items-center justify-between mt-4">
             <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
               {{ q.skill?.name || 'General' }}
             </span>
-          </div>
-        </div>
-      </div>
   
-<div *ngIf="isModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 animate-slide-up">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-gray-900">Create New Question</h3>
-        <button (click)="closeAddModal()" class="text-gray-500 hover:text-gray-700 transition-colors">✕</button>
-      </div>
-  
-      <form [formGroup]="questionnaireForm" (ngSubmit)="onSubmit()" class="space-y-5">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
-          <textarea
-            formControlName="questionText"
-            rows="3"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your question..."
-          ></textarea>
-        </div>
-  
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Options</label>
-          <div class="flex gap-2 mb-2">
-            <input
-              formControlName="newOption"
-              class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter new option"
-            >
             <button
-              type="button"
-              (click)="addOption()"
-              class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-              [disabled]="!questionnaireForm.get('newOption')?.value"
+              (click)="deleteQuestionnaire(q.id)"
+              class="p-1 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
             >
-              Add Option
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
             </button>
           </div>
+        </div>
+    </div>
   
-          <div class="space-y-2" formArrayName="options">
-            <div
-              *ngFor="let option of optionsArray.controls, let i = index"
-              class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-            >
-              <input
-                type="radio"
-                name="correctAnswer"
-                [value]="option.value"
-                (change)="onCorrectSolutionChange(option.value)"
-                class="h-5 w-5 text-blue-600 focus:ring-blue-500"
-              >
-              <span class="flex-1 text-gray-700">{{ option.value }}</span>
-              <button
-                type="button"
-                (click)="removeOption(i)"
-                class="text-red-500 hover:text-red-700"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+    <div *ngIf="isModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 animate-slide-up">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Create New Question</h3>
+            <button (click)="closeAddModal()" class="text-gray-500 hover:text-gray-700 transition-colors">✕</button>
+        </div>
+    
+        <form [formGroup]="questionnaireForm" (ngSubmit)="onSubmit()" class="space-y-5">
+            <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
+            <textarea
+                formControlName="questionText"
+                rows="3"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your question..."
+            ></textarea>
             </div>
-          </div>
-        </div>
-  
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Skill Category</label>
-            <select
-              formControlName="skillId"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    
+            <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Options</label>
+            <div class="flex gap-2 mb-2">
+                <input
+                formControlName="newOption"
+                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter new option"
+                >
+                <button
+                type="button"
+                (click)="addOption()"
+                class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                [disabled]="!questionnaireForm.get('newOption')?.value"
+                >
+                Add Option
+                </button>
+            </div>
+    
+            <div class="space-y-2" formArrayName="options">
+                <div
+                *ngFor="let option of optionsArray.controls, let i = index"
+                class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                >
+                <input
+                    type="radio"
+                    name="correctAnswer"
+                    [value]="option.value"
+                    (change)="onCorrectSolutionChange(option.value)"
+                    class="h-5 w-5 text-blue-600 focus:ring-blue-500"
+                >
+                <span class="flex-1 text-gray-700">{{ option.value }}</span>
+                <button
+                    type="button"
+                    (click)="removeOption(i)"
+                    class="text-red-500 hover:text-red-700"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                </div>
+            </div>
+            </div>
+    
+            <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Skill Category</label>
+                <select
+                formControlName="skillId"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+                </select>
+            </div>
+            </div>
+    
+            <div class="flex justify-end gap-3 pt-4">
+            <button
+                type="button"
+                (click)="closeAddModal()"
+                class="px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
-            </select>
-          </div>
+                Cancel
+            </button>
+            <button
+                type="submit"
+                [disabled]="questionnaireForm.invalid"
+                class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+                Create Question
+            </button>
+            </div>
+        </form>
         </div>
-  
-        <div class="flex justify-end gap-3 pt-4">
-          <button
-            type="button"
-            (click)="closeAddModal()"
-            class="px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            [disabled]="questionnaireForm.invalid"
-            class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Create Question
-          </button>
-        </div>
-      </form>
     </div>
-  </div>
     </div>
-  </div>
+</div>

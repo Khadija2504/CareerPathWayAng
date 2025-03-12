@@ -1,0 +1,50 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  
+    <div *ngIf="!isLoading" class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Employee Rankings</h1>
+  
+      <div class="space-y-4">
+        <div
+          *ngFor="let employee of rankedEmployees; let i = index"
+          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <span *ngIf="i < 3" class="text-2xl">{{ getBadge(i) }}</span>
+              <h3 class="text-xl font-semibold text-gray-900">
+                #{{ i + 1 }} - {{ employee.employeeName }}
+              </h3>
+            </div>
+            <span class="text-gray-600">Score: {{ employee.rankingScore | number: '1.0-2' }}</span>
+          </div>
+  
+          <div class="mt-4 space-y-2">
+            <div>
+              <p class="text-gray-600">Skill Assessments:</p>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="bg-blue-600 h-2.5 rounded-full"
+                  [style.width]="employee.skillAssessmentPercentage + '%'"
+                ></div>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">{{ employee.skillAssessmentPercentage }}%</p>
+            </div>
+  
+            <div>
+              <p class="text-gray-600">Career Path Progress:</p>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="bg-green-600 h-2.5 rounded-full"
+                  [style.width]="employee.careerPathProgressPercentage + '%'"
+                ></div>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">{{ employee.careerPathProgressPercentage }}%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

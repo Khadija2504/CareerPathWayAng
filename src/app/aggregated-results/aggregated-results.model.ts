@@ -5,4 +5,5 @@ export interface AggregatedResult {
     careerPathProgressPercentage: number;
     trainingProgramsCount: number;
     incompleteGoalsCount: number;
+    rankingScore?: number;
   }

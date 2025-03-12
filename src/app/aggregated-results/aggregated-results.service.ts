@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError, map } from 'rxjs'; // Import map
 import { AggregatedResult } from './aggregated-results.model';
 
 @Injectable({
@@ -50,6 +50,38 @@ export class AggregatedResultsService {
         console.error('Error fetching aggregated results:', error);
         return throwError(() => error);
       })
+    );
+  }
+
+  getRankedAggregatedResults(): Observable<AggregatedResult[]> {
+    return this.getAggregatedResults().pipe(
+      map((results: AggregatedResult[]) => {
+        results.forEach((result: AggregatedResult) => {
+          result.rankingScore = this.calculateRankingScore(result);
+        });
+  
+        results.sort((a: AggregatedResult, b: AggregatedResult) => {
+          const scoreA = a.rankingScore || 0;
+          const scoreB = b.rankingScore || 0;
+          return scoreB - scoreA;
+        });
+  
+        return results;
+      }),
+      catchError(error => {
+        console.error('Error ranking aggregated results:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+  
+  private calculateRankingScore(result: AggregatedResult): number {
+    const careerPathWeight = 0.4;
+    const skillAssessmentWeight = 0.3;
+  
+    return (
+      result.careerPathProgressPercentage * careerPathWeight +
+      result.skillAssessmentPercentage * skillAssessmentWeight
     );
   }
 }

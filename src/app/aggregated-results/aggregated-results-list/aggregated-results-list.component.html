@@ -1,0 +1,50 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  
+    <div *ngIf="!isLoading" class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Aggregated Employee Results</h1>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          *ngFor="let result of aggregatedResults"
+          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
+        >
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ result.employeeName }}</h3>
+  
+          <div class="mb-4">
+            <p class="text-gray-600">Skill Assessments Completed:</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-blue-600 h-2.5 rounded-full"
+                [style.width]="result.skillAssessmentPercentage + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">{{ result.skillAssessmentPercentage }}%</p>
+          </div>
+  
+          <div class="mb-4">
+            <p class="text-gray-600">Career Path Progress:</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-green-600 h-2.5 rounded-full"
+                [style.width]="result.careerPathProgressPercentage + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">{{ result.careerPathProgressPercentage }}%</p>
+          </div>
+  
+          <div class="mb-4">
+            <p class="text-gray-600">Training Programs:</p>
+            <p class="text-lg font-semibold text-gray-900">{{ result.trainingProgramsCount }}</p>
+          </div>
+  
+          <div>
+            <p class="text-gray-600">Incomplete Goals:</p>
+            <p class="text-lg font-semibold text-gray-900">{{ result.incompleteGoalsCount }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

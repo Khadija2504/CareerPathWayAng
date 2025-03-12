@@ -11,6 +11,7 @@ export class MentorshipsListComponent implements OnInit{
   mentorships: any[] = [];
   successMessage: string | null= null;
   errorMessage: string | null = null;
+  isLoading = true;
 
   constructor(private mentorShipService: MentorShipService){}
 
@@ -22,6 +23,7 @@ export class MentorshipsListComponent implements OnInit{
       next: (response) => {
         this.mentorships = response;
         console.log(response);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching mentorships:', error);

@@ -14,6 +14,7 @@ export class SkillAssessmentComponent implements OnInit{
   assessment: any;
   errorMessage: string | null = null;
   assessments: any[] = [];
+  isLoading = true;
 
   constructor(private skillService: SkillAssessmentService, private router: Router, private route: ActivatedRoute) {}
 
@@ -29,6 +30,7 @@ export class SkillAssessmentComponent implements OnInit{
     this.skillService.getAssessments().subscribe({
       next: (response) => {
         this.assessments = response;
+        this.isLoading = false;
       },
       error: (error) => {
         this.errorMessage = 'Failed to load assessment results. Please try again.';

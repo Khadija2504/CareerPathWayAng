@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class NotificationComponent implements OnInit{
 
   notifications: any[] = [];
+  isLoading = true;
   constructor(private notificationService: NotificationService, private router: Router){}
 
   ngOnInit(): void {
@@ -23,6 +24,7 @@ export class NotificationComponent implements OnInit{
         this.notifications = response;
         console.log(response);
         this.readNotifications();
+        this.isLoading  = false;
       }, error : (error) => {
         console.error("error fetching notifications: " , error);
         

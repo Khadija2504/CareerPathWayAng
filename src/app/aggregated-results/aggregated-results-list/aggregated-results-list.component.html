@@ -10,8 +10,9 @@
         <div
           *ngFor="let result of aggregatedResults"
           class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 cursor-pointer"
-          (click)="loadEmployeeReport(result.employeeId)"
         >
+        <div 
+        (click)="loadEmployeeReport(result.employeeId)">
           <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ result.employeeName }}</h3>
   
           <div class="mb-4">
@@ -45,6 +46,13 @@
             <p class="text-gray-600">Incomplete Goals:</p>
             <p class="text-lg font-semibold text-gray-900">{{ result.incompleteGoalsCount }}</p>
           </div>
+        </div>
+        <button
+        (click)="downloadReport(result.employeeId)"
+        class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+      >
+        Download Report
+      </button>
         </div>
       </div>
     </div>

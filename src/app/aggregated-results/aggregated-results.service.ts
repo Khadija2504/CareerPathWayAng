@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError, map } from 'rxjs'; // Import map
-import { AggregatedResult } from './aggregated-results.model';
+import { AggregatedResult, ProgressMetrics } from './aggregated-results.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AggregatedResultsService {
 
-  private aggregatedResultsUrl = 'http://localhost:8800/api/admin/aggregated-results';
+  private aggregatedResultsUrl = 'http://localhost:8800/api/admin';
     
   constructor(private http: HttpClient) {}
 
@@ -45,7 +45,7 @@ export class AggregatedResultsService {
     const headers = this.getHeaders();
     console.log('Headers:', headers);
 
-    return this.http.get<AggregatedResult[]>(this.aggregatedResultsUrl, { headers }).pipe(
+    return this.http.get<AggregatedResult[]>(`${this.aggregatedResultsUrl}/aggregated-results`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching aggregated results:', error);
         return throwError(() => error);
@@ -82,6 +82,18 @@ export class AggregatedResultsService {
     return (
       result.careerPathProgressPercentage * careerPathWeight +
       result.skillAssessmentPercentage * skillAssessmentWeight
+    );
+  }
+
+  getProgressMetrics(): Observable<ProgressMetrics> {
+    const headers = this.getHeaders();
+    console.log('Headers:', headers);
+
+    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/progress-metrics`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching aggregated results:', error);
+        return throwError(() => error);
+      })
     );
   }
 }

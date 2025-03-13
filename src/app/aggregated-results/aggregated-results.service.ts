@@ -106,4 +106,17 @@ export class AggregatedResultsService {
       })
     );
   }
+
+  generateReport(employeeId: number): Observable<Blob> {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.aggregatedResultsUrl}/reports/${employeeId}/download`, {
+      headers: headers,
+      responseType: 'blob',
+    }).pipe(
+      catchError(error => {
+        console.error('Error generating report:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

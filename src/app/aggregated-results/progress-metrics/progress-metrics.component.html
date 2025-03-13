@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  
+    <div *ngIf="!isLoading && progressMetrics" class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Your Progress Metrics</h1>
+  
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Progress Overview</h2>
+        <div class="chart-container">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType"
+            [legend]="barChartLegend"
+          ></canvas>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Trainings Completed</h2>
+          <p class="text-4xl font-bold text-blue-600">{{ totalTrainingsCompleted }}</p>
+          <p class="text-sm text-gray-600">Out of 10 trainings</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Goals Completed</h2>
+          <p class="text-4xl font-bold text-green-600">{{ totalGoalsCompleted }}</p>
+          <p class="text-sm text-gray-600">Out of 5 goals</p>
+        </div>
+      </div>
+  
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Detailed Progress</h2>
+  
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Skill Assessment Progress</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              class="bg-blue-600 h-2.5 rounded-full"
+              [style.width]="progressMetrics.skillAssessmentProgress + '%'"
+            ></div>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ progressMetrics.skillAssessmentProgress | number: '1.0-2' }}%
+          </p>
+        </div>
+  
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Career Path Progress</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              class="bg-green-600 h-2.5 rounded-full"
+              [style.width]="progressMetrics.careerPathProgress + '%'"
+            ></div>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ progressMetrics.careerPathProgress | number: '1.0-2' }}%
+          </p>
+        </div>
+  
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Training Progress</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              class="bg-yellow-600 h-2.5 rounded-full"
+              [style.width]="progressMetrics.trainingProgress + '%'"
+            ></div>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ progressMetrics.trainingProgress | number: '1.0-2' }}%
+          </p>
+        </div>
+  
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Goal Progress</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              class="bg-red-600 h-2.5 rounded-full"
+              [style.width]="progressMetrics.goalProgress + '%'"
+            ></div>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ progressMetrics.goalProgress | number: '1.0-2' }}%
+          </p>
+        </div>
+      </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Career Path Details</h2>
+        <div class="space-y-4">
+        <div *ngFor="let path of careerPathDetails" class="bg-gray-50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-800">{{ path.careerPathName }}</h3>
+            <div class="flex items-center justify-between mt-2">
+            <span class="text-sm text-gray-600">
+                {{ path.completedSteps }} / {{ path.totalSteps }} steps completed
+            </span>
+            <span class="text-blue-600 font-medium">
+                {{ path.progressPercentage | number: '1.0-2' }}%
+            </span>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Skill Progress</h2>
+        <div class="space-y-4">
+          <div *ngFor="let skill of skillDetails" class="bg-gray-50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-800">{{ skill.skillName }}</h3>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-sm text-gray-600">
+                Score: {{ skill.score }} / {{ skill.maxScore }}
+              </span>
+              <span class="text-blue-600 font-medium">
+                {{ skill.progressPercentage | number: '1.0-2' }}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

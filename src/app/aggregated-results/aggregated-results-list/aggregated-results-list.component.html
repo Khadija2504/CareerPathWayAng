@@ -9,7 +9,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           *ngFor="let result of aggregatedResults"
-          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
+          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 cursor-pointer"
+          (click)="loadEmployeeReport(result.employeeId)"
         >
           <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ result.employeeName }}</h3>
   
@@ -43,6 +44,94 @@
           <div>
             <p class="text-gray-600">Incomplete Goals:</p>
             <p class="text-lg font-semibold text-gray-900">{{ result.incompleteGoalsCount }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      *ngIf="showReportModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4"
+    >
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Employee Report</h2>
+          <button
+            (click)="closeReportModal()"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+  
+        <div *ngIf="isReportLoading" class="flex justify-center items-center h-32">
+          <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+  
+        <div *ngIf="selectedEmployeeReport && !isReportLoading">
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Skill Assessment Progress</h3>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-blue-600 h-2.5 rounded-full"
+                [style.width]="selectedEmployeeReport.skillAssessmentProgress + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ selectedEmployeeReport.skillAssessmentProgress | number: '1.0-2' }}%
+            </p>
+          </div>
+  
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Career Path Progress</h3>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-green-600 h-2.5 rounded-full"
+                [style.width]="selectedEmployeeReport.careerPathProgress + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ selectedEmployeeReport.careerPathProgress | number: '1.0-2' }}%
+            </p>
+          </div>
+  
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Training Progress</h3>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-yellow-600 h-2.5 rounded-full"
+                [style.width]="selectedEmployeeReport.trainingProgress + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ selectedEmployeeReport.trainingProgress | number: '1.0-2' }}%
+            </p>
+          </div>
+  
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Goal Progress</h3>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-red-600 h-2.5 rounded-full"
+                [style.width]="selectedEmployeeReport.goalProgress + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ selectedEmployeeReport.goalProgress | number: '1.0-2' }}%
+            </p>
           </div>
         </div>
       </div>

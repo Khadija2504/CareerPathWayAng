@@ -96,4 +96,14 @@ export class AggregatedResultsService {
       })
     );
   }
+
+  getReports(employeeId: number) : Observable<ProgressMetrics> {
+    const headers = this.getHeaders();
+    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/reports/${employeeId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching reports:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

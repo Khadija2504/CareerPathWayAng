@@ -59,4 +59,14 @@ export class NotificationService {
       })
     );
   }
+
+  unreadNotifications() : Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.basenotif}/getUnreadNotifications`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching unread notifs:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

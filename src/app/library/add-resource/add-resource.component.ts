@@ -85,27 +85,26 @@ export class AddResourceComponent implements OnInit{
 
   addResource() {
     this.formSubmitted = true;
-
+  
     if (this.resourceForm.invalid || !this.selectedFile) {
       this.errorMessage = 'Please fill in all fields correctly and upload a file.';
+      setTimeout(() => {
+        this.errorMessage = '';
+      }, 3000);
       return;
     }
-
+  
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
-
+  
     const formData = new FormData();
     formData.append('title', this.resourceForm.value.title);
     formData.append('type', this.resourceForm.get('type')?.value);
     formData.append('category', this.resourceForm.get('category')?.value);
     formData.append('resourceUrl', this.resourceForm.get('resourceUrl')?.value);
     formData.append('image', this.selectedFile);
-
-    console.log(this.resourceForm.value.title);
-    
-    console.log(formData.get);
-
+  
     this.libraryService.addResource(formData).subscribe({
       next: (response) => {
         this.successMessage = 'Resource added successfully!!';
@@ -114,17 +113,41 @@ export class AddResourceComponent implements OnInit{
         this.closeAddResourceModal();
         this.displayResources();
         setTimeout(() => {
-          this.actionSuccessMessage = this.successMessage;
-        }, 300);
+          this.successMessage = '';
+        }, 3000);
       },
       error: (error) => {
         console.error('Error:', error);
         this.errorMessage = error.message || 'Failed to add resource. Please try again.';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 3000);
       },
       complete: () => {
         this.isLoading = false;
       }
     });
+  }
+
+  deleteResource(id: number) {
+    const confirmDelete = confirm('Are you sure you want to delete this resource?');
+    if (confirmDelete) {
+      this.libraryService.deleteResource(id).subscribe({
+        next: () => {
+          this.successMessage = 'Resource deleted successfully!';
+          this.displayResources();
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
+        },
+        error: (error) => {
+          this.errorMessage = 'Failed to delete resource. Please try again.';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000);
+        }
+      });
+    }
   }
 
   get title() { return this.resourceForm.get('title'); }

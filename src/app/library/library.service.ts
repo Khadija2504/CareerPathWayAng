@@ -58,4 +58,14 @@ export class LibraryService {
       })
     );
   }
+
+  deleteResource(resourceId: number): Observable <any>{
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.apiResourcesUrl}/admin/deleteResource/${resourceId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting resource:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

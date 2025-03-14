@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit{
   displayAllNotifications() : void {
     this.notificationService.getNotitfications().subscribe({
       next: (response)=> {
-        this.notifications = response;
+        this.notifications = response.reverse();
         console.log(response);
         this.readNotifications();
         this.isLoading  = false;

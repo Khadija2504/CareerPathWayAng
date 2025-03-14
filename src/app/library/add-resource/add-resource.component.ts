@@ -2,14 +2,26 @@ import { LibraryService } from '../library.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-add-resource',
   standalone: false,
   templateUrl: './add-resource.component.html',
-  styleUrl: './add-resource.component.css'
+  styleUrl: './add-resource.component.css',
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({ opacity: 0, transform: 'translateY(-20px)' })),
+      transition(':enter', [
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' }))
+      ])
+    ])
+  ]
 })
-export class AddResourceComponent {
+export class AddResourceComponent implements OnInit{
   resourceForm: FormGroup;
   resourceTypes = ['EBOOK', 'ARTICLE', 'CASE_STUDY', 'VIDEO'];
   selectedFile: File | null = null;
@@ -17,6 +29,9 @@ export class AddResourceComponent {
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+  resources: any[] = [];
+  showAddResourceModal = false;
+  actionSuccessMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +45,34 @@ export class AddResourceComponent {
       category: ['', [Validators.maxLength(100)]],
       image: [null, [Validators.required]]
     });
+  }
+
+  ngOnInit(): void {    
+    this.displayResources();
+  }
+
+  displayResources(): void {
+    this.errorMessage = '';
+
+    this.libraryService.getAllResources().subscribe({
+      next: (data) => {
+        this.resources = data;
+        console.log(data);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to fetch resources. Please try again later.';
+        console.error('Error fetching resources:', err);
+      }
+    });
+  }
+
+  openAddResourceModal(): void {
+    this.showAddResourceModal = true;
+  }
+
+  closeAddResourceModal(): void {
+    this.showAddResourceModal = false;
   }
 
   onFileChange(event: any): void {
@@ -65,10 +108,14 @@ export class AddResourceComponent {
 
     this.libraryService.addResource(formData).subscribe({
       next: (response) => {
-        this.successMessage = 'Resource added successfully!';
+        this.successMessage = 'Resource added successfully!!';
         this.resourceForm.reset();
         this.formSubmitted = false;
-        setTimeout(() => this.router.navigate(['/resources']), 2000);
+        this.closeAddResourceModal();
+        this.displayResources();
+        setTimeout(() => {
+          this.actionSuccessMessage = this.successMessage;
+        }, 300);
       },
       error: (error) => {
         console.error('Error:', error);

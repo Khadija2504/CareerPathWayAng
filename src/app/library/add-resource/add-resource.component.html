@@ -1,80 +1,176 @@
-<div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-    <h2 class="text-2xl font-bold mb-6">Add New Resource</h2>
-    <form [formGroup]="resourceForm" (ngSubmit)="addResource()" enctype="multipart/form-data">
-      <!-- Title Field -->
-      <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-        <input type="text" id="title" formControlName="title"
-          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          [class.border-red-500]="title?.invalid && (title?.dirty || title?.touched || formSubmitted)">
-        <div *ngIf="title?.invalid && (title?.dirty || title?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <div *ngIf="title?.errors?.['required']">Title is required</div>
-          <div *ngIf="title?.errors?.['maxlength']">Maximum 255 characters</div>
-        </div>
-      </div>
-  
-      <!-- Type Field -->
-      <div class="mb-4">
-        <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-        <select id="type" formControlName="type"
-          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          [class.border-red-500]="type?.invalid && (type?.dirty || type?.touched || formSubmitted)">
-          <option value="" disabled>Select resource type</option>
-          <option *ngFor="let type of resourceTypes" [value]="type">{{ type }}</option>
-        </select>
-        <div *ngIf="type?.invalid && (type?.dirty || type?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <div *ngIf="type?.errors?.['required']">Type is required</div>
-        </div>
-      </div>
-  
-      <!-- Resource URL Field -->
-      <div class="mb-4">
-        <label for="resourceUrl" class="block text-sm font-medium text-gray-700">Resource URL</label>
-        <input type="url" id="resourceUrl" formControlName="resourceUrl"
-          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          [class.border-red-500]="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)">
-        <div *ngIf="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <div *ngIf="resourceUrl?.errors?.['required']">URL is required</div>
-          <div *ngIf="resourceUrl?.errors?.['maxlength']">Maximum 255 characters</div>
-        </div>
-      </div>
-  
-      <!-- Category Field -->
-      <div class="mb-4">
-        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-        <input type="text" id="category" formControlName="category"
-          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          [class.border-red-500]="category?.invalid && (category?.dirty || category?.touched || formSubmitted)">
-        <div *ngIf="category?.invalid && (category?.dirty || category?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <div *ngIf="category?.errors?.['maxlength']">Maximum 100 characters</div>
-        </div>
-      </div>
-  
-      <!-- Image Upload Field -->
-      <div class="mb-6">
-        <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
-        <input type="file" id="image" (change)="onFileChange($event)"
-          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          [class.border-red-500]="image?.invalid && (image?.dirty || image?.touched || formSubmitted)">
-        <div *ngIf="image?.invalid && (image?.dirty || image?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <div *ngIf="image?.errors?.['required']">Image is required</div>
-        </div>
-      </div>
-  
-      <!-- Submit Button & Status Messages -->
-      <button type="submit" 
-        class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition-colors"
-        [disabled]="isLoading">
-        <span *ngIf="!isLoading">Add Resource</span>
-        <span *ngIf="isLoading">Processing...</span>
-      </button>
-  
-      <div *ngIf="successMessage" class="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
-        {{ successMessage }}
-      </div>
-  
-      <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
-        {{ errorMessage }}
-      </div>
-    </form>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-8">
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
   </div>
+
+  <div class="max-w-7xl mx-auto mb-6">
+    <button
+      (click)="openAddResourceModal()"
+      class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Add Resource
+    </button>
+  </div>
+
+<div *ngIf="successMessage" @fadeInOut class="fixed top-6 right-4 z-50">
+  <div class="bg-white border border-green-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
+    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <div>
+      <p class="text-sm font-medium text-gray-800">Success!</p>
+      <p class="text-xs text-gray-500">{{ actionSuccessMessage }}</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" @fadeInOut class="fixed top-4 right-4 z-50">
+  <div class="bg-white border border-red-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
+    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <div>
+      <p class="text-sm font-medium text-gray-800">Error</p>
+      <p class="text-xs text-gray-500">{{ errorMessage }}</p>
+    </div>
+  </div>
+</div>
+
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Available Resources</h1>
+
+    <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="resources.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let resource of resources" class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow">
+        <div class="h-48 overflow-hidden">
+          <img
+            [src]="resource.image"
+            alt="{{ resource.title }}"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div class="p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ resource.title }}</h2>
+          <p class="text-gray-600 mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385V4.804zM10 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.968 7.968 0 0014.5 14c-1.669 0-3.218.51-4.5 1.385V4.804z" />
+            </svg>
+            {{ resource.type }}
+          </p>
+          <p class="text-gray-500 mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zM7 9h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+            </svg>
+            {{ resource.category }}
+          </p>
+          <p class="text-gray-500 mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+              <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+            </svg>
+            {{ resource.resourceUrl }}
+          </p>
+          <a href="{{ resource.resourceUrl }}" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
+            </svg>
+            Visite
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="resources.length === 0 && !isLoading" class="text-gray-500 text-center mt-6">
+      No resources available at the moment.
+    </div>
+  </div>
+
+  <div *ngIf="showAddResourceModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Add New Resource</h2>
+        <button (click)="closeAddResourceModal()" class="text-gray-500 hover:text-gray-700">
+          &times;
+        </button>
+      </div>
+      <form [formGroup]="resourceForm" (ngSubmit)="addResource()" enctype="multipart/form-data">
+        <div class="mb-4">
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <input type="text" id="title" formControlName="title"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            [class.border-red-500]="title?.invalid && (title?.dirty || title?.touched || formSubmitted)">
+          <div *ngIf="title?.invalid && (title?.dirty || title?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+            <div *ngIf="title?.errors?.['required']">Title is required</div>
+            <div *ngIf="title?.errors?.['maxlength']">Maximum 255 characters</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
+          <select id="type" formControlName="type"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            [class.border-red-500]="type?.invalid && (type?.dirty || type?.touched || formSubmitted)">
+            <option value="" disabled>Select resource type</option>
+            <option *ngFor="let type of resourceTypes" [value]="type">{{ type }}</option>
+          </select>
+          <div *ngIf="type?.invalid && (type?.dirty || type?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+            <div *ngIf="type?.errors?.['required']">Type is required</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="resourceUrl" class="block text-sm font-medium text-gray-700">Resource URL</label>
+          <input type="url" id="resourceUrl" formControlName="resourceUrl"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            [class.border-red-500]="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)">
+          <div *ngIf="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+            <div *ngIf="resourceUrl?.errors?.['required']">URL is required</div>
+            <div *ngIf="resourceUrl?.errors?.['maxlength']">Maximum 255 characters</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+          <input type="text" id="category" formControlName="category"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            [class.border-red-500]="category?.invalid && (category?.dirty || category?.touched || formSubmitted)">
+          <div *ngIf="category?.invalid && (category?.dirty || category?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+            <div *ngIf="category?.errors?.['maxlength']">Maximum 100 characters</div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+          <input type="file" id="image" (change)="onFileChange($event)"
+            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            [class.border-red-500]="image?.invalid && (image?.dirty || image?.touched || formSubmitted)">
+          <div *ngIf="image?.invalid && (image?.dirty || image?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+            <div *ngIf="image?.errors?.['required']">Image is required</div>
+          </div>
+        </div>
+
+        <button type="submit" 
+          class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition-colors"
+          [disabled]="isLoading">
+          <span *ngIf="!isLoading">Add Resource</span>
+          <span *ngIf="isLoading">Processing...</span>
+        </button>
+
+        <div *ngIf="successMessage" class="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

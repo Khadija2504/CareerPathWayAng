@@ -6,7 +6,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div *ngFor="let mentorship of mentorships" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
           <div class="flex items-center gap-4">
-            <img [src]="mentorship.mentee.profilePicture || 'assets/default-avatar.png'" alt="{{ mentorship.mentee.firstName }} {{ mentorship.mentee.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
+            <img [src]="mentorship.mentee.imgUrl || 'assets/default-avatar.png'" alt="{{ mentorship.mentee.firstName }} {{ mentorship.mentee.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
             <div>
               <h3 class="text-lg font-semibold text-gray-800">
                 {{ mentorship.mentee.firstName }} {{ mentorship.mentee.lastName }}

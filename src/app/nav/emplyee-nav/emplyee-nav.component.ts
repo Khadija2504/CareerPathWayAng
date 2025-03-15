@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ProfileService } from '../../profile/profile.service';
 import { NotificationService } from '../../notification/notification.service';
+import { MentorShipService } from '../../mentor-ship/mentor-ship.service';
 
 @Component({
   selector: 'app-emplyee-nav',
@@ -21,13 +22,15 @@ export class EmplyeeNavComponent implements OnDestroy {
   isLoading = true;
   errorMessage: string | null = null;
   unreadNotificationsCount: number = 0;
+  unreadMessagesCount: number = 0;
   private pollingInterval: any;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private profileService: ProfileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private conversationService: MentorShipService
   ) {}
 
   ngOnInit(): void {
@@ -93,9 +96,10 @@ export class EmplyeeNavComponent implements OnDestroy {
 
   startPolling(): void {
     this.fetchUnreadNotificationsCount();
-
+    this.fetchUnreadMessagesCount();
     this.pollingInterval = setInterval(() => {
       this.fetchUnreadNotificationsCount();
+      this.fetchUnreadMessagesCount();
     }, 10000);
   }
 
@@ -103,6 +107,17 @@ export class EmplyeeNavComponent implements OnDestroy {
     if (this.pollingInterval) {
       clearInterval(this.pollingInterval);
     }
+  }
+
+  fetchUnreadMessagesCount(): void {
+    this.conversationService.unreadMessages().subscribe({
+      next: (response: any) => {
+        this.unreadMessagesCount = response.length;
+      },
+      error: (error) => {
+        console.error('Error fetching unread messages:', error);
+      },
+    });
   }
 }
 

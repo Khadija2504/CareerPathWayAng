@@ -149,4 +149,14 @@ export class MentorShipService {
       })
     );
   }
+
+  unreadMessages(): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.baseMessagesUrl}/unread`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching unread messages:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

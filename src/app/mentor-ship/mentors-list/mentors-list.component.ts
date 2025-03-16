@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,8 @@ import { ProfileService } from '../../profile/profile.service';
   templateUrl: './mentors-list.component.html',
   styleUrl: './mentors-list.component.css'
 })
-export class MentorsListComponent implements OnInit {
+export class MentorsListComponent implements OnInit, OnDestroy, AfterViewChecked  {
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
   mentors: any[] = [];
   displayedMentors: any[] = [];
   activeMentorships: any[] = [];
@@ -38,12 +39,15 @@ export class MentorsListComponent implements OnInit {
   feedbackSuccess = false;
   feedbackMessage = '';
 
+  unreadMessagesCount: number = 0;
+  unreadConversationMessagesCount: number = 0;
+  private pollingInterval: any;
+
   constructor(
     private mentorShipService: MentorShipService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private profileService: ProfileService,
-    private router: Router
   ) {
     this.chatForm = this.fb.group({
       content: ['', Validators.required]
@@ -64,8 +68,28 @@ export class MentorsListComponent implements OnInit {
         console.error('Error fetching mentors:', error);
       },
     });
+    console.log(this.messages);
+    
     this.fetchUserDetails();
     this.loadActiveMenteeMentorships();
+    this.fetchUnreadMessagesCount();
+    this.startPolling();
+  }
+
+  ngOnDestroy(): void {
+    this.stopPolling();
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
   }
 
   openFeedbackDialog(mentorshipId: number): void {
@@ -128,7 +152,13 @@ export class MentorsListComponent implements OnInit {
     this.mentorShipService.getActiveMenteeMentorships().subscribe({
       next: (response) => {
         this.activeMentorships = response;
-        this.displayedActiveMentorships = this.activeMentorships.slice(0, this.pageSize); // Display first 3 items
+        this.conversations = response;
+  
+        this.conversations.forEach((conversation) => {
+          this.fetchUnreadConversationMessagesCount(conversation);
+        });
+  
+        this.displayedActiveMentorships = this.activeMentorships.slice(0, this.pageSize);
       },
       error: (error) => {
         console.error('Error fetching active mentee mentorships:', error);
@@ -206,6 +236,7 @@ export class MentorsListComponent implements OnInit {
         next: (response) => {
           this.messages = response;
           this.isMessagesOpen = true;
+          this.scrollToBottom();
         },
         error: (error) => {
           console.error('Error fetching messages:', error);
@@ -228,6 +259,7 @@ export class MentorsListComponent implements OnInit {
         next: (response) => {
           this.messages.push(response);
           this.chatForm.reset();
+          this.scrollToBottom();
         },
         error: (error) => {
           console.error('Error sending message:', error);
@@ -244,5 +276,46 @@ export class MentorsListComponent implements OnInit {
 
   closeMessages(): void {
     this.isMessagesOpen = false;
+  }
+
+  startPolling(): void {
+    this.fetchUnreadMessagesCount();
+    this.pollingInterval = setInterval(() => {
+      this.fetchUnreadMessagesCount();
+      this.conversations.forEach((conversation) => {
+        this.fetchUnreadConversationMessagesCount(conversation);
+      });
+    }, 5000);
+  }
+
+  stopPolling(): void {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
+  }
+
+  fetchUnreadMessagesCount(): void {
+    this.mentorShipService.unreadMessages().subscribe({
+      next: (response: any) => {
+        this.unreadMessagesCount = response.length;
+      },
+      error: (error) => {
+        console.error('Error fetching unread messages:', error);
+      },
+    });
+  }
+
+  fetchUnreadConversationMessagesCount(conversation: any): void {
+    this.mentorShipService.getUnreadMessagesBetweenUsers(conversation.mentor.id).subscribe({
+      next: (response: any) => {
+  
+        conversation.unreadCount = response.length;        
+  
+        console.log("Unread Messages for Conversation:", conversation);
+      },
+      error: (error) => {
+        console.error('Error fetching unread messages:', error);
+      },
+    });
   }
 }

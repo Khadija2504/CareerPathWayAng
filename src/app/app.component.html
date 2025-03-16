@@ -1,4 +1,4 @@
-<nav *ngIf="isLoggedIn" class="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
+<nav *ngIf="isLoggedIn" class="sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
   <ng-container *ngIf="hasRole('EMPLOYEE')">
     <app-emplyee-nav></app-emplyee-nav>
   </ng-container>

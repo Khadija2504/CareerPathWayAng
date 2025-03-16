@@ -18,6 +18,7 @@ const routes: Routes = [
   {path: 'skills', loadChildren: () => import('./skill/skill.module').then(m=> m.SkillModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'ADMIN' }},
   {path: 'aggregated-results', loadChildren: () => import('./aggregated-results/aggregated-results.module').then(m=> m.AggregatedResultsModule), canActivate: [AuthGuard]},
   {path: 'questionnaires', loadChildren: () => import('./questionnaire/questionnaire.module').then(m=> m.QuestionnaireModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'ADMIN' }},
+  {path: '', loadChildren: () => import('./home/home.module').then(m=> m.HomeModule)},
   {path: 'skill-assessment', loadChildren: () => import('./skill-assessment/skill-assessment.module').then(m=> m.SkillAssessmentModule), canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'EMPLOYEE' }},
   {path: '**', component: NotFoundComponent},
 

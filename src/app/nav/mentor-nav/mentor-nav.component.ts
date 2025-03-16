@@ -93,7 +93,7 @@ export class MentorNavComponent {
     this.pollingInterval = setInterval(() => {
       this.fetchUnreadNotificationsCount();
       this.fetchUnreadMessagesCount();
-    }, 10000);
+    }, 5000);
   }
 
   stopPolling(): void {

@@ -159,4 +159,15 @@ export class MentorShipService {
       })
     );
   }
+
+  getUnreadMessagesBetweenUsers(receiverId: number): Observable<any[]> {
+    const headers = this.getHeaders();
+    console.log(receiverId);
+    return this.http.get<any[]>(`${this.baseMessagesUrl}/between/unread?receiverId=${receiverId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching unread messages list:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

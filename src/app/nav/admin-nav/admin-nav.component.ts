@@ -3,6 +3,7 @@ import { NgIf } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ProfileService } from '../../profile/profile.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-admin-nav',
@@ -19,7 +20,9 @@ export class AdminNavComponent {
   isDropdownOpen = false;
   isLoading = true;
   errorMessage: string | null = null;
-  constructor(private authService: AuthService, private router:Router, private profileService: ProfileService) {}
+  unreadNotificationsCount: number = 0;
+  private pollingInterval: any;
+  constructor(private authService: AuthService, private router:Router, private profileService: ProfileService, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.fetchUserDetails();
@@ -59,5 +62,34 @@ export class AdminNavComponent {
         console.error('Error fetching user details:', error);
       },
     }); 
+  }
+
+  fetchUnreadNotificationsCount(): void {
+    this.notificationService.unreadNotifications().subscribe({
+      next: (response: any) => {
+        this.unreadNotificationsCount = response.length;
+      },
+      error: (error) => {
+        console.error('Error fetching unread notifications:', error);
+      },
+    });
+  }
+
+  readNotifs(): void {
+    this.unreadNotificationsCount = 0;
+    this.router.navigate(['/notifications']);
+  }
+
+  startPolling(): void {
+    this.fetchUnreadNotificationsCount();
+    this.pollingInterval = setInterval(() => {
+      this.fetchUnreadNotificationsCount();
+    }, 5000);
+  }
+
+  stopPolling(): void {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
   }
 }

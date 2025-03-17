@@ -70,4 +70,7 @@ export class AddCourseComponent {
       }
     });
   }
+  removeFile() {
+    this.file = null;
+  }
 }

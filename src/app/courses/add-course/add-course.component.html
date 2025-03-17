@@ -1,52 +1,192 @@
-<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-4">Add a New Course</h2>
-  
-    <form [formGroup]="courseForm" (ngSubmit)="addCourse()" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium mb-1">Title</label>
-        <input type="text" formControlName="title" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched" class="text-red-500">Title is required</small>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-8 flex items-center justify-center">
+  <div class="w-full max-w-xl">
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+        <h2 class="text-2xl font-bold flex items-center justify-center">
+          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+          Add a New Course
+        </h2>
+        <p class="text-blue-100 text-center mt-2">Create educational content for career development</p>
       </div>
-  
-      <div>
-        <label class="block text-sm font-medium mb-1">Description</label>
-        <textarea formControlName="description" rows="3" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300"></textarea>
-        <small *ngIf="courseForm.get('description')?.invalid && courseForm.get('description')?.touched" class="text-red-500">Description is required</small>
+
+      <div class="p-6">
+        <form [formGroup]="courseForm" (ngSubmit)="addCourse()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Title <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              formControlName="title" 
+              placeholder="Enter course title"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            />
+            <div 
+              *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched" 
+              class="text-red-500 text-sm mt-1 flex items-center"
+            >
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+              Title is required
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Description <span class="text-red-500">*</span>
+            </label>
+            <textarea 
+              formControlName="description" 
+              rows="3" 
+              placeholder="Provide a detailed description of the course"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            ></textarea>
+            <div 
+              *ngIf="courseForm.get('description')?.invalid && courseForm.get('description')?.touched" 
+              class="text-red-500 text-sm mt-1 flex items-center"
+            >
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+              Description is required
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Type <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <select 
+                  formControlName="typeStr" 
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
+                >
+                  <option value="" disabled>Select Type</option>
+                  <option value="VIDEO">Video</option>
+                  <option value="DOC">Document</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div 
+                *ngIf="courseForm.get('typeStr')?.invalid && courseForm.get('typeStr')?.touched" 
+                class="text-red-500 text-sm mt-1 flex items-center"
+              >
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                Type is required
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Category <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                formControlName="category" 
+                placeholder="e.g. Programming, Leadership"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              />
+              <div 
+                *ngIf="courseForm.get('category')?.invalid && courseForm.get('category')?.touched" 
+                class="text-red-500 text-sm mt-1 flex items-center"
+              >
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                Category is required
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+            <label class="block text-sm font-medium text-gray-700 mb-3 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+              Upload Course File <span class="text-red-500 ml-1">*</span>
+            </label>
+            
+            <div class="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center hover:bg-blue-50 transition-colors cursor-pointer">
+              <input
+                type="file"
+                (change)="onFileChange($event)"
+                class="hidden"
+                id="file-upload"
+              />
+              <label for="file-upload" class="cursor-pointer flex flex-col items-center justify-center">
+                <svg class="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <span class="text-sm text-gray-600 font-medium">Click to select a file or drag and drop</span>
+                <span class="text-xs text-gray-500 mt-1">PDF, DOC, MP4, or other supported formats</span>
+              </label>
+            </div>
+            
+            <div *ngIf="file" class="mt-3 flex items-center bg-white p-2 rounded-lg border border-blue-200">
+              <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
+              <button 
+                type="button" 
+                (click)="removeFile()" 
+                class="ml-auto text-gray-400 hover:text-red-500"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div 
+              *ngIf="!file && formSubmitted" 
+              class="text-red-500 text-sm mt-2 flex items-center"
+            >
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+              File is required
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-medium shadow-md disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+            [disabled]="isLoading"
+          >
+            <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isLoading ? 'Adding Course...' : 'Add Course' }}
+          </button>
+
+          <div *ngIf="successMessage || errorMessage" class="mt-4">
+            <div *ngIf="successMessage" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-start">
+              <svg class="w-5 h-5 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>{{ successMessage }}</span>
+            </div>
+            <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
+              <svg class="w-5 h-5 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>{{ errorMessage }}</span>
+            </div>
+          </div>
+        </form>
       </div>
-  
-      <div>
-        <label class="block text-sm font-medium mb-1">Type</label>
-        <select formControlName="typeStr" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300">
-          <option value="" disabled>Select Type</option>
-          <option value="VIDEO">Video</option>
-          <option value="DOC">Document</option>
-        </select>
-        <small *ngIf="courseForm.get('typeStr')?.invalid && courseForm.get('typeStr')?.touched" class="text-red-500">Type is required</small>
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium mb-1">Category</label>
-        <input type="text" formControlName="category" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="courseForm.get('category')?.invalid && courseForm.get('category')?.touched" class="text-red-500">Category is required</small>
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium mb-1">Upload File</label>
-        <input
-          type="file"
-          (change)="onFileChange($event)"
-          class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300"
-        />
-        <small *ngIf="!file && formSubmitted" class="text-red-500">File is required</small>
-      </div>
-  
-      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-        [disabled]="isLoading">
-        {{ isLoading ? 'Adding Course...' : 'Add Course' }}
-      </button>
-  
-      <p *ngIf="successMessage" class="text-green-600 text-center mt-2">{{ successMessage }}</p>
-      <p *ngIf="errorMessage" class="text-red-600 text-center mt-2">{{ errorMessage }}</p>
-    </form>
+    </div>
   </div>
-  
+</div>

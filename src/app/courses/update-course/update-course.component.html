@@ -1,45 +1,141 @@
-<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-4">Add a New Course</h2>
-  
-    <form [formGroup]="editcourseForm" (ngSubmit)="onSubmit()" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium mb-1">Title</label>
-        <input type="text" formControlName="title" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="editcourseForm.get('title')?.invalid && editcourseForm.get('title')?.touched" class="text-red-500">Title is required</small>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-8 flex items-center justify-center">
+  <div class="w-full max-w-lg bg-white shadow-lg rounded-lg overflow-hidden">
+    <!-- Gradient Header -->
+    <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+      <div class="flex items-center">
+        <svg class="w-6 h-6 text-white mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>
+        <h2 class="text-xl font-bold text-white">Add a New Course</h2>
       </div>
+      <p class="text-blue-100 mt-2">Expand your learning resources collection</p>
+    </div>
+    
+    <!-- Form Content -->
+    <div class="p-6">
+      <form [formGroup]="editcourseForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Title</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              formControlName="title" 
+              placeholder="Enter course title"
+              class="w-full border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+            />
+          </div>
+          <small 
+            *ngIf="editcourseForm.get('title')?.invalid && editcourseForm.get('title')?.touched" 
+            class="text-red-500 text-xs mt-1 block"
+          >
+            Title is required
+          </small>
+        </div>
   
-      <div>
-        <label class="block text-sm font-medium mb-1">Description</label>
-        <textarea formControlName="description" rows="3" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300"></textarea>
-        <small *ngIf="editcourseForm.get('description')?.invalid && editcourseForm.get('description')?.touched" class="text-red-500">Description is required</small>
-      </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Description</label>
+          <textarea 
+            formControlName="description" 
+            rows="3" 
+            placeholder="Enter course description"
+            class="w-full border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[100px]"
+          ></textarea>
+          <small 
+            *ngIf="editcourseForm.get('description')?.invalid && editcourseForm.get('description')?.touched" 
+            class="text-red-500 text-xs mt-1 block"
+          >
+            Description is required
+          </small>
+        </div>
   
-      <div>
-        <label class="block text-sm font-medium mb-1">Type</label>
-        <select formControlName="typeStr" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300">
-          <option value="" disabled>Select Type</option>
-          <option value="DOC">Docs</option>
-          <option value="VIDEO">Video</option>
-        </select>
-        <small *ngIf="editcourseForm.get('type')?.invalid && editcourseForm.get('type')?.touched" class="text-red-500">Type is required</small>
-      </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Type</label>
+          <div class="relative">
+            <select 
+              formControlName="typeStr" 
+              class="w-full border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-10"
+            >
+              <option value="" disabled>Select Type</option>
+              <option value="DOC">Docs</option>
+              <option value="VIDEO">Video</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <small 
+            *ngIf="editcourseForm.get('type')?.invalid && editcourseForm.get('type')?.touched" 
+            class="text-red-500 text-xs mt-1 block"
+          >
+            Type is required
+          </small>
+        </div>
   
-      <div>
-        <label class="block text-sm font-medium mb-1">Category</label>
-        <input type="text" formControlName="category" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="editcourseForm.get('category')?.invalid && editcourseForm.get('category')?.touched" class="text-red-500">Category is required</small>
-      </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Category</label>
+          <input 
+            type="text" 
+            formControlName="category" 
+            placeholder="Enter course category"
+            class="w-full border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+          />
+          <small 
+            *ngIf="editcourseForm.get('category')?.invalid && editcourseForm.get('category')?.touched" 
+            class="text-red-500 text-xs mt-1 block"
+          >
+            Category is required
+          </small>
+        </div>
   
-      <div>
-        <label class="block text-sm font-medium mb-1">Course URL</label>
-        <input type="text" formControlName="url" class="w-full border p-2 rounded-md focus:ring focus:ring-blue-300" />
-        <small *ngIf="editcourseForm.get('url')?.invalid && editcourseForm.get('url')?.touched" class="text-red-500">Enter a valid URL</small>
-      </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5">Course URL</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              formControlName="url" 
+              placeholder="https://example.com/course"
+              class="w-full border border-gray-300 p-2.5 pl-10 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+            />
+          </div>
+          <small 
+            *ngIf="editcourseForm.get('url')?.invalid && editcourseForm.get('url')?.touched" 
+            class="text-red-500 text-xs mt-1 block"
+          >
+            Enter a valid URL
+          </small>
+        </div>
   
-      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition">Update</button>
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="bg-green-50 border border-green-200 text-green-800 rounded-md p-3 flex items-start">
+          <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>{{ successMessage }}</span>
+        </div>
   
-      <p *ngIf="successMessage" class="text-green-600 text-center mt-2">{{ successMessage }}</p>
-      <p *ngIf="errorMessage" class="text-red-600 text-center mt-2">{{ errorMessage }}</p>
-    </form>
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 flex items-start">
+          <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>{{ errorMessage }}</span>
+        </div>
+  
+        <button 
+          type="submit" 
+          class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-md hover:from-blue-600 hover:to-purple-700 transition-colors font-medium"
+        >
+          Add Course
+        </button>
+      </form>
+    </div>
   </div>
+</div>
   

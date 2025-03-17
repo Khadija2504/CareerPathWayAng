@@ -1,130 +1,185 @@
-<div class="min-h-screen bg-gray-50 p-8">
+<div class="min-h-screen bg-gray-50 p-4 sm:p-8">
     <div class="max-w-7xl mx-auto">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-        </svg>
-        Update Career Path
-      </h2>
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-xl shadow-md">
+        <h2 class="text-2xl font-bold flex items-center">
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Update Career Path
+        </h2>
+        <p class="text-blue-100 mt-2 ml-9">Modify the career path details and progression steps</p>
+      </div>
   
-      <form [formGroup]="careerPathForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Career Path Name <span class="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            formControlName="name"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-          />
-          <div
-            *ngIf="careerPathForm.get('name')?.invalid && careerPathForm.get('name')?.touched"
-            class="text-red-500 text-sm mt-1"
-          >
-            Career Path Name is required.
-          </div>
-        </div>
+      <div class="bg-white rounded-b-xl shadow-md p-6 mb-8">
+        <form [formGroup]="careerPathForm" (ngSubmit)="onSubmit()" class="space-y-8">
+          <div class="bg-blue-50 p-5 rounded-xl border border-blue-100">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Basic Information
+            </h3>
   
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          <textarea
-            formControlName="description"
-            rows="3"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-          ></textarea>
-        </div>
-  
-        <div class="border-t border-gray-200 pt-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-            <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-            Career Steps
-          </h3>
-  
-          <div formArrayName="steps">
-            <div
-              *ngFor="let step of steps.controls; let i = index"
-              [formGroupName]="i"
-              class="mb-6 p-6 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
-            >
-              <div class="flex justify-between items-center mb-4">
-                <span class="text-sm font-medium text-gray-600 flex items-center">
-                  <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  Step {{ i + 1 }}
-                </span>
-                <button
-                  type="button"
-                  (click)="removeStep(i)"
-                  class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center"
-                >
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                  </svg>
-                  Remove
-                </button>
-              </div>
-  
-              <div class="mb-4">
+            <div class="space-y-5">
+              <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Step Title <span class="text-red-500">*</span>
+                  Career Path Name <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  formControlName="title"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  formControlName="name"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Enter career path name"
                 />
                 <div
-                  *ngIf="step.get('title')?.invalid && step.get('title')?.touched"
-                  class="text-red-500 text-sm mt-1"
+                  *ngIf="careerPathForm.get('name')?.invalid && careerPathForm.get('name')?.touched"
+                  class="text-red-500 text-sm mt-1 flex items-center"
                 >
-                  Step Title is required.
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                  </svg>
+                  Career Path Name is required.
                 </div>
               </div>
   
-              <div class="mb-4">
+              <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
                   formControlName="description"
-                  rows="2"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  rows="3"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Describe the purpose and goals of this career path"
                 ></textarea>
-              </div>
-  
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Required Skill</label>
-                <select
-                  formControlName="requiredSkillId"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                >
-                  <option value="">Select a skill</option>
-                  <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
-                </select>
               </div>
             </div>
           </div>
   
-          <button
-            type="button"
-            (click)="addStep()"
-            class="w-full mt-4 py-2 px-4 border border-dashed border-gray-300 rounded-lg hover:border-gray-400 text-gray-600 hover:text-gray-700 transition-colors flex items-center justify-center"
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            Add Step
-          </button>
-        </div>
+          <div class="border-t border-gray-200 pt-6">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                Career Steps
+              </h3>
+              <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                {{ steps.controls.length }} steps defined
+              </span>
+            </div>
   
-        <button
-          type="submit"
-          [disabled]="careerPathForm.invalid"
-          class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Update Career Path
-        </button>
-      </form>
+            <div formArrayName="steps" class="relative">
+              <div class="absolute left-[2.25rem] top-8 bottom-16 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600 z-0"></div>
+  
+              <div
+                *ngFor="let step of steps.controls; let i = index"
+                [formGroupName]="i"
+                class="mb-8 relative"
+              >
+                <div class="ml-16 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all overflow-hidden">
+                  <div class="bg-gradient-to-r from-blue-500/10 to-purple-600/10 p-4 border-b border-gray-200 flex justify-between items-center">
+                    <div class="flex items-center">
+                      <span class="text-sm font-medium text-gray-700">Step {{ i + 1 }}</span>
+                    </div>
+                    <button
+                      type="button"
+                      (click)="removeStep(i)"
+                      class="text-gray-400 hover:text-red-500 flex items-center transition-colors"
+                    >
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                      Remove
+                    </button>
+                  </div>
+  
+                  <div class="p-5 space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Step Title <span class="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        formControlName="title"
+                        class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        placeholder="e.g. Master Basic Skills"
+                      />
+                      <div
+                        *ngIf="step.get('title')?.invalid && step.get('title')?.touched"
+                        class="text-red-500 text-sm mt-1 flex items-center"
+                      >
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        Step Title is required.
+                      </div>
+                    </div>
+  
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                      <textarea
+                        formControlName="description"
+                        rows="2"
+                        class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        placeholder="Describe what needs to be accomplished in this step"
+                      ></textarea>
+                    </div>
+  
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Required Skill</label>
+                      <div class="relative">
+                        <select
+                          formControlName="requiredSkillId"
+                          class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
+                        >
+                          <option value="">Select a skill</option>
+                          <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="absolute left-9 top-6 -translate-x-1/2 z-10">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 border-4 border-white shadow flex items-center justify-center text-white text-xs font-bold">
+                    {{ i + 1 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <button
+              type="button"
+              (click)="addStep()"
+              class="w-full mt-4 py-3 px-4 border-2 border-dashed border-blue-300 rounded-xl hover:border-purple-400 text-blue-600 hover:text-purple-600 hover:bg-purple-50 transition-all flex items-center justify-center font-medium"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Add Career Step
+            </button>
+          </div>
+  
+          <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              class="sm:flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              [disabled]="careerPathForm.invalid"
+              class="sm:flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+            >
+              Update Career Path
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>

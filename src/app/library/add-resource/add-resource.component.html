@@ -1,62 +1,71 @@
-<div class="min-h-screen bg-gray-50 p-4 sm:p-8">
-  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-8">
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-xl flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-3 border-b-3 border-purple-600 mb-4"></div>
+      <p class="text-gray-700 font-medium">Loading resources...</p>
+    </div>
   </div>
 
-  <div class="max-w-7xl mx-auto mb-6">
-    <button
-      (click)="openAddResourceModal()"
-      class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+  <div *ngIf="successMessage" @fadeInOut class="fixed top-6 right-4 z-50">
+    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-xl flex items-center space-x-4 p-4 pr-6">
+      <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
-      Add Resource
-    </button>
-  </div>
-
-<div *ngIf="successMessage" @fadeInOut class="fixed top-6 right-4 z-50">
-  <div class="bg-white border border-green-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
-    <div>
-      <p class="text-sm font-medium text-gray-800">Success!</p>
-      <p class="text-xs text-gray-500">{{ successMessage }}</p>
+      <div>
+        <p class="text-sm font-medium text-gray-800">Success!</p>
+        <p class="text-xs text-gray-600">{{ successMessage }}</p>
+      </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="errorMessage" @fadeInOut class="fixed top-4 right-4 z-50">
-  <div class="bg-white border border-red-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-    <div>
-      <p class="text-sm font-medium text-gray-800">Error</p>
-      <p class="text-xs text-gray-500">{{ errorMessage }}</p>
+  <div *ngIf="errorMessage" @fadeInOut class="fixed top-6 right-4 z-50">
+    <div class="bg-white border-l-4 border-red-500 rounded-lg shadow-xl flex items-center space-x-4 p-4 pr-6">
+      <svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-gray-800">Error</p>
+        <p class="text-xs text-gray-600">{{ errorMessage }}</p>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="max-w-7xl mx-auto">
-    <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Available Resources</h1>
-
-    <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
-      {{ errorMessage }}
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Available Resources</h1>
+          <p class="text-gray-600 mt-1">Browse and manage your learning materials</p>
+        </div>
+        <button
+          (click)="openAddResourceModal()"
+          class="mt-4 sm:mt-0 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors shadow-md flex items-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Add Resource
+        </button>
+      </div>
     </div>
 
     <div *ngIf="resources.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div *ngFor="let resource of resources" class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow">
+      <div *ngFor="let resource of resources" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100">
         <div class="h-48 overflow-hidden relative">
           <img
             [src]="resource.image"
             alt="{{ resource.title }}"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           />
+          <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 w-full">
+              <h2 class="text-xl font-bold text-white mb-1 truncate">{{ resource.title }}</h2>
+              <p class="text-white/80 text-sm">{{ resource.type }}</p>
+            </div>
+          </div>
           <button
             (click)="deleteResource(resource.id)"
-            class="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300"
+            class="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 shadow-lg hover:bg-red-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,119 +85,182 @@
         </div>
       
         <div class="p-6">
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ resource.title }}</h2>
-          <p class="text-gray-600 mb-2 flex items-center">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3 truncate">{{ resource.title }}</h2>
+          <div class="space-y-2 mb-4">
+            <p class="text-gray-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385V4.804zM10 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.968 7.968 0 0014.5 14c-1.669 0-3.218.51-4.5 1.385V4.804z" />
+              </svg>
+              <span class="font-medium">{{ resource.type }}</span>
+            </p>
+            <p class="text-gray-600 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zM7 9h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+              </svg>
+              {{ resource.category }}
+            </p>
+            <p class="text-gray-600 flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
+              </svg>
+              <span class="truncate">{{ resource.resourceUrl }}</span>
+            </p>
+          </div>
+          <a href="{{ resource.resourceUrl }}" target="_blank" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors flex items-center justify-center shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385V4.804zM10 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.968 7.968 0 0014.5 14c-1.669 0-3.218.51-4.5 1.385V4.804z" />
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
             </svg>
-            {{ resource.type }}
-          </p>
-          <p class="text-gray-500 mb-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zM7 9h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
-            </svg>
-            {{ resource.category }}
-          </p>
-          <p class="text-gray-500 mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-              <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-            </svg>
-            {{ resource.resourceUrl }}
-          </p>
-          <a href="{{ resource.resourceUrl }}" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
-            </svg>
-            Visite
+            Visit Resource
           </a>
         </div>
       </div>
     </div>
 
-    <div *ngIf="resources.length === 0 && !isLoading" class="text-gray-500 text-center mt-6">
-      No resources available at the moment.
+    <div *ngIf="resources.length === 0 && !isLoading" class="bg-white rounded-xl shadow-md p-10 text-center">
+      <div class="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">No resources available</h3>
+      <p class="text-gray-600 mb-6">Start adding learning resources to build your collection</p>
+      <button 
+        (click)="openAddResourceModal()" 
+        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors"
+      >
+        Add Your First Resource
+      </button>
     </div>
   </div>
 
-  <div *ngIf="showAddResourceModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">Add New Resource</h2>
-        <button (click)="closeAddResourceModal()" class="text-gray-500 hover:text-gray-700">
-          &times;
-        </button>
+  <div *ngIf="showAddResourceModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-bold text-white flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Add New Resource
+          </h2>
+          <button (click)="closeAddResourceModal()" class="text-white/80 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
       </div>
-      <form [formGroup]="resourceForm" (ngSubmit)="addResource()" enctype="multipart/form-data">
-        <div class="mb-4">
-          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-          <input type="text" id="title" formControlName="title"
-            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            [class.border-red-500]="title?.invalid && (title?.dirty || title?.touched || formSubmitted)">
-          <div *ngIf="title?.invalid && (title?.dirty || title?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-            <div *ngIf="title?.errors?.['required']">Title is required</div>
-            <div *ngIf="title?.errors?.['maxlength']">Maximum 255 characters</div>
+      
+      <div class="p-6">
+        <form [formGroup]="resourceForm" (ngSubmit)="addResource()" enctype="multipart/form-data" class="space-y-5">
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" id="title" formControlName="title"
+              class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              [class.border-red-500]="title?.invalid && (title?.dirty || title?.touched || formSubmitted)">
+            <div *ngIf="title?.invalid && (title?.dirty || title?.touched || formSubmitted)" class="text-red-500 text-xs mt-1">
+              <div *ngIf="title?.errors?.['required']">Title is required</div>
+              <div *ngIf="title?.errors?.['maxlength']">Maximum 255 characters</div>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-4">
-          <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-          <select id="type" formControlName="type"
-            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            [class.border-red-500]="type?.invalid && (type?.dirty || type?.touched || formSubmitted)">
-            <option value="" disabled>Select resource type</option>
-            <option *ngFor="let type of resourceTypes" [value]="type">{{ type }}</option>
-          </select>
-          <div *ngIf="type?.invalid && (type?.dirty || type?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-            <div *ngIf="type?.errors?.['required']">Type is required</div>
+          <div>
+            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <div class="relative">
+              <select id="type" formControlName="type"
+                class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-10"
+                [class.border-red-500]="type?.invalid && (type?.dirty || type?.touched || formSubmitted)">
+                <option value="" disabled>Select resource type</option>
+                <option *ngFor="let type of resourceTypes" [value]="type">{{ type }}</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <div *ngIf="type?.invalid && (type?.dirty || type?.touched || formSubmitted)" class="text-red-500 text-xs mt-1">
+              <div *ngIf="type?.errors?.['required']">Type is required</div>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-4">
-          <label for="resourceUrl" class="block text-sm font-medium text-gray-700">Resource URL</label>
-          <input type="url" id="resourceUrl" formControlName="resourceUrl"
-            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            [class.border-red-500]="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)">
-          <div *ngIf="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-            <div *ngIf="resourceUrl?.errors?.['required']">URL is required</div>
-            <div *ngIf="resourceUrl?.errors?.['maxlength']">Maximum 255 characters</div>
+          <div>
+            <label for="resourceUrl" class="block text-sm font-medium text-gray-700 mb-1">Resource URL</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              <input type="url" id="resourceUrl" formControlName="resourceUrl" placeholder="https://example.com/resource"
+                class="block w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                [class.border-red-500]="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)">
+            </div>
+            <div *ngIf="resourceUrl?.invalid && (resourceUrl?.dirty || resourceUrl?.touched || formSubmitted)" class="text-red-500 text-xs mt-1">
+              <div *ngIf="resourceUrl?.errors?.['required']">URL is required</div>
+              <div *ngIf="resourceUrl?.errors?.['maxlength']">Maximum 255 characters</div>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-4">
-          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-          <input type="text" id="category" formControlName="category"
-            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            [class.border-red-500]="category?.invalid && (category?.dirty || category?.touched || formSubmitted)">
-          <div *ngIf="category?.invalid && (category?.dirty || category?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-            <div *ngIf="category?.errors?.['maxlength']">Maximum 100 characters</div>
+          <div>
+            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+              </div>
+              <input type="text" id="category" formControlName="category" placeholder="Enter category"
+                class="block w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                [class.border-red-500]="category?.invalid && (category?.dirty || category?.touched || formSubmitted)">
+            </div>
+            <div *ngIf="category?.invalid && (category?.dirty || category?.touched || formSubmitted)" class="text-red-500 text-xs mt-1">
+              <div *ngIf="category?.errors?.['maxlength']">Maximum 100 characters</div>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-6">
-          <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
-          <input type="file" id="image" (change)="onFileChange($event)"
-            class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            [class.border-red-500]="image?.invalid && (image?.dirty || image?.touched || formSubmitted)">
-          <div *ngIf="image?.invalid && (image?.dirty || image?.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-            <div *ngIf="image?.errors?.['required']">Image is required</div>
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-purple-500 transition-colors">
+              <div class="space-y-1 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <div class="flex text-sm text-gray-600">
+                  <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none">
+                    <span>Upload a file</span>
+                    <input id="image" type="file" class="sr-only" (change)="onFileChange($event)">
+                  </label>
+                  <p class="pl-1">or drag and drop</p>
+                </div>
+                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              </div>
+            </div>
+            <div *ngIf="image?.invalid && (image?.dirty || image?.touched || formSubmitted)" class="text-red-500 text-xs mt-1">
+              <div *ngIf="image?.errors?.['required']">Image is required</div>
+            </div>
           </div>
-        </div>
 
-        <button type="submit" 
-          class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition-colors"
-          [disabled]="isLoading">
-          <span *ngIf="!isLoading">Add Resource</span>
-          <span *ngIf="isLoading">Processing...</span>
-        </button>
-
-        <div *ngIf="successMessage" class="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
-          {{ successMessage }}
-        </div>
-
-        <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
-          {{ errorMessage }}
-        </div>
-      </form>
+          <button type="submit" 
+            class="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors shadow-md"
+            [disabled]="isLoading">
+            <span *ngIf="!isLoading" class="flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              Add Resource
+            </span>
+            <span *ngIf="isLoading" class="flex items-center justify-center">
+              <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Processing...
+            </span>
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

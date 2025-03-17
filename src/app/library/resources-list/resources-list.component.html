@@ -1,56 +1,89 @@
-<div class="min-h-screen bg-gray-50 p-4 sm:p-8">
-  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-  </div>
-<div class="max-w-7xl mx-auto">
-  <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Available Resources</h1>
-
-  <div *ngIf="errorMessage" class="text-red-500 text-center font-semibold">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="resources.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    <div *ngFor="let resource of resources" class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow">
-      <div class="h-48 overflow-hidden relative">
-        <img
-          [src]="resource.image"
-          alt="{{ resource.title }}"
-          class="w-full h-full object-cover"
-        />
-      </div>
-    
-      <div class="p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ resource.title }}</h2>
-        <p class="text-gray-600 mb-2 flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385V4.804zM10 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.968 7.968 0 0014.5 14c-1.669 0-3.218.51-4.5 1.385V4.804z" />
-          </svg>
-          {{ resource.type }}
-        </p>
-        <p class="text-gray-500 mb-2 flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zM7 9h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
-          </svg>
-          {{ resource.category }}
-        </p>
-        <p class="text-gray-500 mb-4 flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-          </svg>
-          {{ resource.resourceUrl }}
-        </p>
-        <a href="{{ resource.resourceUrl }}" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
-          </svg>
-          Visite
-        </a>
-      </div>
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-8">
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-xl flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-3 border-b-3 border-purple-600 mb-4"></div>
+      <p class="text-gray-700 font-medium">Loading resources...</p>
     </div>
   </div>
 
-  <div *ngIf="resources.length === 0 && !isLoading" class="text-gray-500 text-center mt-6">
-    No resources available at the moment.
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 -mt-10 shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-white text-center">Available Resources</h1>
+        <div class="w-24 h-1 bg-white/30 mx-auto mt-3 rounded-full"></div>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-lg">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="resources.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let resource of resources" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            [src]="resource.image"
+            alt="{{ resource.title }}"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 w-full">
+              <h2 class="text-xl font-bold text-white mb-1 truncate">{{ resource.title }}</h2>
+              <p class="text-white/80 text-sm">{{ resource.type }}</p>
+            </div>
+          </div>
+        </div>
+      
+        <div class="p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3 truncate">{{ resource.title }}</h2>
+          <div class="space-y-2 mb-4">
+            <p class="text-gray-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385V4.804zM10 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.968 7.968 0 0014.5 14c-1.669 0-3.218.51-4.5 1.385V4.804z" />
+              </svg>
+              <span class="font-medium">{{ resource.type }}</span>
+            </p>
+            <p class="text-gray-600 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H4a1 1 0 110-2V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zM7 9h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+              </svg>
+              {{ resource.category }}
+            </p>
+            <p class="text-gray-600 flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
+              </svg>
+              <span class="truncate">{{ resource.resourceUrl }}</span>
+            </p>
+          </div>
+          <a href="{{ resource.resourceUrl }}" target="_blank" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors flex items-center justify-center shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+            </svg>
+            Visit Resource
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="resources.length === 0 && !isLoading" class="bg-white rounded-xl shadow-md p-10 text-center">
+      <div class="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">No resources available</h3>
+      <p class="text-gray-600">Check back later for new learning materials</p>
+    </div>
   </div>
 </div>

@@ -12,6 +12,7 @@ import { Questionnaire, Skill } from '../questionnaire.model';
 export class QuestionnaireListComponent implements OnInit {
   questionnaires: Questionnaire[] = [];
   skills: Skill[] = [];
+  filteredSkills: Skill[] = [];
   isModalOpen = false;
   isLoading = true;
   questionnaireForm: FormGroup;
@@ -34,7 +35,7 @@ export class QuestionnaireListComponent implements OnInit {
     this.loadData();
   }
 
-  onCorrectSolutionChange(option: String): void {
+  onCorrectSolutionChange(option: string): void {
     this.questionnaireForm.get("correctAnswer")?.setValue(option);
     console.log(this.questionnaireForm.get("correctAnswer")?.value);
   }
@@ -47,14 +48,22 @@ export class QuestionnaireListComponent implements OnInit {
           this.visibleOptions[index] = 3;
         });
         this.isLoading = false;
+
+        this.service.getAllSkillss().subscribe({
+          next: (skills) => {
+            this.skills = skills;
+            this.filterSkills();
+          },
+          error: (err) => this.handleError(err)
+        });
       },
       error: (err) => this.handleError(err)
     });
+  }
 
-    this.service.getAllSkillss().subscribe({
-      next: (skills) => this.skills = skills,
-      error: (err) => this.handleError(err)
-    });
+  private filterSkills(): void {
+    const skillIdsWithQuestionnaires = new Set(this.questionnaires.map(q => q.skill?.id));
+    this.filteredSkills = this.skills.filter(skill => !skillIdsWithQuestionnaires.has(skill.id));
   }
 
   loadMoreOptions(index: number): void {
@@ -92,22 +101,19 @@ export class QuestionnaireListComponent implements OnInit {
 
   onSubmit(): void {
     if (this.questionnaireForm.invalid) return;
-  
+
     const formValue = this.questionnaireForm.value;
-    console.log('Form Value:', formValue);
-  
     const newQuestion: any = {
       questionText: formValue.questionText,
       options: formValue.options,
       correctAnswer: formValue.correctAnswer,
       skillId: +formValue.skillId,
     };
-  
-    console.log('New Question:', newQuestion);
-  
+
     this.service.createQuestionnaire(newQuestion).subscribe({
       next: (created) => {
         this.questionnaires = [created, ...this.questionnaires];
+        this.filterSkills();
         this.closeAddModal();
       },
       error: (err) => this.handleError(err)
@@ -127,11 +133,11 @@ export class QuestionnaireListComponent implements OnInit {
     };
   }
 
-  public deleteQuestionnaire(id:  number): void {
+  public deleteQuestionnaire(id: number): void {
     this.service.deleteQuestionnaire(id).subscribe({
       next: (data) => {
-        console.log(data);
         this.questionnaires = this.questionnaires.filter((questionnaire) => questionnaire.id !== id);
+        this.filterSkills();
       },
       error: (err) => this.handleError(err)
     });

@@ -44,4 +44,8 @@ export class InteractiveQuestionnairesComponent {
       },
     });
   }
+
+  getCompletedQuestions(): number {
+    return this.responses.filter(response => response !== undefined && response !== null && response !== '').length;
+  }
 }

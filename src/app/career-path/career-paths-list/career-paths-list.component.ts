@@ -92,4 +92,7 @@ export class CareerPathsListComponent implements OnInit {
     this.selectedCareerPathId = null;
   }
 
+  getCompletedStepsCount(path: any): number {
+    return path.steps.filter((step: any) => step.done).length;
+  }
 }

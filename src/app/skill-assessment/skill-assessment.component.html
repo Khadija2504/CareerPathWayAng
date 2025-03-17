@@ -1,72 +1,131 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
   </div>
   <div class="max-w-7xl mx-auto">
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Skill Assessment</h3>
-      <div class="max-w-md">
-        <label class="block text-sm font-medium text-gray-700">Select Skill</label>
-        <select
-          [(ngModel)]="selectedSkillId"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
-        </select>
-        <button
-          (click)="onSelectSkill()"
-          [disabled]="!selectedSkillId"
-          class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Start Assessment
-        </button>
+    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg p-1 mb-8">
+      <div class="bg-white rounded-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Skill Assessment</h3>
+        </div>
+        
+        <div class="max-w-md mx-auto">
+          <p class="text-gray-600 mb-4">Evaluate your proficiency and identify areas for improvement.</p>
+          
+          <label class="block text-sm font-medium text-gray-700 mb-2">Select a skill to assess</label>
+          <div class="relative">
+            <select
+              [(ngModel)]="selectedSkillId"
+              class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none"
+            >
+              <option value="" disabled selected>Choose a skill</option>
+              <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <button
+            (click)="onSelectSkill()"
+            [disabled]="!selectedSkillId"
+            class="mt-6 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+          >
+            Start Assessment
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-lg p-6">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Assessment History</h3>
-      <p class="text-sm text-gray-600 mb-6">Previous assessment results and analysis</p>
-
-      <div *ngIf="errorMessage" class="mb-4 p-4 rounded-md bg-red-50 text-red-600">
-        {{ errorMessage }}
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
+        <h3 class="text-xl font-bold text-white">Assessment History</h3>
+        <p class="text-blue-100 text-sm">Previous assessment results and analysis</p>
       </div>
+      
+      <div class="p-6">
+        <div *ngIf="errorMessage" class="mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-600 flex items-start">
+          <svg class="h-5 w-5 mr-2 mt-0.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ errorMessage }}
+        </div>
 
-      <div *ngIf="assessments" class="space-y-4">
-        <div *ngFor="let assessment of assessments" class="bg-gray-50 p-4 rounded-lg">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Score</dt>
-              <dd class="mt-1 text-sm text-gray-900">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+        <div *ngIf="assessments" class="space-y-6">
+          <div *ngFor="let assessment of assessments" class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+              <div class="flex items-center">
+                <span class="font-medium text-gray-700">{{ assessment.skill?.name || 'Skill Assessment' }}</span>
+                <span class="ml-2 text-xs text-gray-500">{{ assessment.date | date:'medium' }}</span>
+              </div>
+              <div class="flex items-center">
+                <div class="px-3 py-1 rounded-full text-sm font-semibold" 
+                     [ngClass]="{
+                       'bg-green-100 text-green-800': assessment.score >= 70,
+                       'bg-yellow-100 text-yellow-800': assessment.score >= 40 && assessment.score < 70,
+                       'bg-red-100 text-red-800': assessment.score < 40
+                     }">
                   {{ assessment.score }}%
-                </span>
-              </dd>
+                </div>
+              </div>
             </div>
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Strengths</dt>
-              <dd class="mt-1 text-sm text-gray-900">
-                <ul class="list-disc pl-5">
-                  <li *ngFor="let strength of assessment.strengths">{{ strength }}</li>
-                </ul>
-              </dd>
-            </div>
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Weaknesses</dt>
-              <dd class="mt-1 text-sm text-gray-900">
-                <ul class="list-disc pl-5">
-                  <li *ngFor="let weakness of assessment.weaknesses">{{ weakness }}</li>
-                </ul>
-              </dd>
+            
+            <div class="p-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 class="flex items-center text-sm font-medium text-gray-700 mb-3">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Strengths
+                  </h4>
+                  <ul class="space-y-2">
+                    <li *ngFor="let strength of assessment.strengths" class="flex items-start">
+                      <svg class="w-4 h-4 text-green-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      <span class="text-sm text-gray-700">{{ strength }}</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 class="flex items-center text-sm font-medium text-gray-700 mb-3">
+                    <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    Areas for Improvement
+                  </h4>
+                  <ul class="space-y-2">
+                    <li *ngFor="let weakness of assessment.weaknesses" class="flex items-start">
+                      <svg class="w-4 h-4 text-orange-500 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                      </svg>
+                      <span class="text-sm text-gray-700">{{ weakness }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div *ngIf="assessments?.length === 0" class="text-center text-gray-400 py-6">
-        <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        <p class="mt-2 text-sm">No assessment results available. Complete an assessment to see your analysis.</p>
+        <div *ngIf="assessments?.length === 0" class="text-center py-10">
+          <div class="bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+            <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+          </div>
+          <h4 class="text-lg font-medium text-gray-900 mb-2">No assessments yet</h4>
+          <p class="text-gray-500 max-w-md mx-auto">Complete your first skill assessment to see detailed analysis and recommendations for improvement.</p>
+        </div>
       </div>
     </div>
   </div>

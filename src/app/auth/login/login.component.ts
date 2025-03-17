@@ -38,9 +38,9 @@ export class LoginComponent {
           this.successMessage = 'Login successful! Redirecting...';
           setTimeout(() => {
               if (userRole === 'MENTOR') {
-                  this.router.navigate(['']);
+                  this.router.navigate(['/mentorShip-coaching/mentorships-list']);
               } else if (userRole === 'EMPLOYEE') {
-                  this.router.navigate(['']);
+                  this.router.navigate(['/home']);
               } else {
                   this.router.navigate(['']);
               }

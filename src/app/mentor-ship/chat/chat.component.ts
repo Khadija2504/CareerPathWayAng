@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked  {
+export class ChatComponent implements OnInit,OnDestroy, AfterViewChecked  {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   messages: any[] = [];
   chatForm: FormGroup;
@@ -23,6 +23,9 @@ export class ChatComponent implements OnInit, AfterViewChecked  {
   isConversationsOpen: boolean = false;
   isMessagesOpen: boolean = false;
   isFirstLoad: boolean = true;
+
+  unreadConversationMessagesCount: number = 0;
+  private pollingInterval: any;
 
   constructor(
     private mentorShipService: MentorShipService,
@@ -41,6 +44,11 @@ export class ChatComponent implements OnInit, AfterViewChecked  {
     this.fetchUserDetails();
     this.loadConversations();
     this.sortConversations();
+    this.startPolling();
+  }
+
+  ngOnDestroy(): void {
+    this.stopPolling();
   }
 
   hasRole(role: string): boolean {
@@ -85,6 +93,10 @@ export class ChatComponent implements OnInit, AfterViewChecked  {
           const dateA = new Date(a.lastMessageDate || 0).getTime();
           const dateB = new Date(b.lastMessageDate || 0).getTime();
           return dateB - dateA;
+        });
+
+        this.conversations.forEach((conversation) => {
+          this.fetchUnreadConversationMessagesCount(conversation);
         });
   
         if (this.conversations.length > 0 && !this.receiverId) {
@@ -142,6 +154,7 @@ export class ChatComponent implements OnInit, AfterViewChecked  {
           if (conversation) {
             conversation.lastMessageDate = new Date().toISOString();
             this.sortConversations();
+            this.scrollToBottom();
           }
           this.chatForm.reset();
           this.scrollToBottom();
@@ -169,5 +182,33 @@ export class ChatComponent implements OnInit, AfterViewChecked  {
 
   closeMessages(): void {
     this.isMessagesOpen = false;
+  }
+
+  startPolling(): void {
+    this.pollingInterval = setInterval(() => {
+      this.conversations.forEach((conversation) => {
+        this.fetchUnreadConversationMessagesCount(conversation);
+      });
+    }, 5000);
+  }
+
+  stopPolling(): void {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
+  }
+
+  fetchUnreadConversationMessagesCount(conversation: any): void {
+    this.mentorShipService.getUnreadMessagesBetweenUsers(conversation.mentor.id).subscribe({
+      next: (response: any) => {
+  
+        conversation.unreadCount = response.length;        
+  
+        console.log("Unread Messages for Conversation:", conversation);
+      },
+      error: (error) => {
+        console.error('Error fetching unread messages:', error);
+      },
+    });
   }
 }

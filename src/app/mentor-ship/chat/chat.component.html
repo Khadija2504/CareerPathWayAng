@@ -23,7 +23,13 @@
             <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-800 truncate">{{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}</p>
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-semibold text-gray-800 truncate">{{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}</p>
+              <span *ngIf="conversation.unreadCount > 0" 
+                class="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-medium">
+                {{ conversation.unreadCount }}
+              </span>
+            </div>
             <p class="text-xs text-gray-500 truncate">
               {{ conversation.lastMessageDate | date:'short' }} • 
               {{ i % 2 === 0 ? 'Online' : 'Last seen recently' }}

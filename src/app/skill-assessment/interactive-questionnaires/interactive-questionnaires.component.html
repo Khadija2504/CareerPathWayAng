@@ -1,29 +1,83 @@
 <div class="min-h-screen bg-gray-50 p-6">
-  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Skill Assessment</h2>
-    <div *ngIf="errorMessage" class="mb-4 p-4 rounded-md bg-red-50 text-red-600">
-      {{ errorMessage }}
-    </div>
-    <form (ngSubmit)="onSubmit()" class="space-y-6">
-      <div *ngFor="let question of questions; let i = index" class="space-y-4">
-        <p class="text-lg font-semibold text-gray-800">{{ question.questionText }}</p>
-        <div *ngFor="let option of question.options" class="flex items-center">
-          <input
-            type="radio"
-            [(ngModel)]="responses[i]"
-            [value]="option"
-            [name]="'question' + i"
-            class="mr-2"
-          />
-          <label class="text-gray-700">{{ option }}</label>
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl p-6 shadow-lg">
+      <div class="flex items-center">
+        <div class="bg-white/20 p-2 rounded-lg mr-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white">Skill Assessment</h2>
+          <p class="text-blue-100">Answer all questions to evaluate your proficiency</p>
         </div>
       </div>
-      <button
-        type="submit"
-        class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
-      >
-        Submit
-      </button>
-    </form>
+    </div>
+    
+    <div class="bg-white rounded-b-xl shadow-lg p-8">
+      <div *ngIf="errorMessage" class="mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-600 flex items-start">
+        <svg class="h-5 w-5 mr-2 mt-0.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        {{ errorMessage }}
+      </div>
+      
+      <form (ngSubmit)="onSubmit()" class="space-y-8">
+        <div *ngFor="let question of questions; let i = index" class="border border-gray-100 rounded-lg p-6 hover:shadow-md transition-shadow">
+          <div class="flex items-start mb-4">
+            <div class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">
+              {{ i + 1 }}
+            </div>
+            <p class="text-lg font-semibold text-gray-800">{{ question.questionText }}</p>
+          </div>
+          
+          <div class="space-y-3 ml-11">
+            <div *ngFor="let option of question.options" 
+                 class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                 (click)="responses[i] = option">
+              <div class="relative flex items-center">
+                <input
+                  type="radio"
+                  [(ngModel)]="responses[i]"
+                  [value]="option"
+                  [name]="'question' + i"
+                  class="w-5 h-5 text-purple-600 border-gray-300 focus:ring-purple-500"
+                />
+                <div [ngClass]="{'bg-purple-600': responses[i] === option, 'border-2 border-gray-300': responses[i] !== option}" 
+                     class="absolute w-5 h-5 rounded-full transition-colors"></div>
+                <div *ngIf="responses[i] === option" class="absolute w-2 h-2 bg-white rounded-full left-1.5 top-1.5"></div>
+              </div>
+              <label class="ml-3 text-gray-700 cursor-pointer w-full">{{ option }}</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <span>Progress</span>
+            <span>{{ getCompletedQuestions() }} of {{ questions.length }} questions answered</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2.5 rounded-full" 
+                 [style.width]="(getCompletedQuestions() / questions.length * 100) + '%'"></div>
+          </div>
+        </div>
+        
+        <div class="pt-4">
+          <button
+            type="submit"
+            [disabled]="getCompletedQuestions() < questions.length"
+            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+          >
+            <span *ngIf="getCompletedQuestions() < questions.length">
+              Please answer all questions
+            </span>
+            <span *ngIf="getCompletedQuestions() === questions.length">
+              Submit Assessment
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

@@ -231,6 +231,7 @@ export class MentorsListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   startChat(mentorId: number): void {
+    this.isFirstLoad = true;
     this.loadMessages(mentorId);
   }
 

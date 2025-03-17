@@ -317,7 +317,7 @@
   </div>
 </div>
   
-<div *ngIf="isMessagesOpen" class="fixed bottom-6 right-6 flex flex-col w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-[400px] sm:h-[500px] bg-white rounded-lg shadow-xl overflow-hidden">
+<div style="z-index: 40;" *ngIf="isMessagesOpen" class="fixed bottom-6 right-6 flex flex-col w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-[400px] sm:h-[500px] bg-white rounded-lg shadow-xl overflow-hidden">
   <div class="bg-blue-500 px-4 py-3 flex justify-between items-center">
     <h2 class="text-sm font-semibold text-white">Chat</h2>
     <button (click)="closeMessages()" class="text-white hover:text-gray-200">
@@ -341,8 +341,8 @@
     <div *ngFor="let message of messages">
       <div *ngIf="message.sender.id !== loggedinUser" class="flex items-start space-x-2">
         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-sm overflow-hidden">
-          <img *ngIf="message.sender.image" [src]="message.sender.image" [alt]="message.sender.firstName" class="w-full h-full object-cover">
-          <span *ngIf="!message.sender.image">
+          <img *ngIf="message.sender.imgUrl" [src]="message.sender.imgUrl" [alt]="message.sender.firstName" class="w-full h-full object-cover">
+          <span *ngIf="!message.sender.imgUrl">
             {{ message.sender.firstName?.charAt(0) || 'U' }}
           </span>
         </div>
@@ -367,8 +367,8 @@
           </div>
         </div>
         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-sm overflow-hidden">
-          <img *ngIf="message.sender.image" [src]="message.sender.image" alt="Me" class="w-full h-full object-cover">
-          <span *ngIf="!message.sender.image">Me</span>
+          <img *ngIf="message.sender.imgUrl" [src]="message.sender.imgUrl" alt="Me" class="w-full h-full object-cover">
+          <span *ngIf="!message.sender.imgUrl">Me</span>
         </div>
       </div>
     </div>

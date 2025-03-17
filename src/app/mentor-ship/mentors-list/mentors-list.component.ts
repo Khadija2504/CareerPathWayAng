@@ -43,6 +43,8 @@ export class MentorsListComponent implements OnInit, OnDestroy, AfterViewChecked
   unreadConversationMessagesCount: number = 0;
   private pollingInterval: any;
 
+  isFirstLoad: boolean = true;
+
   constructor(
     private mentorShipService: MentorShipService,
     private route: ActivatedRoute,
@@ -81,7 +83,10 @@ export class MentorsListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   ngAfterViewChecked(): void {
-    this.scrollToBottom();
+    if (this.isFirstLoad && this.isMessagesOpen) {
+      this.scrollToBottom();
+      this.isFirstLoad = false;
+    }
   }
 
   private scrollToBottom(): void {
@@ -259,7 +264,6 @@ export class MentorsListComponent implements OnInit, OnDestroy, AfterViewChecked
         next: (response) => {
           this.messages.push(response);
           this.chatForm.reset();
-          this.scrollToBottom();
         },
         error: (error) => {
           console.error('Error sending message:', error);

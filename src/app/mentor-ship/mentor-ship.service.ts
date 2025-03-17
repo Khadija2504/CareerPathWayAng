@@ -170,4 +170,14 @@ export class MentorShipService {
       })
     );
   }
+
+  getMentorshipFeedbacks(mentorshipId: number): Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.mentorshipUrl}/mentor/getMentorshipFeedbacks/${mentorshipId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching mentorship feedbacks:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

@@ -1,88 +1,185 @@
-<div class="min-h-screen bg-gray-50 p-6">
-  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-xl flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-3 border-b-3 border-purple-600 mb-4"></div>
+      <p class="text-gray-700 font-medium">Loading mentorships...</p>
+    </div>
   </div>
+
   <div class="max-w-7xl mx-auto">
-    <div class="mb-8">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Active Mentorships</h2>
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            Active Mentorships
+          </h2>
+          <p class="text-gray-600 mt-1">Your ongoing mentorship relationships</p>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let mentorship of displayedActiveMentorships" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
-          <div class="flex items-center gap-4">
-            <img [src]="mentorship.mentor.imgUrl || 'assets/default-avatar.png'" alt="{{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">
-                {{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}
-                <span class="bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded-md ml-2">{{ mentorship.mentor.role }}</span>
-              </h3>
-              <p class="text-gray-500 text-sm">{{ mentorship.mentor.expertiseArea }}</p>
-              <p class="text-gray-400 text-xs">{{ mentorship.mentor.yearsOfExperience }} years of experience</p>
+        <div *ngFor="let mentorship of displayedActiveMentorships" 
+             class="bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-3"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-4">
+              <div class="relative">
+                <img [src]="mentorship.mentor.imgUrl || 'assets/default-avatar.png'" 
+                     alt="{{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}" 
+                     class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" />
+                <div class="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center flex-wrap">
+                  {{ mentorship.mentor.firstName }} {{ mentorship.mentor.lastName }}
+                  <span class="bg-blue-100 text-blue-700 px-2 py-0.5 text-xs rounded-full ml-2 font-medium">
+                    {{ mentorship.mentor.role }}
+                  </span>
+                </h3>
+                <p class="text-gray-600 text-sm">{{ mentorship.mentor.expertiseArea }}</p>
+                <p class="text-gray-500 text-xs flex items-center mt-1">
+                  <svg class="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  {{ mentorship.mentor.yearsOfExperience }} years of experience
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="mt-6 flex space-x-3">
-            <button
-              (click)="startChat(mentorship.mentor.id)"
-              class="flex-1 bg-blue-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-blue-700 transition"
-            >
-              Message
-            </button>
-            <button
-              (click)="openFeedbackDialog(mentorship.id)"
-              class="flex-1 bg-green-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-              </svg>
-              Feedback
-            </button>
+            
+            <div class="mt-6 flex space-x-3">
+              <button
+                (click)="startChat(mentorship.mentor.id)"
+                class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors shadow-sm flex items-center justify-center"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Message
+              </button>
+              <button
+                (click)="openFeedbackDialog(mentorship.id)"
+                class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2.5 px-3 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-colors shadow-sm flex items-center justify-center"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                </svg>
+                Feedback
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      
+      <div *ngIf="activeMentorships.length === 0" class="bg-white rounded-xl border border-gray-200 p-8 text-center">
+        <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">No active mentorships</h3>
+        <p class="text-gray-600 mb-6">Connect with a mentor to start your learning journey</p>
+      </div>
+      
       <div *ngIf="activeMentorships.length > displayedActiveMentorships.length" class="mt-6 text-center">
         <button
           (click)="loadMoreActiveMentorships()"
-          class="bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+          class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors shadow-md flex items-center justify-center mx-auto"
         >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
           Load More Active Mentorships
         </button>
       </div>
     </div>
 
-    <div>
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Recommended Mentors</h2>
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            Recommended Mentors
+          </h2>
+          <p class="text-gray-600 mt-1">Mentors matched to your skills and interests</p>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let mentor of displayedMentors" class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-transform transform hover:scale-105">
-          <div class="flex items-center gap-4">
-            <img [src]="mentor.imgUrl|| 'assets/default-avatar.png'" alt="{{ mentor.firstName }} {{ mentor.lastName }}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500" />
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">
-                {{ mentor.firstName }} {{ mentor.lastName }}
-                <span class="bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded-md ml-2">{{ mentor.role }}</span>
-              </h3>
-              <p class="text-gray-500 text-sm">{{ mentor.expertiseArea }}</p>
-              <p class="text-gray-400 text-xs">{{ mentor.yearsOfExperience }} years of experience</p>
+        <div *ngFor="let mentor of displayedMentors" 
+             class="bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+          <div class="bg-gradient-to-r from-purple-500 to-pink-600 h-3"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-4">
+              <div class="relative">
+                <img [src]="mentor.imgUrl || 'assets/default-avatar.png'" 
+                     alt="{{ mentor.firstName }} {{ mentor.lastName }}" 
+                     class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" />
+                <div class="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center flex-wrap">
+                  {{ mentor.firstName }} {{ mentor.lastName }}
+                  <span class="bg-purple-100 text-purple-700 px-2 py-0.5 text-xs rounded-full ml-2 font-medium">
+                    {{ mentor.role }}
+                  </span>
+                </h3>
+                <p class="text-gray-600 text-sm">{{ mentor.expertiseArea }}</p>
+                <p class="text-gray-500 text-xs flex items-center mt-1">
+                  <svg class="w-4 h-4 mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  {{ mentor.yearsOfExperience }} years of experience
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="mt-6 flex space-x-3">
-            <button
-              (click)="isMentorExist(mentor.id)"
-              class="flex-1 bg-blue-600 text-white text-sm py-2 px-3 rounded-lg hover:bg-blue-700 transition"
-            >
-              Connect
-            </button>
-            <button
-              (click)="isConversationExist(mentor.id)"
-              class="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-lg hover:bg-gray-200 transition"
-            >
-              Message
-            </button>
+            
+            <div class="mt-6 flex space-x-3">
+              <button
+                (click)="isMentorExist(mentor.id)"
+                class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2.5 px-3 rounded-lg hover:from-purple-600 hover:to-pink-700 transition-colors shadow-sm flex items-center justify-center"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                </svg>
+                Connect
+              </button>
+              <button
+                (click)="isConversationExist(mentor.id)"
+                class="flex-1 bg-white border border-gray-300 text-gray-700 py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center"
+              >
+                <svg class="w-4 h-4 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Message
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      
+      <div *ngIf="mentors.length === 0" class="bg-white rounded-xl border border-gray-200 p-8 text-center">
+        <div class="bg-purple-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">No recommended mentors</h3>
+        <p class="text-gray-600 mb-6">Complete your profile to get personalized recommendations</p>
+      </div>
+      
       <div *ngIf="mentors.length > displayedMentors.length" class="mt-6 text-center">
         <button
           (click)="loadMoreMentors()"
-          class="bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+          class="bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2.5 px-6 rounded-lg hover:from-purple-600 hover:to-pink-700 transition-colors shadow-md flex items-center justify-center mx-auto"
         >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
           Load More Mentors
         </button>
       </div>
@@ -90,30 +187,35 @@
   </div>
 </div>
 
-<div *ngIf="isFeedbackDialogOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+<div *ngIf="isFeedbackDialogOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
   <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-semibold text-gray-800">Submit Feedback</h3>
-      <button (click)="closeFeedbackDialog()" class="text-gray-500 hover:text-gray-700">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-gray-800 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+        </svg>
+        Submit Feedback
+      </h3>
+      <button (click)="closeFeedbackDialog()" class="text-gray-500 hover:text-gray-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
     
-    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="space-y-4">
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="space-y-5">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
         <div class="flex space-x-2">
           <button *ngFor="let star of [1,2,3,4,5]" type="button" 
                   (click)="setRating(star)"
-                  class="p-2 rounded-full transition-colors"
+                  class="p-2 rounded-full transition-colors hover:bg-yellow-50"
                   [ngClass]="{
                     'text-yellow-400': star <= feedbackForm.get('rating')?.value,
                     'text-gray-300': star > feedbackForm.get('rating')?.value
                   }">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
             </svg>
           </button>
         </div>
@@ -122,65 +224,95 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
         <textarea formControlName="feedback" rows="4"
-                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Share your experience..."></textarea>
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                  placeholder="Share your experience with this mentor..."></textarea>
       </div>
 
       <button type="submit" [disabled]="feedbackForm.invalid" 
-              class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors
-                     disabled:bg-gray-300 disabled:cursor-not-allowed">
+              class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-4 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-colors shadow-md
+                     disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed">
         Submit Feedback
       </button>
 
-      <div *ngIf="feedbackSubmitted" class="text-center p-3 rounded-lg"
-           [ngClass]="feedbackSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
-        {{ feedbackMessage }}
+      <div *ngIf="feedbackSubmitted" class="text-center p-4 rounded-lg"
+           [ngClass]="feedbackSuccess ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'">
+        <div class="flex items-center justify-center mb-2">
+          <svg *ngIf="feedbackSuccess" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <svg *ngIf="!feedbackSuccess" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="font-medium">{{ feedbackMessage }}</span>
+        </div>
       </div>
     </form>
   </div>
 </div>
 
-<div>
-  <div class="fixed bottom-6 right-6 flex flex-col w-full max-w-xs sm:max-w-sm md:max-w-md bg-white rounded-lg shadow-xl overflow-hidden">
-    <div class="bg-[#f3f6f8] px-4 py-3 cursor-pointer flex justify-between items-center" 
-         (click)="toggleConversations()">
-      <h2 class="text-sm font-semibold text-[#0a66c2]">Conversations</h2>
-      <div class="flex items-center space-x-1">
-        <span *ngIf="unreadMessagesCount > 0" class="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">{{unreadMessagesCount}}</span>
-        <svg *ngIf="!isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
-             viewBox="0 0 16 16" fill="none" class="text-[#666666]">
-          <path d="M8 11L3 6l.7-.7L8 9.6l4.3-4.3.7.7-5 5z" fill="currentColor"></path>
-        </svg>
-        <svg *ngIf="isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
-             viewBox="0 0 16 16" fill="none" class="text-[#666666]">
-          <path d="M8 5L13 10l-.7.7L8 6.4 3.7 10.7 3 10l5-5z" fill="currentColor"></path>
-        </svg>
-      </div>
+<div class="fixed bottom-6 right-6 flex flex-col w-full max-w-xs sm:max-w-sm md:max-w-md bg-white rounded-xl shadow-xl overflow-hidden z-40">
+  <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 cursor-pointer flex justify-between items-center" 
+       (click)="toggleConversations()">
+    <h2 class="text-sm font-bold text-white flex items-center">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+      </svg>
+      Conversations
+    </h2>
+    <div class="flex items-center space-x-2">
+      <span *ngIf="unreadMessagesCount > 0" class="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-medium">
+        {{unreadMessagesCount}}
+      </span>
+      <svg *ngIf="!isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+           viewBox="0 0 16 16" fill="none" class="text-white/80">
+        <path d="M8 11L3 6l.7-.7L8 9.6l4.3-4.3.7.7-5 5z" fill="currentColor"></path>
+      </svg>
+      <svg *ngIf="isConversationsOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+           viewBox="0 0 16 16" fill="none" class="text-white/80">
+        <path d="M8 5L13 10l-.7.7L8 6.4 3.7 10.7 3 10l5-5z" fill="currentColor"></path>
+      </svg>
     </div>
+  </div>
 
-    <div *ngIf="isConversationsOpen" class="flex-1 overflow-y-auto">
-      <div *ngFor="let conversation of conversations" class="border-t border-gray-200">
-        <button (click)="startChat(conversation.mentor.id)"
-                class="w-full text-left p-3 hover:bg-[#f5f5f5] transition-colors flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-full bg-[#e6e6e6] flex items-center justify-center flex-shrink-0">
-            <span class="text-xs font-medium text-[#666666]">
+  <div *ngIf="isConversationsOpen" class="max-h-80 overflow-y-auto">
+    <div *ngFor="let conversation of conversations" class="border-t border-gray-100">
+      <button (click)="startChat(conversation.mentor.id)"
+              class="w-full text-left p-3 hover:bg-gray-50 transition-colors flex items-center space-x-3">
+        <div class="relative">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-sm overflow-hidden">
+            <img *ngIf="conversation.mentor.imgUrl" [src]="conversation.mentor.imgUrl" [alt]="conversation.mentor.firstName" class="w-full h-full object-cover">
+            <span *ngIf="!conversation.mentor.imgUrl">
               {{conversation.mentor.firstName[0]}}{{conversation.mentor.lastName[0]}}
             </span>
           </div>
-          
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold text-[#191919] truncate">
-                {{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}
-              </p>
-              <span *ngIf="conversation.unreadCount > 0" 
-                    class="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                {{ conversation.unreadCount }}
-              </span>
-            </div>
+          <div *ngIf="conversation.isOnline" class="absolute -bottom-0.5 -right-0.5 bg-green-500 w-3 h-3 rounded-full border-2 border-white"></div>
+        </div>
+        
+        <div class="flex-1 min-w-0">
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-semibold text-gray-800 truncate">
+              {{ conversation.mentor.firstName }} {{ conversation.mentor.lastName }}
+            </p>
+            <span *ngIf="conversation.unreadCount > 0" 
+                  class="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-medium">
+              {{ conversation.unreadCount }}
+            </span>
           </div>
-        </button>
+          <p class="text-xs text-gray-500 truncate">
+            {{ conversation.lastMessage || 'Start a conversation' }}
+          </p>
+        </div>
+      </button>
+    </div>
+    
+    <div *ngIf="conversations.length === 0" class="py-8 px-4 text-center">
+      <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
       </div>
+      <p class="text-sm text-gray-600">No conversations yet</p>
+      <p class="text-xs text-gray-500 mt-1">Connect with mentors to start chatting</p>
     </div>
   </div>
 </div>
@@ -195,51 +327,82 @@
     </button>
   </div>
 
-  <div #messageContainer class="message-container flex-1 overflow-y-auto p-4 space-y-3">
+  <div #messageContainer class="message-container flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+    <div *ngIf="messages.length === 0" class="h-full flex flex-col items-center justify-center text-center p-6">
+      <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+      </div>
+      <h3 class="text-base font-semibold text-gray-800 mb-2">No messages yet</h3>
+      <p class="text-sm text-gray-600">Start the conversation by sending a message</p>
+    </div>
+    
     <div *ngFor="let message of messages">
       <div *ngIf="message.sender.id !== loggedinUser" class="flex items-start space-x-2">
-        <div class="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-          <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-          </svg>
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-sm overflow-hidden">
+          <img *ngIf="message.sender.image" [src]="message.sender.image" [alt]="message.sender.firstName" class="w-full h-full object-cover">
+          <span *ngIf="!message.sender.image">
+            {{ message.sender.firstName?.charAt(0) || 'U' }}
+          </span>
         </div>
         <div>
-          <div class="bg-gray-100 rounded-lg px-3 py-2 max-w-xs">
-            <p class="text-xs text-gray-800">{{ message.content }}</p>
+          <div class="bg-white rounded-2xl px-4 py-2 max-w-xs shadow-sm">
+            <p class="text-sm text-gray-800">{{ message.content }}</p>
           </div>
-          <div class="text-[10px] text-gray-400 mt-1">{{ message.timestamp | date:'shortTime' }}</div>
+          <div class="text-xs text-gray-400 mt-1 ml-2">{{ message.timestamp | date:'shortTime' }}</div>
         </div>
       </div>
 
       <div *ngIf="message.sender.id === loggedinUser" class="flex items-start justify-end space-x-2">
         <div>
-          <div class="bg-blue-500 rounded-lg px-3 py-2 max-w-xs">
-            <p class="text-xs text-white">{{ message.content }}</p>
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl px-4 py-2 max-w-xs shadow-sm">
+            <p class="text-sm text-white">{{ message.content }}</p>
           </div>
-          <div class="text-[10px] text-gray-400 mt-1 text-right">{{ message.timestamp | date:'shortTime' }}</div>
+          <div class="text-xs text-gray-400 mt-1 mr-2 text-right flex items-center justify-end">
+            {{ message.timestamp | date:'shortTime' }}
+            <svg class="w-3 h-3 ml-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
         </div>
-        <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-          <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-          </svg>
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-sm overflow-hidden">
+          <img *ngIf="message.sender.image" [src]="message.sender.image" alt="Me" class="w-full h-full object-cover">
+          <span *ngIf="!message.sender.image">Me</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="border-t border-gray-200 p-3">
+  <div class="p-3 bg-white border-t border-gray-200">
     <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="flex items-center space-x-2">
-      <textarea
-        formControlName="content"
-        placeholder="Type a message..."
-        class="flex-1 p-2 text-xs border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
-        rows="1"
-      ></textarea>
+      <div class="flex-1 relative">
+        <textarea
+          formControlName="content"
+          placeholder="Type a message..."
+          class="w-full p-3 pr-10 text-sm border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[44px] max-h-32"
+          rows="1"
+        ></textarea>
+        <div class="absolute right-3 bottom-3 flex space-x-1">
+          <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </button>
+          <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
       <button
         type="submit"
-        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-xs"
+        class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-colors shadow-md flex items-center justify-center"
       >
-        Send
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+        </svg>
       </button>
     </form>
   </div>

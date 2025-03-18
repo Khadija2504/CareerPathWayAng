@@ -1,50 +1,139 @@
-<div class="min-h-screen bg-gray-50 p-6">
-    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-6 lg:p-8">
+  <div *ngIf="isLoading" class="flex flex-col justify-center items-center h-64">
+    <div class="relative w-16 h-16">
+      <div class="absolute top-0 left-0 right-0 bottom-0 rounded-full border-4 border-blue-100"></div>
+      <div class="absolute top-0 left-0 right-0 bottom-0 rounded-full border-4 border-transparent border-t-blue-600 border-r-indigo-600 animate-spin"></div>
     </div>
+    <p class="mt-4 text-gray-600 font-medium">Loading rankings data...</p>
+  </div>
   
-    <div *ngIf="!isLoading" class="max-w-7xl mx-auto">
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">Employee Rankings</h1>
-  
-      <div class="space-y-4">
-        <div
-          *ngFor="let employee of rankedEmployees; let i = index"
-          class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
-        >
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-              <span *ngIf="i < 3" class="text-2xl">{{ getBadge(i) }}</span>
-              <h3 class="text-xl font-semibold text-gray-900">
-                #{{ i + 1 }} - {{ employee.employeeName }}
-              </h3>
+  <div *ngIf="!isLoading" class="max-w-5xl mx-auto">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Employee Rankings</h1>
+        <p class="text-gray-600 mt-2">Performance leaderboard based on skills and career progress</p>
+      </div>
+    </div>
+
+    <div class="hidden md:flex justify-center items-end mb-12 space-x-4">
+      <div *ngIf="rankedEmployees.length > 1" class="w-1/4 flex flex-col items-center">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-md flex items-center justify-center mb-4">
+          <span class="text-3xl">🥈</span>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-gray-800">{{ rankedEmployees[1].employeeName }}</p>
+          <p class="text-sm text-gray-600">Score: {{ rankedEmployees[1].rankingScore | number: '1.0-1' }}</p>
+        </div>
+        <div class="h-32 w-full bg-silver rounded-t-lg mt-4 flex items-center justify-center">
+          <span class="text-2xl font-bold text-white">#2</span>
+        </div>
+      </div>
+      
+      <div *ngIf="rankedEmployees.length > 0" class="w-1/3 flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 border-4 border-white shadow-lg flex items-center justify-center mb-4">
+          <span class="text-4xl">🥇</span>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-lg text-gray-800">{{ rankedEmployees[0].employeeName }}</p>
+          <p class="text-sm text-gray-600">Score: {{ rankedEmployees[0].rankingScore | number: '1.0-1' }}</p>
+        </div>
+        <div class="h-40 w-full bg-gold rounded-t-lg mt-4 flex items-center justify-center">
+          <span class="text-2xl font-bold text-white">#1</span>
+        </div>
+      </div>
+      
+      <div *ngIf="rankedEmployees.length > 2" class="w-1/4 flex flex-col items-center">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-600 to-amber-700 border-4 border-white shadow-md flex items-center justify-center mb-4">
+          <span class="text-3xl">🥉</span>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-gray-800">{{ rankedEmployees[2].employeeName }}</p>
+          <p class="text-sm text-gray-600">Score: {{ rankedEmployees[2].rankingScore | number: '1.0-1' }}</p>
+        </div>
+        <div class="h-24 w-full bg-bronze rounded-t-lg mt-4 flex items-center justify-center">
+          <span class="text-2xl font-bold text-white">#3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div
+        *ngFor="let employee of rankedEmployees; let i = index"
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden"
+        [ngClass]="{
+          'border-yellow-300 bg-gradient-to-r from-yellow-50 to-white': i === 0,
+          'border-gray-300 bg-gradient-to-r from-gray-50 to-white': i === 1,
+          'border-amber-600 bg-gradient-to-r from-amber-50 to-white': i === 2
+        }"
+      >
+        <div class="flex flex-col sm:flex-row sm:items-center p-6">
+          <div class="flex items-center mb-4 sm:mb-0 sm:flex-1">
+            <div class="flex-shrink-0 mr-4">
+              <div 
+                class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold"
+                [ngClass]="{
+                  'bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-md': i === 0,
+                  'bg-gradient-to-br from-gray-300 to-gray-500 shadow-md': i === 1,
+                  'bg-gradient-to-br from-amber-500 to-amber-700 shadow-md': i === 2,
+                  'bg-gradient-to-br from-blue-500 to-indigo-600': i > 2
+                }"
+              >
+                <span *ngIf="i < 3" class="text-xl">{{ getBadge(i) }}</span>
+                <span *ngIf="i >= 3" class="text-lg">{{ i + 1 }}</span>
+              </div>
             </div>
-            <span class="text-gray-600">Score: {{ employee.rankingScore | number: '1.0-2' }}</span>
-          </div>
-  
-          <div class="mt-4 space-y-2">
+            
             <div>
-              <p class="text-gray-600">Skill Assessments:</p>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <h3 class="text-lg font-semibold text-gray-900">{{ employee.employeeName }}</h3>
+              <div class="flex items-center mt-1">
+                <div class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                  Score: {{ employee.rankingScore | number: '1.0-1' }}
+                </div>
+                
+                <div class="ml-2 px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
+                  Team Alpha
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="sm:w-2/5 space-y-3">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-medium text-gray-500">Skills</span>
+                <span class="text-xs font-semibold text-blue-600">{{ employee.skillAssessmentPercentage }}%</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5">
                 <div
-                  class="bg-blue-600 h-2.5 rounded-full"
+                  class="bg-blue-600 h-1.5 rounded-full"
                   [style.width]="employee.skillAssessmentPercentage + '%'"
                 ></div>
               </div>
-              <p class="text-sm text-gray-600 mt-1">{{ employee.skillAssessmentPercentage }}%</p>
             </div>
-  
+            
             <div>
-              <p class="text-gray-600">Career Path Progress:</p>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-medium text-gray-500">Career Path</span>
+                <span class="text-xs font-semibold text-green-600">{{ employee.careerPathProgressPercentage }}%</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5">
                 <div
-                  class="bg-green-600 h-2.5 rounded-full"
+                  class="bg-green-600 h-1.5 rounded-full"
                   [style.width]="employee.careerPathProgressPercentage + '%'"
                 ></div>
               </div>
-              <p class="text-sm text-gray-600 mt-1">{{ employee.careerPathProgressPercentage }}%</p>
             </div>
           </div>
         </div>
       </div>
+      
+      <div *ngIf="rankedEmployees.length === 0" class="bg-white rounded-xl shadow-sm p-8 text-center">
+        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-800 mb-1">No rankings available</h3>
+        <p class="text-gray-500 mb-4">There are no employee rankings to display at this time.</p>
+      </div>
     </div>
   </div>
+</div>

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ProfileService } from '../profile.service';
 import { Router } from '@angular/router';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { AggregatedResultsService } from '../../aggregated-results/aggregated-results.service';
+import { AggregatedResult } from '../../aggregated-results/aggregated-results.model';
 
 @Component({
   selector: 'app-user-details',
@@ -17,12 +19,14 @@ export class UserDetailsComponent {
   selectedGoal: any = null;
   faEdit = faEdit;
     faTrash = faTrash;
+  rankedEmployees: AggregatedResult[] = [];
 
-  constructor(private profileService: ProfileService, private router: Router) {}
+  constructor(private profileService: ProfileService, private router: Router, private aggregatedResultsService: AggregatedResultsService) {}
 
   ngOnInit(): void {
     this.fetchUserDetails();
     this.getGoalsList();
+    this.loadRankedEmployees();
   }
 
   fetchUserDetails(): void {
@@ -71,5 +75,31 @@ export class UserDetailsComponent {
         this.errorMessage = error.error?.message || 'Failed to update goal status. Please try again.';
       },
     });
+  }
+
+  private loadRankedEmployees(): void {
+    this.aggregatedResultsService.getRankedAggregatedResults().subscribe({
+      next: (data) => {
+        this.rankedEmployees = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching ranked employees:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  getBadge(index: number): string {
+    switch (index) {
+      case 0:
+        return '🥇';
+      case 1:
+        return '🥈';
+      case 2:
+        return '🥉';
+      default:
+        return '';
+    }
   }
 }

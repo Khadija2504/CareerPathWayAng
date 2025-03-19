@@ -1,90 +1,122 @@
-import { Component, OnInit } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of, throwError } from 'rxjs';
+import { ProgressMetricsComponent } from './progress-metrics.component';
 import { AggregatedResultsService } from '../aggregated-results.service';
-import { CareerPathProgressDetail, ProgressMetrics, SkillAssessmentDetail } from '../aggregated-results.model';
-import { ChartConfiguration, ChartData, ChartType, LinearScale, BarController, BarElement, CategoryScale } from 'chart.js';
-import { Chart } from 'chart.js';
+import { ProgressMetrics, CareerPathProgressDetail, SkillAssessmentDetail } from '../aggregated-results.model';
+import { ChartConfiguration } from 'chart.js';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-@Component({
-  selector: 'app-progress-metrics',
-  standalone: false,
-  templateUrl: './progress-metrics.component.html',
-  styleUrls: ['./progress-metrics.component.css'],
-})
-export class ProgressMetricsComponent implements OnInit {
-  progressMetrics: ProgressMetrics | null = null;
-  isLoading = true;
-  
-  careerPathDetails: CareerPathProgressDetail[] = [];
-  skillDetails: SkillAssessmentDetail[] = [];
+describe('ProgressMetricsComponent', () => {
+  let component: ProgressMetricsComponent;
+  let fixture: ComponentFixture<ProgressMetricsComponent>;
+  let progressService: jasmine.SpyObj<AggregatedResultsService>;
 
-  constructor(private progressService: AggregatedResultsService) {
-    Chart.register(BarController, BarElement, CategoryScale, LinearScale);
-  }
-
-  public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          callback: (tickValue: number | string) => `${tickValue}%`,
-        },
+  const mockProgressMetrics: ProgressMetrics = {
+    skillAssessmentProgress: 80,
+    careerPathProgress: 70,
+    trainingProgress: 60,
+    goalProgress: 50,
+    careerPathProgressDetails: [
+      {
+        careerPathName: 'Software Engineer',
+        totalSteps: 10,
+        completedSteps: 7,
+        progressPercentage: 70,
       },
-    },
+    ],
+    skillAssessmentDetails: [
+      {
+        skillName: 'Angular',
+        score: 8,
+        maxScore: 10,
+        progressPercentage: 80,
+      },
+    ],
   };
 
-  public barChartLabels = ['Skill Assessment', 'Career Path', 'Training', 'Goals'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartData: ChartData<'bar'> = {
-    labels: this.barChartLabels,
-    datasets: [],
-  };
+  beforeEach(() => {
+    const spy = jasmine.createSpyObj('AggregatedResultsService', ['getProgressMetrics']);
 
-  totalTrainingsCompleted: number = 0;
-  totalGoalsCompleted: number = 0;
-
-  ngOnInit(): void {
-    this.loadProgressMetrics();
-  }
-
-  private loadProgressMetrics(): void {
-    this.progressService.getProgressMetrics().subscribe({
-      next: (data) => {
-        this.progressMetrics = data;
-        this.isLoading = false;
-
-        this.careerPathDetails = data.careerPathProgressDetails;
-        this.skillDetails = data.skillAssessmentDetails;
-
-        this.barChartData = {
-          labels: this.barChartLabels,
-          datasets: [
-            {
-              data: [
-                data.skillAssessmentProgress,
-                data.careerPathProgress,
-                data.trainingProgress,
-                data.goalProgress,
-              ],
-              label: 'Progress (%)',
-              backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-            },
-          ],
-        };
-
-        this.totalTrainingsCompleted = Math.round(
-          (data.trainingProgress / 100) * 10
-        );
-        this.totalGoalsCompleted = Math.round(
-          (data.goalProgress / 100) * 5
-        );
-      },
-      error: (err) => {
-        console.error('Error fetching progress metrics:', err);
-        this.isLoading = false;
-      },
+    TestBed.configureTestingModule({
+      declarations: [ProgressMetricsComponent],
+      providers: [{ provide: AggregatedResultsService, useValue: spy }],
+      schemas: [NO_ERRORS_SCHEMA],
     });
-  }
-}
+
+    fixture = TestBed.createComponent(ProgressMetricsComponent);
+    component = fixture.componentInstance;
+    progressService = TestBed.inject(AggregatedResultsService) as jasmine.SpyObj<AggregatedResultsService>;
+  });
+
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should load progress metrics and initialize chart data', () => {
+      progressService.getProgressMetrics.and.returnValue(of(mockProgressMetrics));
+
+      fixture.detectChanges();
+
+      expect(component.isLoading).toBeFalse();
+      expect(component.progressMetrics).toEqual(mockProgressMetrics);
+      expect(component.careerPathDetails).toEqual(mockProgressMetrics.careerPathProgressDetails);
+      expect(component.skillDetails).toEqual(mockProgressMetrics.skillAssessmentDetails);
+
+      expect(component.barChartData.labels).toEqual(['Skill Assessment', 'Career Path', 'Training', 'Goals']);
+      expect(component.barChartData.datasets[0].data).toEqual([
+        mockProgressMetrics.skillAssessmentProgress,
+        mockProgressMetrics.careerPathProgress,
+        mockProgressMetrics.trainingProgress,
+        mockProgressMetrics.goalProgress,
+      ]);
+      expect(component.barChartData.datasets[0].label).toBe('Progress (%)');
+      expect(component.barChartData.datasets[0].backgroundColor).toEqual([
+        '#3b82f6',
+        '#10b981',
+        '#f59e0b',
+        '#ef4444',
+      ]);
+
+      expect(component.totalTrainingsCompleted).toBe(6);
+      expect(component.totalGoalsCompleted).toBe(3);
+    });
+
+    it('should handle error when loading progress metrics fails', () => {
+      progressService.getProgressMetrics.and.returnValue(throwError(() => new Error('Failed to load')));
+
+      fixture.detectChanges();
+
+      expect(component.isLoading).toBeFalse();
+      expect(component.progressMetrics).toBeNull();
+      expect(component.barChartData.datasets.length).toBe(0);
+    });
+  });
+
+  describe('Chart Configuration', () => {
+    it('should have correct bar chart options', () => {
+      expect(component.barChartOptions).toBeDefined();
+      const yAxis = component.barChartOptions?.scales?.['y'];
+      expect(yAxis).toBeDefined();
+
+      if (yAxis && 'beginAtZero' in yAxis) {
+        expect(yAxis.beginAtZero).toBeTrue();
+      } else {
+        fail('beginAtZero property not found in yAxis');
+      }
+
+      expect(yAxis?.max).toBe(100);
+
+      if (yAxis?.ticks?.callback) {
+        const callback = yAxis.ticks.callback;
+        const mockScale = {} as any;
+        expect(callback.call(mockScale, 50, 0, [])).toBe('50%');
+      }
+    });
+
+    it('should have correct bar chart type and labels', () => {
+      expect(component.barChartType).toBe('bar');
+      expect(component.barChartLabels).toEqual(['Skill Assessment', 'Career Path', 'Training', 'Goals']);
+    });
+  });
+});

@@ -1,102 +1,145 @@
-<div class="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-  <div *ngIf="successMessage" class="fixed top-20 right-4 bg-white border border-gray-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
-    <div>
-      <p class="text-sm font-medium text-gray-800">Successfully saved!</p>
-      <p class="text-xs text-gray-500">Anyone with a link can now view this file.</p>
+<div class="px-8 pt-12 pb-8">
+  <h1 class="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-8">Add New Goal</h1>
+
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-8">
+    <div class="relative w-16 h-16 mb-4">
+      <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+      <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-600 border-r-purple-600 animate-spin"></div>
     </div>
+    <p class="text-gray-600 animate-pulse">Adding your goal...</p>
   </div>
 
-  <div *ngIf="errorMessage" class="fixed top-20 right-4 bg-white border border-red-200 rounded-lg shadow-lg flex items-center space-x-3 p-4">
-    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
+  <form [formGroup]="goalForm" (ngSubmit)="onSubmit()" class="space-y-6" [ngClass]="{'opacity-50 pointer-events-none': isLoading}">
     <div>
-      <p class="text-sm font-medium text-gray-800">Error</p>
-      <p class="text-xs text-gray-500">{{ errorMessage }}</p>
-    </div>
-  </div>
-
-  <div class="max-w-4xl mx-auto mt-10 bg-white rounded-lg shadow-2xl p-8">
-    <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Add new goal</h1>
-
-    <div *ngIf="isLoading" class="text-center">
-      <p class="text-gray-700">Adding goal...</p>
-    </div>
-
-    <form [formGroup]="goalForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Goal Description</label>
-        <textarea
-          formControlName="goalDescription"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Enter goal description"
-        ></textarea>
-        <div *ngIf="f['goalDescription'].touched && f['goalDescription'].errors" class="text-red-500 text-sm mt-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1.5">Goal Description</label>
+      <textarea
+        formControlName="goalDescription"
+        class="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        placeholder="What do you want to achieve?"
+        rows="4"
+      ></textarea>
+      <div *ngIf="f['goalDescription'].touched && f['goalDescription'].errors" class="mt-2 text-sm text-red-600 flex items-start">
+        <svg class="w-4 h-4 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <div>
           <div *ngIf="f['goalDescription'].errors['required']">Goal description is required.</div>
           <div *ngIf="f['goalDescription'].errors['maxlength']">Description cannot exceed 500 characters.</div>
           <div *ngIf="f['goalDescription'].errors['serverError']">{{ f['goalDescription'].errors['serverError'] }}</div>
         </div>
       </div>
+    </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <label class="block text-sm font-medium text-gray-700">Target date</label>
-        <input
-          type="date"
-          formControlName="targetDate"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-        <div *ngIf="f['targetDate'].touched && f['targetDate'].errors" class="text-red-500 text-sm mt-1">
-          <div *ngIf="f['targetDate'].errors['required']">Target date is required.</div>
-          <div *ngIf="f['targetDate'].errors['future']">Target date must be in the future.</div>
-          <div *ngIf="f['targetDate'].errors['serverError']">{{ f['targetDate'].errors['serverError'] }}</div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">Target Date</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <input
+            type="date"
+            formControlName="targetDate"
+            class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          />
+        </div>
+        <div *ngIf="f['targetDate'].touched && f['targetDate'].errors" class="mt-2 text-sm text-red-600 flex items-start">
+          <svg class="w-4 h-4 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          <div>
+            <div *ngIf="f['targetDate'].errors['required']">Target date is required.</div>
+            <div *ngIf="f['targetDate'].errors['future']">Target date must be in the future.</div>
+            <div *ngIf="f['targetDate'].errors['serverError']">{{ f['targetDate'].errors['serverError'] }}</div>
+          </div>
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Status</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">Type</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+          </div>
+          <select
+            formControlName="type"
+            class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
+          >
+            <option value="longTerm">Long Term</option>
+            <option value="shortTerm">Short Term</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        </div>
+        <div *ngIf="f['type'].touched && f['type'].errors" class="mt-2 text-sm text-red-600 flex items-start">
+          <svg class="w-4 h-4 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          <div>
+            <div *ngIf="f['type'].errors['required']">Type is required.</div>
+            <div *ngIf="f['type'].errors['pattern']">Type must be longTerm or shortTerm.</div>
+            <div *ngIf="f['type'].errors['serverError']">{{ f['type'].errors['serverError'] }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1.5">Status</label>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
         <select
           formControlName="status"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors"
         >
           <option value="NOT_STARTED">Not Started</option>
           <option value="IN_PROGRESS">In Progress</option>
         </select>
-        <div *ngIf="f['status'].touched && f['status'].errors" class="text-red-500 text-sm mt-1">
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+      <div *ngIf="f['status'].touched && f['status'].errors" class="mt-2 text-sm text-red-600 flex items-start">
+        <svg class="w-4 h-4 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <div>
           <div *ngIf="f['status'].errors['required']">Status is required.</div>
           <div *ngIf="f['status'].errors['pattern']">Status must be NOT_STARTED, IN_PROGRESS, or COMPLETED.</div>
           <div *ngIf="f['status'].errors['serverError']">{{ f['status'].errors['serverError'] }}</div>
         </div>
       </div>
+    </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Type</label>
-        <select
-          formControlName="type"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="longTerm">Long Term</option>
-          <option value="shortTerm">Short Term</option>
-        </select>
-        <div *ngIf="f['type'].touched && f['type'].errors" class="text-red-500 text-sm mt-1">
-          <div *ngIf="f['type'].errors['required']">Type is required.</div>
-          <div *ngIf="f['type'].errors['pattern']">Type must be longTerm or shortTerm.</div>
-          <div *ngIf="f['type'].errors['serverError']">{{ f['type'].errors['serverError'] }}</div>
-        </div>
-      </div>
-
-      <div class="text-center">
-        <button
-          type="submit"
-          [disabled]="isLoading"
-          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-          <span *ngIf="!isLoading">Add Goal</span>
-          <span *ngIf="isLoading">Adding...</span>
-        </button>
-      </div>
-    </form>
-  </div>
+    <div class="pt-6 border-t border-gray-200 flex justify-center">
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center min-w-[180px]"
+      >
+        <svg *ngIf="!isLoading" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span *ngIf="!isLoading">Add Goal</span>
+        <span *ngIf="isLoading">Adding...</span>
+      </button>
+    </div>
+  </form>
 </div>

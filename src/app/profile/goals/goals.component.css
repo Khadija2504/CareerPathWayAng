@@ -3,52 +3,58 @@
     background-color: #0000008f;
   }
 
-  /* LinkedIn-inspired design */
-.bg-gradient-to-r {
-    background: linear-gradient(to right, #0077b5, #00a0dc);
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   
-  .shadow-md {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
   
-  .hover\:shadow-lg:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
   
-  .rounded-lg {
-    border-radius: 0.5rem;
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
   }
   
-  .transition-shadow {
-    transition: box-shadow 0.3s ease;
+  .animate-scaleIn {
+    animation: scaleIn 0.3s ease-out;
   }
   
-  .cursor-pointer {
-    cursor: pointer;
+  .animate-slideInRight {
+    animation: slideInRight 0.3s ease-out;
   }
   
-  /* Popup styling */
-  .fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
   
-  .bg-opacity-50 {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .max-w-lg {
-    max-width: 32rem;
-  }
-  
-  .w-full {
-    width: 100%;
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
   }

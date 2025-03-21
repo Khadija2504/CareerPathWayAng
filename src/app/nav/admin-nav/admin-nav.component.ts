@@ -31,6 +31,11 @@ export class AdminNavComponent {
     this.checkLoginStatus();
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userRole = this.authService.getUserRole();
+    this.startPolling();
+  }
+
+  ngOnDestroy(): void {
+    this.stopPolling();
   }
 
   checkLoginStatus(): void {

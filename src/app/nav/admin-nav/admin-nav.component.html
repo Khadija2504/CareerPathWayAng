@@ -22,12 +22,6 @@
                class="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
                Career Paths
             </a>
-           
-            <a routerLink="/mentorShip-coaching/mentors-list" 
-               routerLinkActive="border-b-2 border-white"
-               class="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
-               Mentorship
-            </a>
             <a routerLink="/courses" 
                routerLinkActive="border-b-2 border-white"
                class="text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
@@ -70,9 +64,6 @@
               <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                 Profile
               </a>
-              <a routerLink="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                Settings
-              </a>
               <button (click)="logout()" 
                       class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                 Logout
@@ -103,20 +94,6 @@
 
   <div class="md:hidden" [class.hidden]="!isMobileMenuOpen">
     <div class="px-2 pt-2 pb-3 space-y-1">
-      <a routerLink="/dashboard" 
-         class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
-        Dashboard
-      </a>
-      <a routerLink="/training" 
-         class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
-        Training
-      </a>
-      <a routerLink="/career-paths" 
-         class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
-        Career Paths
-      </a>
-
-
       <a routerLink="/skills" 
           class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
           Skills
@@ -125,14 +102,9 @@
           class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
           Questionnaires
       </a>
-      <a routerLink="/dashboard" 
+      <a routerLink="/career-path/list" 
           class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
           Career Paths
-      </a>
-      
-      <a routerLink="/mentorShip-coaching/mentors-list" 
-          class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
-          Mentorship
       </a>
       <a routerLink="/courses" 
           class="text-white hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">
@@ -161,9 +133,6 @@
         <a routerLink="/profile" 
            class="block px-3 py-2 text-white hover:bg-blue-600 rounded-md">
           Profile
-        </a>
-        <a routerLink="/settings" >
-          Settings
         </a>
         <button (click)="logout()" 
                 class="block w-full text-left px-3 py-2 text-white hover:bg-blue-600 rounded-md">

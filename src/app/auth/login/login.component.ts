@@ -42,7 +42,7 @@ export class LoginComponent {
               } else if (userRole === 'EMPLOYEE') {
                   this.router.navigate(['/home']);
               } else {
-                  this.router.navigate(['']);
+                  this.router.navigate(['/home']);
               }
           }, 200);
       },

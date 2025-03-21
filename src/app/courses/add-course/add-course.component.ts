@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseService } from '../course-service.service';
+import { SkillService } from '../../skill/skill.service';
 
 @Component({
   selector: 'app-add-course',
@@ -8,15 +9,16 @@ import { CourseService } from '../course-service.service';
   templateUrl: './add-course.component.html',
   styleUrl: './add-course.component.css'
 })
-export class AddCourseComponent {
+export class AddCourseComponent implements OnInit {
   courseForm: FormGroup;
   file: File | null = null;
   formSubmitted = false;
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+  skills : any[] = [];
 
-  constructor(private fb: FormBuilder, private courseService: CourseService) {
+  constructor(private fb: FormBuilder, private courseService: CourseService, private skillService: SkillService) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -25,11 +27,30 @@ export class AddCourseComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.fetchSkills();
+  }
+
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.file = file;
     }
+  }
+
+  fetchSkills(): void {
+    this.errorMessage = '';
+
+    this.skillService.getAllSkills().subscribe({
+      next: (data) => {
+        this.skills = data;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to fetch skills. Please try again later.';
+        this.isLoading = false;
+        console.error('Error fetching skills:', err);
+      }
+    });
   }
 
   addCourse() {

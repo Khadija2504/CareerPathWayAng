@@ -6,7 +6,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthorizGuard } from './auth/authoriz.guard';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/auth/login', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m=> m.AuthModule), canActivate: [AuthorizGuard]},
   {path: 'error', loadChildren: () => import('./errors/errors.module').then(m=> m.ErrorsModule)},
   {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m=> m.ProfileModule), canActivate: [AuthGuard]},

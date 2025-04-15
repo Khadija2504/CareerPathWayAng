@@ -89,12 +89,5 @@ export class SkillListComponent implements OnInit {
     });
   }
 
-  deleteSkill(skillId: number): void {
-    this.skillService.deleteSkill(skillId).subscribe({
-      next: () => {
-        this.skills = this.skills.filter((skill) => skill.id !== skillId);
-      },
-      error: (error) => console.error('Error deleting skill:', error)
-    });
-  }
+
 }

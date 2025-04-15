@@ -36,15 +36,6 @@ export class SkillService {
     );
   }
 
-  deleteSkill(skillId: number): Observable<any> {
-    return this.http.delete<any>(`${this.skillUrl}/admin/deleteSkill/${skillId}`).pipe(
-      catchError(error => {
-        console.error('Error deleting skill with id:' + skillId, error);
-        return throwError(() => error);
-      })
-    );
-  }
-
   updateSkill(skillData: Skill, skillId: number):Observable<any> {
     return this.http.put<any>(`${this.skillUrl}/admin/updateSkill/${skillId}`, skillData).pipe(
       catchError(error => {

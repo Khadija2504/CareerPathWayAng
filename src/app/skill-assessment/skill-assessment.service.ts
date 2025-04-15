@@ -17,33 +17,8 @@ export class SkillAssessmentService {
       return !!this.getToken();
     }  
   
-    private getHeaders(): HttpHeaders {
-      const tokenString = this.getToken();
-      if(tokenString) {
-        try {
-          const tokenObj = JSON.parse(tokenString);
-          const jwtToken = tokenObj.token;
-          if(jwtToken) {
-            return new HttpHeaders({
-              Authorization: `Bearer ${jwtToken}`,
-              'content-type' : 'application/json',
-            });
-          }
-        } catch (error) {
-          console.error('error parsing token:', error);
-          return new HttpHeaders({
-            'content-type' : 'application/json'
-          });
-        }
-      }
-      return new HttpHeaders({
-        'content-type': 'application/json'
-      });
-    }
-
   getAllSkills(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseSkillUrl}/displaySkills`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseSkillUrl}/displaySkills`).pipe(
       catchError(error => {
         console.error('Error fetching skills:', error);
         return throwError(() => error);
@@ -52,8 +27,7 @@ export class SkillAssessmentService {
   }
   
   getQuestionnairesBySkillId(skillId: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseQuestionsUrm}/skill/${skillId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseQuestionsUrm}/skill/${skillId}`).pipe(
       catchError(error => {
         console.error('Error fetching questionnaires:', error);
         return throwError(() => error);
@@ -62,9 +36,8 @@ export class SkillAssessmentService {
   }
   
   submitQuestionnaireResponses(skillId: number, responses: string[]): Observable<any> {
-    const headers = this.getHeaders();
     const requestBody = { skillId, responses };
-    return this.http.post<any>(`${this.baseQuestionsUrm}/submit`, requestBody, { headers }).pipe(
+    return this.http.post<any>(`${this.baseQuestionsUrm}/submit`, requestBody).pipe(
       catchError(error => {
         console.error('Error submitting responses:', error);
         return throwError(() => error);
@@ -73,8 +46,7 @@ export class SkillAssessmentService {
   }
   
   getAssessments(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseSkillUrl}/displayEmployeeSkillAssessment`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseSkillUrl}/displayEmployeeSkillAssessment`).pipe(
       catchError(error => {
         console.error('Error fetching assessment:', error);
         return throwError(() => error);

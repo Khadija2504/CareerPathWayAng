@@ -17,33 +17,8 @@ export class NotificationService {
     return !!this.getToken();
   }  
 
-  private getHeaders(): HttpHeaders {
-    const tokenString = this.getToken();
-    if(tokenString) {
-      try {
-        const tokenObj = JSON.parse(tokenString);
-        const jwtToken = tokenObj.token;
-        if(jwtToken) {
-          return new HttpHeaders({
-            Authorization: `Bearer ${jwtToken}`,
-            'content-type' : 'application/json',
-          });
-        }
-      } catch (error) {
-        console.error('error parsing token:', error);
-        return new HttpHeaders({
-          'content-type' : 'application/json'
-        });
-      }
-    }
-    return new HttpHeaders({
-      'content-type': 'application/json'
-    });
-  }
-
   getNotitfications() : Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.basenotif}/getNotifications`, { headers }).pipe(
+    return this.http.get<any>(`${this.basenotif}/getNotifications`).pipe(
       catchError(error => {
         console.error('Error fetching notifs:', error);
         return throwError(() => error);
@@ -51,8 +26,7 @@ export class NotificationService {
     );
   }
   readNotifications() : Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.basenotif}/updateNotifications`, { headers }).pipe(
+    return this.http.get<any>(`${this.basenotif}/updateNotifications`).pipe(
       catchError(error => {
         console.error('Error updating notifs:', error);
         return throwError(() => error);
@@ -61,8 +35,7 @@ export class NotificationService {
   }
 
   unreadNotifications() : Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.basenotif}/getUnreadNotifications`, { headers }).pipe(
+    return this.http.get<any>(`${this.basenotif}/getUnreadNotifications`).pipe(
       catchError(error => {
         console.error('Error fetching unread notifs:', error);
         return throwError(() => error);

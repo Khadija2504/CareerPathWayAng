@@ -21,30 +21,9 @@ export class CareerPathService {
     return !!this.getToken();
   }  
 
-  private getHeaders(): HttpHeaders {
-    const tokenString = this.getToken();
-    if (tokenString) {
-      try {
-        const tokenObj = JSON.parse(tokenString);
-        const jwtToken = tokenObj.token;
-        if (jwtToken) {
-          return new HttpHeaders({
-            Authorization: `Bearer ${jwtToken}`,
-          });
-        }
-      } catch (error) {
-        console.error('Error parsing token:', error);
-        return new HttpHeaders();
-      }
-    }
-    return new HttpHeaders();
-  }
   createCareerPath(careerPath: CareerPath): Observable<any> {
-    const headers = this.getHeaders();
-    console.log('JWT Token being sent:', headers.get('Authorization'));
-
     return this.http
-      .post<any>(`${this.apiCareerPathUrl}/admin/create-careerPath`, careerPath, { headers })
+      .post<any>(`${this.apiCareerPathUrl}/admin/create-careerPath`, careerPath)
       .pipe(
         catchError((error) => {
           console.error('Error creating new career path:', error);
@@ -54,9 +33,8 @@ export class CareerPathService {
   }
 
   loadEmployees(): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiUserhUrl}/allEmployees`, { headers })
+      .get<any>(`${this.apiUserhUrl}/allEmployees`)
       .pipe(
         catchError((error) => {
           console.error('Error fetching employees:', error);
@@ -66,9 +44,8 @@ export class CareerPathService {
   }
 
   loadCareerPaths(): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCareerPathUrl}/admin/getAllCareerPaths`, { headers })
+      .get<any>(`${this.apiCareerPathUrl}/admin/getAllCareerPaths`)
       .pipe(
         catchError((error) => {
           console.error('Error fetching employee careerPaths:', error);
@@ -78,9 +55,8 @@ export class CareerPathService {
   }
 
   loadEmployeeCareerPaths(): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCareerPathUrl}/employee/getAllCareerPaths`, { headers })
+      .get<any>(`${this.apiCareerPathUrl}/employee/getAllCareerPaths`)
       .pipe(
         catchError((error) => {
           console.error('Error fetching employee careerPaths:', error);
@@ -90,9 +66,8 @@ export class CareerPathService {
   }
 
   getCareerPathById(careerPathId: any): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCareerPathUrl}/admin/getCareerPath/${careerPathId}`, { headers }).pipe(
+      .get<any>(`${this.apiCareerPathUrl}/admin/getCareerPath/${careerPathId}`).pipe(
         catchError((error) => {
           console.error('Error fetching careerPath details:', error);
           return throwError(() => error);
@@ -101,9 +76,8 @@ export class CareerPathService {
   }
 
   updateCareerPath(updatedCareerPath: CareerPath, careerPathId: any): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .put<any>(`${this.apiCareerPathUrl}/admin/updateCareerPath/${careerPathId}`, updatedCareerPath, { headers })
+      .put<any>(`${this.apiCareerPathUrl}/admin/updateCareerPath/${careerPathId}`, updatedCareerPath)
       .pipe(
         catchError((error) => {
           console.error('Error updating careerPath details:', error);
@@ -120,9 +94,8 @@ export class CareerPathService {
   }
 
   deleteCareerPath(careerPathId: any): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCareerPathUrl}/admin/deleteCareerPath/${careerPathId}`, { headers }).pipe(
+      .get<any>(`${this.apiCareerPathUrl}/admin/deleteCareerPath/${careerPathId}`).pipe(
         catchError((error) => {
           console.error('Error deleting career path:', error);
           return throwError(() => error);
@@ -131,10 +104,9 @@ export class CareerPathService {
   }
 
   updateStepStatus(done: boolean, stepId: number): Observable<any> {
-    const headers = this.getHeaders();
     const body = { done };
     return this.http
-      .post<any>(`${this.apiCareerPathUrl}/employee/updateStepStatus/${stepId}`, body, { headers })
+      .post<any>(`${this.apiCareerPathUrl}/employee/updateStepStatus/${stepId}`, body)
       .pipe(
         catchError((error) => {
           console.error('Error updating step status:', error);
@@ -144,9 +116,8 @@ export class CareerPathService {
   }
 
   completeCareerPath(careerPathId: number): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCareerPathUrl}/employee/completeCareerPath/${careerPathId}`, { headers })
+      .get<any>(`${this.apiCareerPathUrl}/employee/completeCareerPath/${careerPathId}`)
       .pipe(
         catchError((error) => {
           console.error('Error updating career status:', error);
@@ -156,9 +127,8 @@ export class CareerPathService {
   }
   
   getCareerPathCertification(careerPathId: number): Observable<any> {
-    const headers = this.getHeaders();
     return this.http
-      .get<any>(`${this.apiCertificationUrl}/${careerPathId}`, { headers })
+      .get<any>(`${this.apiCertificationUrl}/${careerPathId}`)
       .pipe(
         catchError((error) => {
           console.error('Error fetching career path certfification:', error);

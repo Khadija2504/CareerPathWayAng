@@ -17,34 +17,9 @@ export class TrainingService {
     isLoggedin(): boolean {
       return !!this.getToken();
     }  
-  
-    private getHeaders(): HttpHeaders {
-      const tokenString = this.getToken();
-      if(tokenString) {
-        try {
-          const tokenObj = JSON.parse(tokenString);
-          const jwtToken = tokenObj.token;
-          if(jwtToken) {
-            return new HttpHeaders({
-              Authorization: `Bearer ${jwtToken}`,
-              'content-type' : 'application/json',
-            });
-          }
-        } catch (error) {
-          console.error('error parsing token:', error);
-          return new HttpHeaders({
-            'content-type' : 'application/json'
-          });
-        }
-      }
-      return new HttpHeaders({
-        'content-type': 'application/json'
-      });
-    }
 
   getRecommendations(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseTrainingUrl}/recommendations`, {headers}).pipe(
+    return this.http.get<any>(`${this.baseTrainingUrl}/recommendations`).pipe(
       catchError(error => {
         console.error('Error fetching training programs with recommentations courses and resources:', error);
         return throwError(() => error);
@@ -53,14 +28,13 @@ export class TrainingService {
   }
 
   getAdditionalTrainingPrograms(currentPage: number, pageSize: number): Observable<any> {
-    const headers = this.getHeaders();
   
     const params = {
       page: currentPage.toString(),
       size: pageSize.toString()
     };
   
-    return this.http.get<any>(`${this.baseTrainingUrl}/training-programs`, { headers, params }).pipe(
+    return this.http.get<any>(`${this.baseTrainingUrl}/training-programs`, { params }).pipe(
       catchError(error => {
         console.error('Error fetching additional training programs:', error);
         return throwError(() => error);

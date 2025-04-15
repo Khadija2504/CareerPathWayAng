@@ -20,27 +20,8 @@ export class CourseService {
     return !!this.getToken();
   }
 
-  private getHeaders(): HttpHeaders {
-    const tokenString = this.getToken();
-    if (tokenString) {
-      try {
-        const tokenObj = JSON.parse(tokenString);
-        const jwtToken = tokenObj.token;
-        if (jwtToken) {
-          return new HttpHeaders({
-            Authorization: `Bearer ${jwtToken}`
-          });
-        }
-      } catch (error) {
-        console.error('Error parsing token:', error);
-      }
-    }
-    return new HttpHeaders();
-  }
-
   getAllCourses(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.apiUrlEmployee}/displayAllCourses`, { headers }).pipe(
+    return this.http.get<any>(`${this.apiUrlEmployee}/displayAllCourses`).pipe(
       catchError(error => {
         console.error('Error fetching all courses:', error);
         return throwError(() => error);
@@ -49,10 +30,7 @@ export class CourseService {
   }
 
   addCourse(courseData: FormData): Observable<any> {
-    const headers = this.getHeaders();
-    console.log("JWT Token being sent:", headers.get('Authorization'));
-
-    return this.http.post<any>(`${this.apiUrlAdmin}/createCourse`, courseData, { headers }).pipe(
+    return this.http.post<any>(`${this.apiUrlAdmin}/createCourse`, courseData).pipe(
       catchError(error => {
         console.error('Error creating new course:', error);
         return throwError(() => error);
@@ -61,10 +39,9 @@ export class CourseService {
   }
 
   updateCourse(courseData: any, courseId: any): Observable<any> {
-    const headers = this.getHeaders();
     console.log(courseId);
 
-    return this.http.put<any>(`${this.apiUrlAdmin}/updateCourse/${courseId}`, courseData, { headers }).pipe(
+    return this.http.put<any>(`${this.apiUrlAdmin}/updateCourse/${courseId}`, courseData).pipe(
       catchError(error => {
         console.error('Error updating this course:', error);
         return throwError(() => error);
@@ -73,8 +50,7 @@ export class CourseService {
   }
 
   getCourseById(courseId: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.apiUrl}/getCourseById/${courseId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.apiUrl}/getCourseById/${courseId}`).pipe(
       catchError(error => {
         console.error('Error displaying this course:', error);
         return throwError(() => error);

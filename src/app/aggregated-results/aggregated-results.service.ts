@@ -42,10 +42,7 @@ export class AggregatedResultsService {
   }
 
   getAggregatedResults(): Observable<AggregatedResult[]> {
-    const headers = this.getHeaders();
-    console.log('Headers:', headers);
-
-    return this.http.get<AggregatedResult[]>(`${this.aggregatedResultsUrl}/aggregated-results`, { headers }).pipe(
+    return this.http.get<AggregatedResult[]>(`${this.aggregatedResultsUrl}/aggregated-results`).pipe(
       catchError(error => {
         console.error('Error fetching aggregated results:', error);
         return throwError(() => error);
@@ -86,10 +83,7 @@ export class AggregatedResultsService {
   }
 
   getProgressMetrics(): Observable<ProgressMetrics> {
-    const headers = this.getHeaders();
-    console.log('Headers:', headers);
-
-    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/progress-metrics`, { headers }).pipe(
+    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/progress-metrics`).pipe(
       catchError(error => {
         console.error('Error fetching aggregated results:', error);
         return throwError(() => error);
@@ -98,8 +92,7 @@ export class AggregatedResultsService {
   }
 
   getReports(employeeId: number) : Observable<ProgressMetrics> {
-    const headers = this.getHeaders();
-    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/reports/${employeeId}`, { headers }).pipe(
+    return this.http.get<ProgressMetrics>(`${this.aggregatedResultsUrl}/reports/${employeeId}`).pipe(
       catchError(error => {
         console.error('Error fetching reports:', error);
         return throwError(() => error);
@@ -108,9 +101,7 @@ export class AggregatedResultsService {
   }
 
   generateReport(employeeId: number): Observable<Blob> {
-    const headers = this.getHeaders();
     return this.http.get(`${this.aggregatedResultsUrl}/reports/${employeeId}/download`, {
-      headers: headers,
       responseType: 'blob',
     }).pipe(
       catchError(error => {

@@ -27,33 +27,8 @@ export class ProfileService {
     return !!this.getToken();
   }  
 
-  private getHeaders(): HttpHeaders {
-    const tokenString = this.getToken();
-    if(tokenString) {
-      try {
-        const tokenObj = JSON.parse(tokenString);
-        const jwtToken = tokenObj.token;
-        if(jwtToken) {
-          return new HttpHeaders({
-            Authorization: `Bearer ${jwtToken}`,
-            'content-type' : 'application/json',
-          });
-        }
-      } catch (error) {
-        console.error('error parsing token:', error);
-        return new HttpHeaders({
-          'content-type' : 'application/json'
-        });
-      }
-    }
-    return new HttpHeaders({
-      'content-type': 'application/json'
-    });
-  }
-
   getUserDetails(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(this.getUserUrl, {headers}).pipe(
+    return this.http.get<any>(this.getUserUrl).pipe(
       catchError(error => {
         console.error('Error fetching user details:', error);
         return throwError(() => error);
@@ -62,8 +37,7 @@ export class ProfileService {
   }
 
   updateUserDetails(userData: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.put<any>(this.updateUserUrl, userData, { headers }).pipe(
+    return this.http.put<any>(this.updateUserUrl, userData).pipe(
       catchError(error => {
         console.error('Error updating user details:', error);
   
@@ -74,8 +48,7 @@ export class ProfileService {
   }
 
   addGoal(goalData: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(this.addGoalUrl, goalData, { headers }).pipe(
+    return this.http.post<any>(this.addGoalUrl, goalData).pipe(
       catchError(error => {
         console.error('Error adding goal:', error);
         const errorMessage = error.error || 'Failed to add goal. Please try again.';
@@ -86,8 +59,7 @@ export class ProfileService {
   }
 
   getAllEmployeeGoals(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(this.getGoalsUrl, {headers}).pipe(
+    return this.http.get<any>(this.getGoalsUrl).pipe(
       catchError(error => {
         console.error('error fetching goals:', error);
         return throwError(()=> error);
@@ -97,8 +69,7 @@ export class ProfileService {
 
   
   updateGoalStatus(goalData: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(this.updateGoalUrl, goalData, {headers}).pipe(
+    return this.http.post<any>(this.updateGoalUrl, goalData).pipe(
       catchError(error=> {
         console.error('error updating goal status: ', error);
         const errorMessage = error?.error?.message || 'failed to update goal status, plz try agin leater';
@@ -108,8 +79,7 @@ export class ProfileService {
   }
 
   deleteGoal(goalId: number):Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(this.deleteGoalUrl, goalId, {headers}).pipe(
+    return this.http.post<any>(this.deleteGoalUrl, goalId).pipe(
       catchError(error=> {
         console.error('error deleting this goal: ', error);
         const errorMessage = error?.error?.message || 'failed to delete this goal, plz try agin leater';
@@ -119,8 +89,7 @@ export class ProfileService {
   }
 
   updateGoal(goalId: any, goalData: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.put<any>(`${this.updateGoalDetailsUrl}/${goalId}`, goalData, { headers }).pipe(
+    return this.http.put<any>(`${this.updateGoalDetailsUrl}/${goalId}`, goalData).pipe(
       catchError(error => {
         console.error('Error updating goal:', error);
         const errorMessage = error?.error?.message || 'Failed to update goal, please try again';
@@ -130,10 +99,9 @@ export class ProfileService {
   }
 
   getGoalById(goalId: any): Observable<any> {
-    const headers = this.getHeaders();
     console.log(goalId);
     
-    return this.http.get<any>(`${this.baseGoalUrl}/getGoal/${goalId}`, { headers }).pipe(
+    return this.http.get<any>(`${this.baseGoalUrl}/getGoal/${goalId}`).pipe(
       catchError(error => {
         console.error('Error fetching goal details:', error);
         const errorMessage = error?.error?.message || 'Failed to fetch goal details.';
@@ -143,8 +111,7 @@ export class ProfileService {
   }
 
   getGoalReminders(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(this.remindersUrl, {headers}).pipe(
+    return this.http.get<any>(this.remindersUrl).pipe(
       catchError(error => {
         console.error('error fetching goal reminders:', error);
         return throwError(()=> error);
@@ -153,10 +120,9 @@ export class ProfileService {
   }
 
   supportGoal(goalId: number, supported: boolean): Observable<any> {
-    const headers = this.getHeaders();
     console.log(goalId, supported);
   
-    return this.http.post<any>(`${this.baseGoalUrl}/GoalSupported/${goalId}`, supported, { headers }).pipe(
+    return this.http.post<any>(`${this.baseGoalUrl}/GoalSupported/${goalId}`, supported).pipe(
       catchError(error => {
         console.error('Error supporting goal:', error);
         const errorMessage = error?.error?.message || 'Failed to support goal, please try again';
@@ -166,8 +132,7 @@ export class ProfileService {
   }
 
   getAllGoals(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseGoalUrl}/allGoals`, {headers}).pipe(
+    return this.http.get<any>(`${this.baseGoalUrl}/allGoals`).pipe(
       catchError(error => {
         console.error('error fetching goals:', error);
         return throwError(()=> error);

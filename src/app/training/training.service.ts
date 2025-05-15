@@ -41,4 +41,13 @@ export class TrainingService {
       })
     );
   }
+
+  addSteps(trainingSteps: any) : Observable<any> {
+    return this.http.post<any> (`${this.baseTrainingUrl}/training-program-steps`, trainingSteps).pipe(
+      catchError(error => {
+        console.error('error during adding new steps:', error);
+        return throwError(() => error)
+      })
+    );
+  }
 }

@@ -8,6 +8,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class TrainingService {
 
   private baseTrainingUrl = 'http://localhost:8800/api/training';
+  private baseTrainingMenteeUrl = 'http://localhost:8800/api/mentee';
 
   constructor(private http: HttpClient) {}
     getToken(): string | null {
@@ -47,6 +48,16 @@ export class TrainingService {
       catchError(error => {
         console.error('error during adding new steps:', error);
         return throwError(() => error)
+      })
+    );
+  }
+
+  getMenteeTrainingPrograms(menteeId: number): Observable<any> {
+    console.log(menteeId);
+    return this.http.get<any>(`${this.baseTrainingMenteeUrl}/mentee-training-program/${menteeId}`).pipe(
+      catchError(error => {
+        console.error('Error fetching mentee training programs:', error);
+        return throwError(() => error);
       })
     );
   }

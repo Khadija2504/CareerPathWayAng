@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MentorShipService } from '../mentor-ship.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mentorships-list',
@@ -18,7 +19,7 @@ export class MentorshipsListComponent implements OnInit{
   feedbacks: any[] = [];
   showFeedbackPopup = false;
 
-  constructor(private mentorShipService: MentorShipService){}
+  constructor(private mentorShipService: MentorShipService, private router: Router){}
 
   ngOnInit(): void {
     this.loadMentors();
@@ -68,6 +69,10 @@ export class MentorshipsListComponent implements OnInit{
         console.error('Error loading mentorship feedbacks:', error);
       },
     });
+  }
+
+  loadMenteePrograms(menteeId: number) : void {
+    this.router.navigate(['/training-programs/manag-training-programs/' + menteeId])
   }
 
   closeFeedbackPopup(): void {

@@ -1,0 +1,83 @@
+/* Custom styles for the component */
+
+/* Gradient border effect */
+.border-gradient-to-b {
+    position: relative;
+  }
+  
+  .border-gradient-to-b::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  }
+  
+  /* Modal animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .fixed {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .fixed > div {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  /* Custom scrollbar for the modal */
+  .max-h-\[90vh\]::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .max-h-\[90vh\]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .max-h-\[90vh\]::-webkit-scrollbar-thumb {
+    background: #c4b5fd;
+    border-radius: 10px;
+  }
+  
+  .max-h-\[90vh\]::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
+  }
+  
+  /* Multi-select styling */
+  select[multiple] {
+    background-image: none;
+  }
+  
+  select[multiple] option:checked {
+    background: linear-gradient(to right, #ddd6fe, #e9d5ff);
+    color: #6b21a8;
+  }
+  
+  /* Form focus states */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+  }
+  
